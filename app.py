@@ -1,15 +1,25 @@
 import os, os.path
 import pymysql
+import json
 import cherrypy
-from models import Article, Category, Img, Admin
+from models import Base, Article, Category, Img, Admin
 from cherrypy.process import wspbus, plugins
+
+
+### Mako Templates ###
+from mako.template import Template
+from mako.lookup import TemplateLookup
+
+lookup = TemplateLookup(directories=["templates"])
+
+### Plugins ###
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-### Plugins ###
         
 class SAEnginePlugin(plugins.SimplePlugin):
-    def __init__(self, bus, connection_string=None):
+    def __init__(self, bus):
         """
         The plugin is registered to the CherryPy engine and therefore
         is part of the bus (the engine *is* a bus) registery.
@@ -17,54 +27,27 @@ class SAEnginePlugin(plugins.SimplePlugin):
         We use this plugin to create the SA engine. At the same time,
         when the plugin starts we create the tables into the database
         using the mapped class of the global metadata.
+ 
+        Finally we create a new 'bind' channel that the SA tool
+        will use to map a session to the SA engine at request time.
         """
         plugins.SimplePlugin.__init__(self, bus)
         self.sa_engine = None
-        self.connection_string = connection_string
-        self.session = scoped_session(sessionmaker(autoflush=True,
-                                                   autocommit=False))
+        self.bus.subscribe("bind", self.bind)
  
     def start(self):
-        self.bus.log('Starting up DB access')
-        self.sa_engine = create_engine(self.connection_string, echo=False)
-        self.bus.subscribe("bind-session", self.bind)
-        self.bus.subscribe("commit-session", self.commit)
+        db_path = os.path.abspath(os.path.join(os.curdir, 'my.db'))
+        self.sa_engine = create_engine('sqlite:///%s' % db_path, echo=True)
+        Base.metadata.create_all(self.sa_engine)
  
     def stop(self):
-        self.bus.log('Stopping down DB access')
-        self.bus.unsubscribe("bind-session", self.bind)
-        self.bus.unsubscribe("commit-session", self.commit)
         if self.sa_engine:
             self.sa_engine.dispose()
             self.sa_engine = None
  
-    def bind(self):
-        """
-        Whenever this plugin receives the 'bind-session' command, it applies
-        this method and to bind the current session to the engine.
-
-        It then returns the session to the caller.
-        """
-        self.session.configure(bind=self.sa_engine)
-        return self.session
-
-    def commit(self):
-        """
-        Commits the current transaction or rollbacks if an error occurs.
-
-        In all cases, the current session is unbound and therefore
-        not usable any longer.
-        """
-        try:
-            self.session.commit()
-        except:
-            self.session.rollback()  
-            raise
-        finally:
-            self.session.remove()
-
-### Tools ###
-
+    def bind(self, session):
+        session.configure(bind=self.sa_engine)
+ 
 class SATool(cherrypy.Tool):
     def __init__(self):
         """
@@ -83,6 +66,9 @@ class SATool(cherrypy.Tool):
                                self.bind_session,
                                priority=20)
  
+        self.session = scoped_session(sessionmaker(autoflush=True,
+                                                  autocommit=False))
+ 
     def _setup(self):
         cherrypy.Tool._setup(self)
         cherrypy.request.hooks.attach('on_end_resource',
@@ -90,37 +76,67 @@ class SATool(cherrypy.Tool):
                                       priority=80)
  
     def bind_session(self):
-        """
-        Attaches a session to the request's scope by requesting
-        the SA plugin to bind a session to the SA engine.
-        """
-        session = cherrypy.engine.publish('bind-session').pop()
-        cherrypy.request.db = session
+        cherrypy.engine.publish('bind', self.session)
+        cherrypy.request.db = self.session
  
     def commit_transaction(self):
-        """
-        Commits the current transaction or rolls back
-        if an error occurs. Removes the session handle
-        from the request's scope.
-        """
-        if not hasattr(cherrypy.request, 'db'):
-            return
         cherrypy.request.db = None
-        cherrypy.engine.publish('commit-session')
+        try:
+            self.session.commit()
+        except:
+            self.session.rollback()  
+            raise
+        finally:
+            self.session.remove()
 
-### Routes ###
+### Decorators ###
 
-class Root(object):
-	@cherrypy.expose
-	def index(self):
-		categories = 
+from functools import wraps
+from cherrypy import response, expose
+
+
+def jsonify(func):
+    '''JSON decorator reponse headers'''
+    @wraps(func)
+    def wrapper(*args, **kw):
+        cherrypy.response.headers["Content-Type"] = "application/json"        
+    return wrapper
+
+class RootController(object):
+
+    @cherrypy.expose
+    @jsonify
+    def index(self):
+        # Localization thread variable
+        # Return tutorial categories, progress indicator, faction stylesheets
+        categories = [category for category in Category.list(cherrypy.request.db)]
+        template = lookup.get_template("index.html")
+        return template.render(categories=categories)
+
+class CategoryController(object):
+
+    exposed = True
+    def GET(self, id=None):
+        '''
+        Returns category_id if id is supplied
+        Or a list of category records if no id is supplied
+        '''
+        pass
+
+    @jsonify
+    def POST(self, **kwargs):
+        category = Category(**kwargs)
+        cherrypy.request.db.add(category)
+        template = lookup.get_template("index.html")
+        return template.render(categories=category)
 
 
 
 if __name__ == '__main__':
     SAEnginePlugin(cherrypy.engine).subscribe()
     cherrypy.tools.db = SATool()
-	cherrypy.tree.mount(User(), '/user', 'app.conf')
-	cherrypy.engine.subscribe('start_thread', DBConnect)
-	cherrypy.engine.start()
-	cherrypy.engine.block()
+    cherrypy.tree.mount(RootController(), '/', {'/': {'tools.db.on': True}})
+    cherrypy.tree.mount(CategoryController(), '/category')
+    #cherrypy.engine.subscribe('start_thread', ConnectDB)
+    cherrypy.engine.start()
+    cherrypy.engine.block()
