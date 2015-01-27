@@ -2,28 +2,13 @@
 
 ## Dependencies
 
-* [Peewee ORM](https://github.com/coleifer/peewee)
+* [SQL Alchemy](http://www.sqlalchemy.org/)
 
-I chose to use an ORM for easy additions to the data models in future versions. A developer can extend a model like so:
+I chose to use an ORM for easy additions to the data models in future versions. A developer can extend a model by editing its base class and generating a new table with the supplied Column() objects. 
 
-```
-from peewee import *
+Detailed instructions to follow.
 
-myDB = peewee.mySQLDatabase("mydb", host="hostname", port=3306, user="user", passwd="password")
-
-class ThisSQLModel(peewee.Model):
-	"""The root of our model, a SQL database"""
-	class Meta:
-		database = myDB
-
-class Category(peewee.Model):
-	"""mydb.Category table"""
-	# Fields describe the mapping of models
-	title = TextField()
-	dateUpdated = DateTimeField()
-	# A ForeignKeyField is a relationship to another model
-	article = ForeignKeyField(Article, related_name='articles')
-
+* [Mako Templates]
 
 
 ```

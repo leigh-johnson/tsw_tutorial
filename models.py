@@ -71,7 +71,6 @@ class Category(Base):
 		for key, value in kwargs.iteritems():
 			self.key = value
 
-
 	@staticmethod
 	def list(session):
 		return session.query(Category).all()
@@ -122,7 +121,7 @@ class Img(Base):
 	src = Column(String)
 	title = Column(String(55))
 
-	
+
 	def __init__(self, **kwargs):
 		Base.__init__(self)
 		for key, value in kwargs.iteritems():

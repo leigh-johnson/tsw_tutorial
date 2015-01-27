@@ -10,7 +10,7 @@ from cherrypy.process import wspbus, plugins
 from mako.template import Template
 from mako.lookup import TemplateLookup
 
-lookup = TemplateLookup(directories=["templates"])
+lookup = TemplateLookup(directories=["view"])
 
 ### Plugins ###
 
@@ -102,6 +102,7 @@ def jsonify(func):
         cherrypy.response.headers["Content-Type"] = "application/json"        
     return wrapper
 
+### App Index/Home/Root ### 
 class RootController(object):
 
     @cherrypy.expose
@@ -111,32 +112,109 @@ class RootController(object):
         # Return tutorial categories, progress indicator, faction stylesheets
         categories = [category for category in Category.list(cherrypy.request.db)]
         template = lookup.get_template("index.html")
-        return template.render(categories=categories)
+        return template.render(categories=categories, layout='default')
 
-class CategoryController(object):
+    def category(self):
+        pass
+
+    def article(self):
+        pass
+
+    def login(self):
+        pass
+
+
+### RESTful API Controllers ###
+### ALL RETURNS ON API ROUTES AGONOSTICALLY RETURN `result` ###
+
+class CategoryAPI(object):
 
     exposed = True
-    def GET(self, id=None):
+
+    @jsonify
+    def GET(self, category_id=None):
         '''
-        Returns category_id if id is supplied
-        Or a list of category records if no id is supplied
+        Returns category_id if id is supplied OR
+        all category records if no id is supplied
+        '''
+        if category_id == None:
+            result = [category for category in Category.list(cherrypy.request.db)]
+            return result
+        else: 
+            result = cherrypy.request.db.query(Category).get(category_id)
+            return result
+
+    def POST(self, **kwargs):
+        '''If authorized, persist a new Category() to session and return it
+        No validation strategy implemented, use with caution
+        '''
+        result = Category(**kwargs)
+        cherrypy.request.db.add(result)
+        return result
+
+    def PUT(self, **kwargs):
+        '''If authorized, persist .update() on session
+        **KWARGS:
+        key=value
+        No validation strategy implemented, use with caution
+        '''
+        values = {}
+        for key, value in kwargs.iteritems():
+            values[key] = value
+        category_id = values[category_id]
+        result = cherrypy.request.db.query(Category).filter(id == category_id).update(values)
+        return result
+
+    def DELETE(self, category_id):
+        '''Marks object for delete in session
+        Cascade should NEVER be handled in the Controllers
+        Instead, declaratively state cascadence in model parameters'''
+        result = cherrypy.request.db.query(Category).filter(id == category_id).delete()
+        return result
+
+class ArticleAPI(object):
+    
+    exposed = True
+
+    def GET(self, category_id=None):
+        '''Returns an article_id if supplied OR
+        all article records if no id is supplied
         '''
         pass
 
-    @jsonify
     def POST(self, **kwargs):
-        category = Category(**kwargs)
-        cherrypy.request.db.add(category)
-        template = lookup.get_template("index.html")
-        return template.render(categories=category)
+        pass
 
+    def PUT(self, **kwargs):
+        '''If Authorized'''
+        pass
+
+    def DELETE(self, category_id):
+        pass
+
+
+class ImgAPI(object):
+
+    exposed = True
+
+    def GET(self, img_id=None):
+        pass
+
+    def POST(self, **kwargs):
+        pass
+
+    def PUT(self, **kwargs):
+        pass
+
+    def DELETE(self, img_id):
+        pass
 
 
 if __name__ == '__main__':
     SAEnginePlugin(cherrypy.engine).subscribe()
     cherrypy.tools.db = SATool()
     cherrypy.tree.mount(RootController(), '/', {'/': {'tools.db.on': True}})
-    cherrypy.tree.mount(CategoryController(), '/category')
+    cherrypy.tree.mount(CategoryAPI(), '/api/category')
     #cherrypy.engine.subscribe('start_thread', ConnectDB)
     cherrypy.engine.start()
     cherrypy.engine.block()
