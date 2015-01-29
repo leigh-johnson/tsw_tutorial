@@ -1,12 +1,34 @@
 import base64
 import uuid
+import json
 import hashlib
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.types import String, Integer, Text
 
 Base = declarative_base()
+
+
+class Jsonify(json.JSONEncoder):
+	def default(self, obj):
+		#obj can be a single object or a 1D array of objects
+		if isinstance(obj.__class__, DeclarativeMeta):
+			keyed = {}
+			fields = {}
+			for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata']:
+				data = obj.__getattribute__(field)
+				try:
+					json.dumps(data) # this will fail on non-encodable values, like other classes
+					fields[field] = data
+				except TypeError:
+					fields[field] = None
+			keyed[obj.id] = fields
+			
+			# a json-encodable dict
+			return keyed
+
+		return json.JSONEncoder.default(self, obj)
 
 ### Database schema requires 'None' be inserted into columns with null values
 ### Default 'None' value can be accessed by declaring Column(default='aDefault') parameter
@@ -20,12 +42,9 @@ class Admin(Base):
 	username =  Column(String)
 	password = Column(String)
  
-	def __init__(self, username, password):
-		Base.__init__(self)
-		self.username = username
-		self.password = self.hash_password(password)
-		# generate salt
-		# salt the password
+	def __init__(self, **kwargs):
+		super(Admin, self).__init__(**kwargs)
+		# do custom initialization here
 
 	def hash_password(password, salt=None):
 		if salt is None:
@@ -66,11 +85,6 @@ class Category(Base):
 	description_de = Column(String(255))
 	body_de = Column(Text)
 
-	def __init__(self, **kwargs):
-		Base.__init__(self)
-		for key, value in kwargs.iteritems():
-			self.key = value
-
 	@staticmethod
 	def list(session):
 		return session.query(Category).all()
@@ -100,11 +114,6 @@ class Article(Base):
 	body_de = Column(Text)
 
 
-	def __init__(self, **kwargs):
-		Base.__init__(self)
-		for key, value in kwargs.iteritems():
-			self.key = value
-
 	@staticmethod
 	def list(session):
 		return session.query(Article).all()
@@ -121,12 +130,7 @@ class Img(Base):
 	src = Column(String)
 	title = Column(String(55))
 
-
-	def __init__(self, **kwargs):
-		Base.__init__(self)
-		for key, value in kwargs.iteritems():
-			self.key = value
-
 	@staticmethod
 	def list(session):
 		return session.query(Img).all()
+

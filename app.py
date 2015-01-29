@@ -1,8 +1,8 @@
 import os, os.path
-import pymysql
 import json
+import pymysql
 import cherrypy
-from models import Base, Article, Category, Img, Admin
+from models import Base, Article, Category, Img, Admin, Jsonify
 from cherrypy.process import wspbus, plugins
 
 
@@ -12,12 +12,11 @@ from mako.lookup import TemplateLookup
 
 lookup = TemplateLookup(directories=["view"])
 
-### Plugins ###
+### Plugins/Tools ###
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-
-        
+      
 class SAEnginePlugin(plugins.SimplePlugin):
     def __init__(self, bus):
         """
@@ -89,24 +88,13 @@ class SATool(cherrypy.Tool):
         finally:
             self.session.remove()
 
-### Decorators ###
-
-from functools import wraps
-from cherrypy import response, expose
-
-
-def jsonify(func):
-    '''JSON decorator reponse headers'''
-    @wraps(func)
-    def wrapper(*args, **kw):
-        cherrypy.response.headers["Content-Type"] = "application/json"        
-    return wrapper
 
 ### App Index/Home/Root ### 
+
 class RootController(object):
 
     @cherrypy.expose
-    @jsonify
+    
     def index(self):
         # Localization thread variable
         # Return tutorial categories, progress indicator, faction stylesheets
@@ -114,12 +102,15 @@ class RootController(object):
         template = lookup.get_template("index.html")
         return template.render(categories=categories, layout='default')
 
+    @cherrypy.expose
     def category(self):
         pass
 
+    @cherrypy.expose
     def article(self):
         pass
 
+    @cherrypy.expose
     def login(self):
         pass
 
@@ -131,24 +122,68 @@ class CategoryAPI(object):
 
     exposed = True
 
-    @jsonify
     def GET(self, category_id=None):
         '''
         Returns category_id if id is supplied OR
         all category records if no id is supplied
         '''
         if category_id == None:
-            result = [category for category in Category.list(cherrypy.request.db)]
+            result = Category.list(cherrypy.request.db)
+            return json.dumps(result, cls=Jsonify)
+        elif cherrypy.request.db.query(Category).get(category_id):
+            result = cherrypy.request.db.query(Category).get(category_id)
+            return json.dumps(result, cls=Jsonify)
+        return 'Category ID not found.'
+
+    def POST(self, **kwargs):
+        '''
+        If authorized, persist a new Category() to session and return it
+        No validation strategy implemented, use with caution
+        '''
+        result = Category()
+        cherrypy.request.db.add(result)
+        return json.dumps(result, cls=Jsonify)
+
+    def PUT(self, **kwargs):
+        '''
+        If authorized, persist .update() on session
+        **KWARGS:
+        key=value
+        No validation strategy implemented, use with caution
+        '''
+        result = cherrypy.request.db.query(Category).filter(id == category_id).update(kwargs)
+        cherrypy.request.db.add(result)
+        return json.dumps(result, cls=Jsonify)
+
+    def DELETE(self, category_id):
+        '''
+        Marks object for delete in session
+        '''
+        result = cherrypy.request.db.query(Category).filter(id == category_id)
+        cherrypy.request.db.delete(result)
+        return result
+
+
+class ArticleAPI(object): 
+    exposed = True
+
+    def GET(self, article_id=None):
+        '''
+        Returns article_id if id is supplied OR
+        all article records if no id is supplied
+        '''
+        if article_id == None:
+            result = [article for article in Article.list(cherrypy.request.db)]
             return result
         else: 
-            result = cherrypy.request.db.query(Category).get(category_id)
+            result = cherrypy.request.db.query(Article).get(article_id)
             return result
 
     def POST(self, **kwargs):
-        '''If authorized, persist a new Category() to session and return it
+        '''If authorized, persist a new Article() to session and return it
         No validation strategy implemented, use with caution
         '''
-        result = Category(**kwargs)
+        result = Article(**kwargs)
         cherrypy.request.db.add(result)
         return result
 
@@ -158,40 +193,20 @@ class CategoryAPI(object):
         key=value
         No validation strategy implemented, use with caution
         '''
+        #if authorized
         values = {}
         for key, value in kwargs.iteritems():
             values[key] = value
-        category_id = values[category_id]
-        result = cherrypy.request.db.query(Category).filter(id == category_id).update(values)
+        article_id = values[article_id]
+        result = cherrypy.request.db.query(Article).filter(id == article_id).update(values)
         return result
 
-    def DELETE(self, category_id):
+    def DELETE(self, article_id):
         '''Marks object for delete in session
         Cascade should NEVER be handled in the Controllers
         Instead, declaratively state cascadence in model parameters'''
-        result = cherrypy.request.db.query(Category).filter(id == category_id).delete()
+        result = cherrypy.request.db.query(Article).filter(id == article_id).delete()
         return result
-
-class ArticleAPI(object):
-    
-    exposed = True
-
-    def GET(self, category_id=None):
-        '''Returns an article_id if supplied OR
-        all article records if no id is supplied
-        '''
-        pass
-
-    def POST(self, **kwargs):
-        pass
-
-    def PUT(self, **kwargs):
-        '''If Authorized'''
-        pass
-
-    def DELETE(self, category_id):
-        pass
-
 
 class ImgAPI(object):
 
@@ -209,12 +224,19 @@ class ImgAPI(object):
     def DELETE(self, img_id):
         pass
 
+### Config ###
+
+cherrypy.config.update('app.conf')
 
 if __name__ == '__main__':
+    cherrypy.config.update('app.conf')
     SAEnginePlugin(cherrypy.engine).subscribe()
     cherrypy.tools.db = SATool()
-    cherrypy.tree.mount(RootController(), '/', {'/': {'tools.db.on': True}})
-    cherrypy.tree.mount(CategoryAPI(), '/api/category')
+    cherrypy.tree.mount(RootController(), '/', config='app.conf')
+    cherrypy.tree.mount(CategoryAPI(), '/api/category', config='api.conf')
+    cherrypy.tree.mount(Img(), '/api/img', config='api.conf')
+    cherrypy.tree.mount(ArticleAPI(), '/api/article', config='api.conf')
+
     #cherrypy.engine.subscribe('start_thread', ConnectDB)
-    cherrypy.engine.start()
-    cherrypy.engine.block()
+cherrypy.engine.start()
+cherrypy.engine.block()
