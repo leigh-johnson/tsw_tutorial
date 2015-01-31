@@ -1,0 +1,36 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<!-- CSS -->
+	##faction stylesheets e.g. href="path/to/${faction}-style.css" 
+<link ref="stylesheet" type="text/css" href="style.css" />
+	<!-- JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/public/js/menu.js"></script>
+</head>
+<body>
+<button type="button" class="js-menu-trigger sliding-menu-button">
+  <img src="/public/img/menu-white.png" alt="Menu Icon">
+</button>
+
+<nav class="js-menu sliding-menu-content">
+<ul>
+%for category in categories:
+  <li><a href="category?category_id=${category.id}">
+    ${category.title_en}
+  </a></li>
+%endfor
+</ul>
+</nav>
+
+<div class="js-menu-screen sliding-menu-fade-screen"></div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.js-menu-trigger,.js-menu-screen').on('click touchstart',function (e) {
+    $('.js-menu,.js-menu-screen').toggleClass('is-visible');
+    e.preventDefault();
+  });
+});
+</script>
+</body>
+</html>

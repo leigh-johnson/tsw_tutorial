@@ -1,3 +1,4 @@
+# -*- coding: utf-8> -*-
 import base64
 import uuid
 import json
@@ -14,7 +15,7 @@ class Jsonify(json.JSONEncoder):
 	def default(self, obj):
 		#obj can be a single object or a 1D array of objects
 		if isinstance(obj.__class__, DeclarativeMeta):
-			keyed = {}
+			#keyed = {}
 			fields = {}
 			for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata']:
 				data = obj.__getattribute__(field)
@@ -23,10 +24,10 @@ class Jsonify(json.JSONEncoder):
 					fields[field] = data
 				except TypeError:
 					fields[field] = None
-			keyed[obj.id] = fields
+			#keyed[obj.id] = fields
 			
 			# a json-encodable dict
-			return keyed
+			return fields
 
 		return json.JSONEncoder.default(self, obj)
 
@@ -72,6 +73,7 @@ class Category(Base):
 	id = Column(Integer, primary_key=True)
 	articles = relationship("Article", backref="category")
 	imgs = relationship("Img", backref="category")
+	priority = Column(Integer)
 
 	title_en = Column(String(35))
 	description_en = Column(String(255))
@@ -99,7 +101,10 @@ class Article(Base):
 	id = Column(Integer, primary_key=True)
 	category_id = Column(Integer, ForeignKey('category.id'))
 	imgs = relationship("Img", backref="article.id")
+	video = relationship("Video", backref="article.id")
 	layout = Column(String)
+	priority = Column(Integer)
+
 
 	title_en = Column(String(35))
 	description_en = Column(String(255))
@@ -134,3 +139,18 @@ class Img(Base):
 	def list(session):
 		return session.query(Img).all()
 
+class Video(Base):
+	'''
+	NO LOCALIZED STRINGS
+	title for internal use only
+	'''
+	__tablename__ = 'video'
+	id = Column(Integer, primary_key=True)
+	category_id = Column(Integer, ForeignKey('category.id'))
+	article_id = Column(Integer, ForeignKey('article.id'))
+	src = Column(String)
+	title = Column(String(55))
+
+	@staticmethod
+	def list(session):
+		return session.query(Video).all()

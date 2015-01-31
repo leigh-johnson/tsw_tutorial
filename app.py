@@ -1,4 +1,4 @@
-import os, os.path
+import os
 import json
 import pymysql
 import cherrypy
@@ -9,12 +9,15 @@ from cherrypy.process import wspbus, plugins
 ### Mako Templates ###
 from mako.template import Template
 from mako.lookup import TemplateLookup
+#import mako.runtime
+#mako.runtime.UNDEFINED = ''
 
-lookup = TemplateLookup(directories=["view"])
+path = os.path.abspath(os.path.dirname(__file__))
+lookup = TemplateLookup(directories=[os.path.join(os.path.abspath(os.curdir)+'/view')], output_encoding='utf-8',collection_size=500)
 
 ### Plugins/Tools ###
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, update
 from sqlalchemy.orm import scoped_session, sessionmaker
       
 class SAEnginePlugin(plugins.SimplePlugin):
@@ -87,32 +90,110 @@ class SATool(cherrypy.Tool):
             raise
         finally:
             self.session.remove()
-
+def get_children(a_dir):
+    return [name for name in os.listdir(a_dir)
+        if os.path.isdir(os.path.join(a_dir, name))]
 
 ### App Index/Home/Root ### 
 
 class RootController(object):
 
     @cherrypy.expose
-    
     def index(self):
         # Localization thread variable
-        # Return tutorial categories, progress indicator, faction stylesheets
-        categories = [category for category in Category.list(cherrypy.request.db)]
-        template = lookup.get_template("index.html")
-        return template.render(categories=categories, layout='default')
+        # Faction thread variable
+        # Character name/gender/etc variable
+        #Return tutorial categories, progress indicator, faction stylesheets
+
+        character = {
+            'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
+            'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
+            'language': "_en" # cherrypy.request.headers.get('X-Tsw-Language')
+        }
+
+        result = Category.list(cherrypy.request.db)
+        template = lookup.get_template(("/index"+character['language']+".html"))
+        return template.render(categories=result, character=character)
 
     @cherrypy.expose
-    def category(self):
+    def category(self, category_id):
         pass
 
     @cherrypy.expose
-    def article(self):
+    def article(self, article_id):
         pass
 
     @cherrypy.expose
     def login(self):
         pass
+
+    ## UNIT TEST DATA ##
+    @cherrypy.expose
+    def build_data(self):
+        img_1 = Img(
+            src='http://placehold.it/350x200',
+            title='Placeholder img 1')
+        img_2 = Img(
+            src='http://placehold.it/350x200',
+            title='Placeholder img 2')
+        img_3 = Img(
+            src='http://placehold.it/350x200',
+            title='Placeholder img 3')
+        article_1 = Article(
+            title_en='Movement',
+            description_en='How to move',
+            body_en="Zombie ipsum brains reversus ab cerebellum viral inferno",
+            priority=30,
+            layout='section-aside',
+            )
+        article_2 = Article(
+            title_en='Movement',
+            description_en='How to move',
+            body_en="Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro.",
+            priority=20,
+            layout='section-aside',
+            )
+        article_3 = Article(
+            title_en='Movement',
+            description_en='How to move',
+            body_en="Zombie ipsum brains reversus ab cerebellum viral inferno, brein nam rick mend grimes malum cerveau cerebro.",
+            priority=10,
+            layout='section-aside',
+            )
+        category_1 = Category(
+            title_en="Movement & Combat",
+            description_en="How to fight, how to move",
+            body_en="Zombie ipsum brains reversus ab cerebellum viral inferno, brein nam rick mend grimes malum cerveau cerebro.",
+            priority=10,
+            )
+        category_2 = Category(
+            title_en="Social & Friendship",
+            description_en="How to make friends",
+            body_en="Zombie ipsum brains reversus ab cerebellum viral inferno, brein nam rick mend grimes malum cerveau cerebro.",
+            priority=20,
+            )
+        category_3 = Category(
+            title_en="Dungeons",
+            description_en="How to dungeon",
+            body_en="Zombie ipsum brains reversus ab cerebellum viral inferno, brein nam rick mend grimes malum cerveau cerebro.",
+            priority=30,
+            )   
+        article_1.imgs.append(img_1)
+        article_1.imgs.append(img_2)
+        article_1.imgs.append(img_3)
+        article_2.imgs.append(img_1)
+        article_2.imgs.append(img_2)
+        category_1.articles.append(article_1)
+        category_1.articles.append(article_2)
+        category_1.articles.append(article_3)
+        category_2.articles.append(article_3)
+        category_3.articles.append(article_2)
+        category_1.imgs.append(img_1)
+        category_2.imgs.append(img_2)
+        category_3.imgs.append(img_3)
+
+        result = cherrypy.request.db.add_all([article_1, article_2, article_3, category_1, category_2, category_3, img_1, img_2, img_3])
+        return result
 
 
 ### RESTful API Controllers ###
@@ -144,27 +225,26 @@ class CategoryAPI(object):
         cherrypy.request.db.add(result)
         return json.dumps(result, cls=Jsonify)
 
-    def PUT(self, **kwargs):
+    def PUT(self, category_id, **kwargs):
         '''
         If authorized, persist .update() on session
         **KWARGS:
         key=value
         No validation strategy implemented, use with caution
         '''
-        result = cherrypy.request.db.query(Category).filter(id == category_id).update(kwargs)
-        cherrypy.request.db.add(result)
+        result = cherrypy.request.db.query(Category).filter(Category.id == category_id).update(kwargs)
         return json.dumps(result, cls=Jsonify)
 
     def DELETE(self, category_id):
         '''
         Marks object for delete in session
         '''
-        result = cherrypy.request.db.query(Category).filter(id == category_id)
-        cherrypy.request.db.delete(result)
-        return result
+        result = cherrypy.request.db.query(Category).filter(Category.id == category_id).delete()
+        return json.dumps(result, cls=Jsonify)
 
 
-class ArticleAPI(object): 
+class ArticleAPI(object):
+
     exposed = True
 
     def GET(self, article_id=None):
@@ -173,69 +253,96 @@ class ArticleAPI(object):
         all article records if no id is supplied
         '''
         if article_id == None:
-            result = [article for article in Article.list(cherrypy.request.db)]
-            return result
-        else: 
+            result = Article.list(cherrypy.request.db)
+            return json.dumps(result, cls=Jsonify)
+        elif cherrypy.request.db.query(Article).get(article_id):
             result = cherrypy.request.db.query(Article).get(article_id)
-            return result
+            return json.dumps(result, cls=Jsonify)
+        return 'Article ID not found.'
 
     def POST(self, **kwargs):
-        '''If authorized, persist a new Article() to session and return it
+        '''
+        If authorized, persist a new Article() to session and return it
         No validation strategy implemented, use with caution
         '''
-        result = Article(**kwargs)
+        result = Article()
         cherrypy.request.db.add(result)
-        return result
+        return json.dumps(result, cls=Jsonify)
 
-    def PUT(self, **kwargs):
-        '''If authorized, persist .update() on session
+    def PUT(self, article_id, **kwargs):
+        '''
+        If authorized, persist .update() on session
         **KWARGS:
         key=value
         No validation strategy implemented, use with caution
         '''
-        #if authorized
-        values = {}
-        for key, value in kwargs.iteritems():
-            values[key] = value
-        article_id = values[article_id]
-        result = cherrypy.request.db.query(Article).filter(id == article_id).update(values)
-        return result
+        result = cherrypy.request.db.query(Article).filter(Article.id == article_id).update(kwargs)
+        return json.dumps(result, cls=Jsonify)
 
     def DELETE(self, article_id):
-        '''Marks object for delete in session
-        Cascade should NEVER be handled in the Controllers
-        Instead, declaratively state cascadence in model parameters'''
-        result = cherrypy.request.db.query(Article).filter(id == article_id).delete()
-        return result
+        '''
+        Marks object for delete in session
+        '''
+        result = cherrypy.request.db.query(Article).filter(Article.id == article_id).delete()
+        return json.dumps(result, cls=Jsonify)
+
+
 
 class ImgAPI(object):
 
     exposed = True
 
     def GET(self, img_id=None):
-        pass
+        '''
+        Returns img_id if id is supplied OR
+        all img records if no id is supplied
+        '''
+        if img_id == None:
+            result = Img.list(cherrypy.request.db)
+            return json.dumps(result, cls=Jsonify)
+        elif cherrypy.request.db.query(Img).get(img_id):
+            result = cherrypy.request.db.query(Img).get(img_id)
+            return json.dumps(result, cls=Jsonify)
+        return 'Img ID not found.'
 
     def POST(self, **kwargs):
-        pass
+        '''
+        If authorized, persist a new Img() to session and return it
+        No validation strategy implemented, use with caution
+        '''
+        result = Img()
+        cherrypy.request.db.add(result)
+        return json.dumps(result, cls=Jsonify)
 
-    def PUT(self, **kwargs):
-        pass
+    def PUT(self, img_id, **kwargs):
+        '''
+        If authorized, persist .update() on session
+        **KWARGS:
+        key=value
+        No validation strategy implemented, use with caution
+        '''
+        result = cherrypy.request.db.query(Img).filter(Img.id == img_id).update(kwargs)
+        return json.dumps(result, cls=Jsonify)
 
     def DELETE(self, img_id):
-        pass
+        '''
+        Marks object for delete in session
+        '''
+        result = cherrypy.request.db.query(Img).filter(Img.id == img_id).delete()
+        return json.dumps(result, cls=Jsonify)
 
 ### Config ###
 
-cherrypy.config.update('app.conf')
+##cherrypy.config.update('app.conf')
 
 if __name__ == '__main__':
-    cherrypy.config.update('app.conf')
+    cherrypy.config.update('config/app.conf')
     SAEnginePlugin(cherrypy.engine).subscribe()
     cherrypy.tools.db = SATool()
-    cherrypy.tree.mount(RootController(), '/', config='app.conf')
-    cherrypy.tree.mount(CategoryAPI(), '/api/category', config='api.conf')
-    cherrypy.tree.mount(Img(), '/api/img', config='api.conf')
-    cherrypy.tree.mount(ArticleAPI(), '/api/article', config='api.conf')
+    cherrypy.tree.mount(RootController(), '/', config='config/app.conf')
+    cherrypy.tree.mount(CategoryAPI(), '/api/category', config='config/api.conf')
+    cherrypy.tree.mount(Img(), '/api/img', config='config/api.conf')
+    cherrypy.tree.mount(ArticleAPI(), '/api/article', config='config/api.conf')
 
     #cherrypy.engine.subscribe('start_thread', ConnectDB)
 cherrypy.engine.start()

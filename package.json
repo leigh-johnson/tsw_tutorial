@@ -1,0 +1,16 @@
+{
+  "name": "TSW-tuts",
+  "private": true,
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nuwen/tsw_tutorial.git"
+  },
+  "description": "A tutorial application for The Secret World, includes RESTful api and light CMS",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-connect-proxy": "^0.1.11",
+    "grunt-contrib-sass": "^0.8.1",
+    "grunt-contrib-watch": "^0.6.1"
+  }
+}
