@@ -94,7 +94,7 @@ def get_children(a_dir):
     return [name for name in os.listdir(a_dir)
         if os.path.isdir(os.path.join(a_dir, name))]
 
-### App Index/Home/Root ### 
+### Client Controller ### 
 
 class RootController(object):
 
@@ -111,14 +111,19 @@ class RootController(object):
         return template.render(categories=result, character=character, layout='default')
 
     @cherrypy.expose
-    def category(self, category_id):
+    def category(self, category_id='None'):
         character = {
             'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
             'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
             'language': "_en" # cherrypy.request.headers.get('X-Tsw-Language')
         }
+        categories = Category.list(cherrypy.request.db)
+        template = lookup.get_template(("/index"+character['language']+".html"))
+        if category_id == 'None':
+            return template.render(categories=categories, character=character, layout='default')
 
-        pass
+        category = cherrypy.request.db.query(Category).filter(Category.id == category_id).one()
+        return template.render(categories=categories, character=character, layout='category', category=category)
 
     @cherrypy.expose
     def article(self, article_id='None'):
@@ -146,13 +151,13 @@ class RootController(object):
     @cherrypy.expose
     def build_data(self):
         img_1 = Img(
-            src='http://placehold.it/350x200',
+            src='http://placehold.it/350x200&text=img_1',
             title='Placeholder img 1')
         img_2 = Img(
-            src='http://placehold.it/350x200',
+            src='http://placehold.it/350x200&text=img_2',
             title='Placeholder img 2')
         img_3 = Img(
-            src='http://placehold.it/350x200',
+            src='http://placehold.it/350x200&text=img_3',
             title='Placeholder img 3')
         article_1 = Article(
             title_en='Hero image',
@@ -169,11 +174,11 @@ class RootController(object):
             layout='image-aside',
             )
         article_3 = Article(
-            title_en='Movement',
-            description_en='How to move',
+            title_en='Full-width video',
+            description_en='Full-width video',
             body_en="Zombie ipsum brains reversus ab cerebellum viral inferno, brein nam rick mend grimes malum cerveau cerebro.",
             priority=10,
-            layout='section-aside',
+            layout='video',
             )
         category_1 = Category(
             title_en="Image layouts",
@@ -182,7 +187,7 @@ class RootController(object):
             priority=10,
             )
         category_2 = Category(
-            title_en="Social & Friendship",
+            title_en="Video layouts",
             description_en="How to make friends",
             body_en="Zombie ipsum brains reversus ab cerebellum viral inferno, brein nam rick mend grimes malum cerveau cerebro.",
             priority=20,
@@ -194,15 +199,12 @@ class RootController(object):
             priority=30,
             )   
         article_1.imgs.append(img_1)
-        article_1.imgs.append(img_2)
-        article_1.imgs.append(img_3)
-        article_2.imgs.append(img_1)
         article_2.imgs.append(img_2)
+        article_2.imgs.append(img_3)
+
         category_1.articles.append(article_1)
         category_1.articles.append(article_2)
-        category_1.articles.append(article_3)
         category_2.articles.append(article_3)
-        category_3.articles.append(article_2)
         category_1.imgs.append(img_1)
         category_2.imgs.append(img_2)
         category_3.imgs.append(img_3)

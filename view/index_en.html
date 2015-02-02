@@ -19,38 +19,48 @@
 	</head>
 <body>
 	<div id='container'>
-	<div id='menu-container'>
-	<button type='button' class='js-menu-trigger sliding-menu-button'>
-		<span class='icon-menu'></span>
-	</button>
-	<body>
-	<form class='search-bar' role='search'>
-	  <input type='search' placeholder='Enter Search' />
-	  <button type='submit'>
-	    <span class='icon-magnifying-glass'></span>
-	  </button>
-	</form>
-	<button type='button' class='petition-button'>PETITION</button>
+		<!-- Top Menu & Sliding Menu -->
+		<div id='menu-container'>
+		<button type='button' class='js-menu-trigger sliding-menu-button'>
+			<span class='icon-menu'></span>
+		</button>
+		<body>
+		<form class='search-bar' role='search'>
+		  <input type='search' placeholder='Enter Search' />
+		  <button type='submit'>
+		    <span class='icon-magnifying-glass'></span>
+		  </button>
+		</form>
+		<button type='button' class='petition-button'>PETITION</button>
+		</div>
+		<nav class='js-menu sliding-menu-content'>
+		<ul class='sliding-menu-outer' id='menu-accordion'>
+		%for category in categories:
+		  <li><a class='category-item'>${category.title_en}/</a>
+		  	<ul>
+		  		<li><a href='category?category_id=${category.id}' class='article-item'>
+		  			<span class='icon-text-document'></span>Index</a>
+			%if category.articles != []:
+				<li><a href='category'
+				%for article in category.articles:
+				<li><a href='article?article_id=${article.id}' class='article-item'><span class='icon-text-document'></span>${article.title_en}</a></li>
+				%endfor
+				</ul>
+			%endif
+		 </li>
+		%endfor
+		</ul>
+		</nav>
+
+		<div id='layout-container'>
+		<%include file='layout_en/${layout}.html' />
+
+		<div class='js-menu-screen sliding-menu-fade-screen'>
+		<canvas id='code-canvas'></canvas>
+		</div>
+		</div>
 	</div>
-	<nav class='js-menu sliding-menu-content'>
-	<ul class='sliding-menu-outer' id='menu-accordion'>
-	%for category in categories:
-	  <li><a href='category?category_id=${category.id}' class='category-item'>${category.title_en}</a>
-		%if category.articles != []:
-			<ul>
-			%for article in category.articles:
-			<li><a href='article?article_id=${article.id}' class='article-item'><span class='icon-dots-two-vertical'></span>${article.title_en}</a></li>
-			%endfor
-			</ul>
-		%endif
-	 </li>
-	%endfor
-	</ul>
-	</nav>
-
-<%include file='layouts/${layout}.html' />
-
-<div class='js-menu-screen sliding-menu-fade-screen'></div>
-</div>
+	<!-- Faction-specific canvas animations -->
+	<script src='public/js/${character['faction']}.js'></script>
 </body>
 </html>

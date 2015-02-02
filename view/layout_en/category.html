@@ -1,0 +1,24 @@
+<h1>${category.title_en}</h1>
+<h3>${category.description_en}</h3>
+<p>${category.body_en}</p>
+<div class="cards">
+%for article in category.articles:
+	<div class="card">
+	    <div class="card-image">
+	    	## randomize the featured img
+	    	<%! import random %>
+	    	%if len(article.imgs) > 0:
+	      		<img src='${(random.choice(article.imgs)).src}' />
+	      	%else:
+	      		<img src='${(random.choice(article.imgs)).src}' />
+	      	%endif
+	    </div>
+	    <div class="card-header">
+	      ${article.title_en}
+	    </div>
+	    <div class="card-copy">
+	      <p>${article.body_en}<p>
+	    </div>
+	</div>
+%endfor
+</div>

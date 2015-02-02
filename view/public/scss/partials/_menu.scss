@@ -5,7 +5,6 @@
   }
 
 .sliding-menu-content {  
-  ///////////////////////////////////////////////////////////////////////////////////
   margin-top: 52px;
   ul {
     padding: 0;
@@ -42,6 +41,7 @@
   @extend %menu-item;
 }
 
+
 %menu-item {
   @include padding(1em 1em 1em 7px);
   //border-right: $sliding-menu-border;
@@ -72,14 +72,11 @@
   }
 }
 
+
 .sliding-menu-fade-screen {
-  @include background(linear-gradient(darken($top-bar-background, 2%), darken($top-bar-background, 10%)));
+  //@include background(linear-gradient(darken($top-bar-background, 20%), lighten($top-bar-background, 10%)));
   @include position(fixed, 0px 0px 0px 0px);
   @include transition;
-  @include background-image($sliding-menu-background-img);
-  background-position: bottom right, bottom;
-  background-repeat: no-repeat;
-  //background: $sliding-menu-fade-background;
   opacity: 0;
   visibility: hidden;
   z-index: 999998;
@@ -87,8 +84,13 @@
   width: $width;
 
   &.is-visible {
-    opacity: 0.8;
+    opacity: 0.6;
     visibility: visible;
+  }
+
+  #code-canvas{
+    width: 100%;
+    height: 100%;
   }
 }
 

@@ -23,24 +23,20 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.icon-dot-single:before {
-	content: "\e600";
-}
-
-.icon-dots-two-horizontal:before {
-	content: "\e601";
-}
-
-.icon-dots-two-vertical:before {
-	content: "\e604";
-}
-
 .icon-magnifying-glass:before {
 	content: "\e602";
 }
 
 .icon-menu:before {
 	content: "\e603";
+}
+
+.icon-text-document-inverted:before {
+	content: "\e601";
+}
+
+.icon-text-document:before {
+	content: "\e604";
 }
 
 .icon-folder:before {

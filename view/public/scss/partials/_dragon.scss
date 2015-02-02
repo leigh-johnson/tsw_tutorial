@@ -1,7 +1,7 @@
 
 // Palette
 
-$light-green: #639A3C;
+$light-green: #3E731A;
 $dark-green: #294019;
 $dark-grey: #222;
 
@@ -12,6 +12,16 @@ $base-border-radius: 3px !default;
 $base-line-height: 2em !default;
 $base-accent-color: lighten($light-green, 10%) !default;
 $base-spacing: 9px;
+
+// Body
+$body-background: lighten($dark-green, 45%);
+#container{
+	@include texture(180deg, lighten($light-green, 10%), lighten($dark-green, 2%), 63, 0); 
+}
+
+// Faction imgs
+$faction-logo-background: url(../img/dragon-logo.png);
+$faction-logo-decorator: url(../img/sakura.png);
 
 // Top bar
 $top-bar-background: $dark-grey;
@@ -36,9 +46,11 @@ $sliding-menu-fade-background: rgba(0,0,0,0.5);
 $sliding-menu-background-img: url(../img/dragon-logo.png);
 
 
-// Body
-$body-background: lighten($dark-green, 45%);
-#container{
-	@include texture(180deg, lighten($light-green, 10%), lighten($dark-green, 2%), 63, 0); 
 
-}
+// Layout > Category
+
+// Layout > Image Hero
+
+// Layout > Image aside
+
+// Layout > Video
