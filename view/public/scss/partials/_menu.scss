@@ -1,8 +1,12 @@
+#menu-container {
+  @include background(linear-gradient(darken($top-bar-background, 5%), darken($top-bar-background, 8%)));
+  width: 100%;
+  height: 52px;
+  }
+
 .sliding-menu-content {  
   ///////////////////////////////////////////////////////////////////////////////////
-  $base-accent-color: #477DCA !default;
-  $dark-gray: #333 !default;
-
+  margin-top: 52px;
   ul {
     padding: 0;
     margin: 0;
@@ -13,34 +17,39 @@
   }
 
   a {
+    font-weight: bold;
+    height: 52px;
     text-decoration: none;
   }
 
   width: 220px;
   min-height: 100%;
   position: absolute;
-$sliding-menu-border-color: $dark-gray;
-$sliding-menu-background: lighten($sliding-menu-border-color, 5%);
-$sliding-menu-color: #fff;
-$sliding-menu-border: 1px solid $sliding-menu-border-color;
-$sliding-menu-background-hover: $base-accent-color;
-$sliding-menu-color-hover: #fff;
-$sliding-menu-background-focus: lighten($sliding-menu-background, 5%);
-$sliding-menu-button: #333;
 
   @include position(absolute, 0px auto 0px 0px);
   @include transform(translateX(-220px));
   @include transition(all 0.25s linear);
-  background: $sliding-menu-background;
   z-index: 999999;
   -webkit-overflow-scrolling: touch;
 
-li a {
-    border-bottom: $sliding-menu-border;
-    color: $sliding-menu-color;
+.category-item {
+  @include background(linear-gradient(darken($top-bar-background, 5%), darken($top-bar-background, 8%)));
+  @extend %menu-item;
+  }
+
+.article-item {
+  @include background(linear-gradient(darken($sliding-menu-button, 5%), darken($sliding-menu-button, 8%)));
+  @extend %menu-item;
+}
+
+%menu-item {
+  @include padding(1em 1em 1em 7px);
+  //border-right: $sliding-menu-border;
+  //border-bottom: $sliding-menu-border;
+  border-radius: 2px;
+  color: $sliding-menu-color;
     display: block;
     font-weight: bold;
-    padding: 1em;
 
     &:focus {
       background-color: $sliding-menu-background-focus;
@@ -50,7 +59,13 @@ li a {
       background-color: $sliding-menu-background-hover;
       color: $sliding-menu-color-hover;
     }
+  span {
+    font-size: 1.2em;
+    padding-right: 7px;
+  }
 }
+
+
 
   &.is-visible {
     @include transform(translateX(0));
@@ -58,9 +73,13 @@ li a {
 }
 
 .sliding-menu-fade-screen {
+  @include background(linear-gradient(darken($top-bar-background, 2%), darken($top-bar-background, 10%)));
   @include position(fixed, 0px 0px 0px 0px);
   @include transition;
-  background: black;
+  @include background-image($sliding-menu-background-img);
+  background-position: bottom right, bottom;
+  background-repeat: no-repeat;
+  //background: $sliding-menu-fade-background;
   opacity: 0;
   visibility: hidden;
   z-index: 999998;
@@ -68,27 +87,76 @@ li a {
   width: $width;
 
   &.is-visible {
-    opacity: 0.4;
+    opacity: 0.8;
     visibility: visible;
   }
 }
 
-.sliding-menu-button {
-  @include button(flat, #eee);
-  padding: 10px 16px;
+// Top Menu
+
+%menu-button{
+  @include button(flat, $sliding-menu-button);
+  @include border-style(solid null null solid);
+  @include border-width(3px null null 3px);
+  @include border-color($base-border-color);
+  @include margin(5px 0 0 5px);
+  font-size: 1.2em;
   display: inline-block;
   cursor: pointer;
+  padding:0;
   position: relative;
-  outline: none;
+  height: 40px;
+}
+.sliding-menu-button {
+  @extend %menu-button;
+  font-size: 2.2em;
+  float: left;
+  width: 48px;
+  height: 40px;
+}
+.petition-button {
+  @extend %menu-button;
+  @include margin(5px 5px 0 0);
+  @include padding(null 10px null 10px);
+  float: right;
+}
 
-.sliding-menu-button img {
-    height: 1.3em;
+form.search-bar {
+  @include margin(10px 10px null 30px);
+  width: 320px;
+  position: relative;
+  float: left;
+  color: #fff;
+  input[type=search] {
+    @extend %borders;
+    @include background(linear-gradient(darken($top-bar-background, 5%), darken($top-bar-background, 8%)));    
+    @include appearance(none);
+    @include box-sizing(border-box);
+    @include transition(border-color);
+    height: 30px;
+    background-color: white;
+    border-radius: $base-border-radius;
+    border-radius: $base-border-radius;
+    display: block;
+    font-size: 1em;
+    font-style: italic;
+    padding: ($base-spacing / 3) ($base-spacing / 3);
+    position: relative;
+    width: 100%;
+
+    @include placeholder{
+      color: $base-border-color;
+    }
+  }
+
+  button[type=submit] {
+    @include button(flat, $sliding-menu-button);
+    @include position(absolute, 0em 0em 0em null);
+    height: 30px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border-top: 3px solid $base-border-color;
+    outline: none;
+    padding: 5px 10px;
   }
 }
-
-.sliding-menu-collapsed {
-  
-}
-
-
-

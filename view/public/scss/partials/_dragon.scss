@@ -1,0 +1,44 @@
+
+// Palette
+
+$light-green: #639A3C;
+$dark-green: #294019;
+$dark-grey: #222;
+
+// Base styles
+
+$base-border-color: #fff !default;
+$base-border-radius: 3px !default;
+$base-line-height: 2em !default;
+$base-accent-color: lighten($light-green, 10%) !default;
+$base-spacing: 9px;
+
+// Top bar
+$top-bar-background: $dark-grey;
+
+
+// Top bar > Search bar
+$search-bar-border-color: $base-border-color;
+$search-bar-border: 3px solid $search-bar-border-color;
+$search-bar-background: lighten($search-bar-border-color, 10%);
+
+// Sliding Menu
+$base-accent-color: $dark-green !default;
+$sliding-menu-border-color: rgba(225,225,225,0.7);
+$sliding-menu-background: $top-bar-background;
+$sliding-menu-color: #fff;
+$sliding-menu-border: 1px solid $sliding-menu-border-color;
+$sliding-menu-background-hover: $base-accent-color;
+$sliding-menu-color-hover: #fff;
+$sliding-menu-background-focus: darken($sliding-menu-background, 10%);
+$sliding-menu-button: $light-green;
+$sliding-menu-fade-background: rgba(0,0,0,0.5);
+$sliding-menu-background-img: url(../img/dragon-logo.png);
+
+
+// Body
+$body-background: lighten($dark-green, 45%);
+#container{
+	@include texture(180deg, lighten($light-green, 10%), lighten($dark-green, 2%), 63, 0); 
+
+}

@@ -100,11 +100,6 @@ class RootController(object):
 
     @cherrypy.expose
     def index(self):
-        # Localization thread variable
-        # Faction thread variable
-        # Character name/gender/etc variable
-        #Return tutorial categories, progress indicator, faction stylesheets
-
         character = {
             'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
             'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
@@ -113,15 +108,35 @@ class RootController(object):
 
         result = Category.list(cherrypy.request.db)
         template = lookup.get_template(("/index"+character['language']+".html"))
-        return template.render(categories=result, character=character)
+        return template.render(categories=result, character=character, layout='default')
 
     @cherrypy.expose
     def category(self, category_id):
+        character = {
+            'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
+            'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
+            'language': "_en" # cherrypy.request.headers.get('X-Tsw-Language')
+        }
+
         pass
 
     @cherrypy.expose
-    def article(self, article_id):
-        pass
+    def article(self, article_id='None'):
+        character = {
+            'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
+            'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
+            'language': "_en" # cherrypy.request.headers.get('X-Tsw-Language')
+        }
+        categories = Category.list(cherrypy.request.db)
+        template = lookup.get_template(("/index"+character['language']+".html"))
+        if article_id == 'None':
+            return template.render(categories=categories, character=character, layout='default')
+
+        article = cherrypy.request.db.query(Article).filter(Article.id == article_id).one()
+        return template.render(categories=categories, character=character, layout=article.layout, article=article)
+
+
+
 
     @cherrypy.expose
     def login(self):
@@ -140,18 +155,18 @@ class RootController(object):
             src='http://placehold.it/350x200',
             title='Placeholder img 3')
         article_1 = Article(
-            title_en='Movement',
-            description_en='How to move',
-            body_en="Zombie ipsum brains reversus ab cerebellum viral inferno",
+            title_en='Hero image',
+            description_en='Hero image description',
+            body_en="Layout: hero image. A single hero image with a short caption",
             priority=30,
-            layout='section-aside',
+            layout='image-hero',
             )
         article_2 = Article(
-            title_en='Movement',
+            title_en='Image asides',
             description_en='How to move',
-            body_en="Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro.",
+            body_en="Layout: image asides",
             priority=20,
-            layout='section-aside',
+            layout='image-aside',
             )
         article_3 = Article(
             title_en='Movement',
@@ -161,9 +176,9 @@ class RootController(object):
             layout='section-aside',
             )
         category_1 = Category(
-            title_en="Movement & Combat",
-            description_en="How to fight, how to move",
-            body_en="Zombie ipsum brains reversus ab cerebellum viral inferno, brein nam rick mend grimes malum cerveau cerebro.",
+            title_en="Image layouts",
+            description_en="Layouts with images",
+            body_en="Category description. Zombie ipsum brains reversus ab cerebellum viral inferno, brein nam rick mend grimes malum cerveau cerebro.",
             priority=10,
             )
         category_2 = Category(

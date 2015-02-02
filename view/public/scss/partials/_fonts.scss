@@ -23,10 +23,30 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.icon-chevron-small-down:before {
+.icon-dot-single:before {
 	content: "\e600";
 }
 
-.icon-chevron-small-right:before {
+.icon-dots-two-horizontal:before {
 	content: "\e601";
+}
+
+.icon-dots-two-vertical:before {
+	content: "\e604";
+}
+
+.icon-magnifying-glass:before {
+	content: "\e602";
+}
+
+.icon-menu:before {
+	content: "\e603";
+}
+
+.icon-folder:before {
+	content: "\e92f";
+}
+
+.icon-folder-open:before {
+	content: "\e930";
 }

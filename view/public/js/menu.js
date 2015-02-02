@@ -6,11 +6,11 @@ $(document).ready(function(){
 
     $('#menu-accordion').accordion();
     $('#menu-accordion').accordion( 'option', { 
-    	header: '.category',
+    	header: '.category-item',
     	heightStyle: 'fill',
      	icons : {
-     		'header': 'icon-chevron-small-right',
-     		'activeHeader': 'icon-chevron-small-down'
+     		'header': 'icon-folder',
+     		'activeHeader': 'icon-folder-open'
      	}
     	 });
       

@@ -1,21 +1,18 @@
 
 // We're constrained by a fixed window size
-
 $width: 780px;
 $height: 580px;
+
 #container {
-	@include texture(180deg, lighten(#bdc3c7, 1), darken(#bdc3c7, 10), 14, 0);
 	height: $height;
 	width: $width;
 	border: none;
 	position: relative;
 	overflow: hidden;
-
 }
 
-#layout {
-	background: red;
-	height: 100%;
-	width: 80%;
-	float:right;
+%borders {
+  @include border-style(solid null null solid);
+  @include border-width(3px null null 3px);
+  @include border-color($base-border-color);
 }
