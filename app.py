@@ -19,7 +19,6 @@ lookup = TemplateLookup(directories=[os.path.join(os.path.abspath(os.curdir)+'/v
 
 from sqlalchemy import create_engine, update
 from sqlalchemy.orm import scoped_session, sessionmaker
-      
 class SAEnginePlugin(plugins.SimplePlugin):
     def __init__(self, bus):
         """
