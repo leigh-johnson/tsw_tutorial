@@ -1,9 +1,11 @@
 @import 'bourbon/bourbon';
 @import 'neat/neat';
-@import 'mixins';
-@import 'partials/dragon';
-@import 'partials/fonts';
-@import 'partials/base';
-@import 'partials/menu';
-@import 'layouts/default';
-@import 'layouts/category';
+@import 'partials/variables';
+@import 'partials/_menu';
+@import 'partials/_admin';
+
+#content{
+	h1,h2,h3{
+		text-align: center;
+	}
+}

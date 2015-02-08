@@ -1,17 +1,14 @@
-$(document).ready(function(){
-  $('.js-menu-trigger,.js-menu-screen').on('click touchstart',function (e) {
-    $('.js-menu,.js-menu-screen').toggleClass('is-visible');
-    e.preventDefault();
-  });
+/*
+  Slidemenu
+*/
+(function() {
+    var $body = document.body
+    , $menu_trigger = $body.getElementsByClassName('menu-trigger')[0];
 
-    $('#menu-accordion').accordion();
-    $('#menu-accordion').accordion( 'option', { 
-    	header: '.category-item',
-    	heightStyle: 'fill',
-     	icons : {
-     		'header': 'icon-folder',
-     		'activeHeader': 'icon-folder-open'
-     	}
-    	 });
-      
-});
+    if ( typeof $menu_trigger !== 'undefined' ) {
+        $menu_trigger.addEventListener('click', function() {
+            $body.className = ( $body.className == 'menu-active' )? '' : 'menu-active';
+        });
+    }
+
+}).call(this);

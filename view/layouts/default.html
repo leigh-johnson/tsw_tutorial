@@ -1,0 +1,31 @@
+<%inherit file="../base.html"/>
+<%block name='head'>
+${parent.head()}
+## load faction-specific stylesheet
+</%block>
+<%block name="content">
+%if article:
+	<h1>${getattr(article, 'title_'+lang)}</h1>
+	<h3>${getattr(article, 'description_'+lang)}</h3>
+	%for body in getattr(article, 'body_'+lang):
+		${body}
+	%endfor
+%elif category:
+	<h1>${getattr(category, 'title_'+lang)}</h1>
+	<h3>${getattr(category, 'description_'+lang)}</h3>
+	## Enumerate body text instances
+	%for i, body in enumerate(getattr(category, 'body_'+lang)):
+		${body.text}
+	%endfor
+	## Enumerate article instances
+	%for summary in category.articles:
+		<figure>
+		<img src="${summary.imgs[0].src}"></img>
+		<figcaption>
+		<h3>${getattr(summary, 'title_'+lang)}</h3>
+		<p>${getattr(summary, 'description_'+lang)}</p>
+		</figcaption>
+		</figure>
+	%endfor
+%endif
+</%block>

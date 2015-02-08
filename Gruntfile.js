@@ -1,31 +1,36 @@
-module.exports = function( grunt ) {
-    
+module.exports = function(grunt) {
+ 
+  grunt.registerTask('watch', [ 'watch' ]);
+ 
   grunt.initConfig({
-     watch: {
+    concat: {
+      js: {
         options: {
-          livereload: 1337
+          separator: ';'
         },
-        css: {
-            files: [ 'view/public/css/*.css' ],
-            tasks: [ 'default' ]
-        },
-        js: {
-            files: [ 'view/public/js/*.js' ],
-            tasks: [ 'default' ]
+        src: [
+          'javascript/*.js'
+        ],
+        dest: 'public/js/main.min.js'
+      },
+    },
+    sass: {
+      files: {
+        "public/css/style.css": "public/scss/style.scss"
+      }
+    },
+    watch: {
+      js: {
+        files: ['javascript/*.js'],
+        tasks: ['concat:js', 'uglify:js'],
+        options: {
+          livereload: true,
         }
       },
-      sass: {                              // Task
-        dist: {                            // Target
-            options: {                       // Target options
-              style: 'expanded'
-            },
-        files: {                         // Dictionary of files
-        'view/public/css/style.css': 'view/public/scss/style.scss',       // 'destination': 'source'
-         }
-        }
+      css: {
+        tasks: ['sass'],
       }
+    }
   });
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.registerTask( 'default', ['watch'], ['sass']);
-};
+}
+ 

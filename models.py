@@ -10,27 +10,22 @@ from sqlalchemy.types import String, Integer, Text
 
 Base = declarative_base()
 
-
 class Jsonify(json.JSONEncoder):
 	def default(self, obj):
-		#obj can be a single object or a 1D array of objects
-		if isinstance(obj.__class__, DeclarativeMeta):
-			#keyed = {}
-			fields = {}
-			for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata']:
-				data = obj.__getattribute__(field)
-				try:
-					json.dumps(data) # this will fail on non-encodable values, like other classes
-					fields[field] = data
-				except TypeError:
-					fields[field] = None
-			#keyed[obj.id] = fields
-			
-			# a json-encodable dict
-			return fields
+	    if isinstance(obj.__class__, DeclarativeMeta):
+	        # an SQLAlchemy class
+	        fields = {}
+	        for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata']:
+	            data = obj.__getattribute__(field)
+	            try:
+	                json.dumps(data) # this will fail on non-encodable values, like other classes
+	                fields[field] = data
+	            except TypeError:
+	                fields[field] = None
+	        # a json-encodable dict
+	        return fields
 
-		return json.JSONEncoder.default(self, obj)
-
+	    return json.JSONEncoder.default(self, obj)
 ### Database schema requires 'None' be inserted into columns with null values
 ### Default 'None' value can be accessed by declaring Column(default='aDefault') parameter
 
@@ -40,28 +35,28 @@ class Admin(Base):
 	'''
 	__tablename__ = 'admin'
 	id = Column(Integer, primary_key=True)
-	username =  Column(String)
-	password = Column(String)
+	username =  Column(String(16), unique=True)
+	password = Column(String(16))
  
-	def __init__(self, **kwargs):
-		super(Admin, self).__init__(**kwargs)
-		# do custom initialization here
 
-	def hash_password(password, salt=None):
-		if salt is None:
-			salt = uuid.uuid4().hex
+	@staticmethod
+	def listByID(session):
+		return session.query(Admin).all()
 
-		hashed_password = hashlib.sha512(password + salt).hexdigest()
-		return (hashed_password, salt)
+class Body(Base):
+	'''Body exists so body_$language columns can contain many entries
+	serialized with model.imgs[]
+	e.g. body[0] & img[0] will share a CKeditor instance'''
+	__tablename__ = 'body'
+	id = Column(Integer, primary_key=True)
+	category_id = Column(Integer, ForeignKey('category.id'))
+	article_id = Column(Integer, ForeignKey('article.id'))
+	text = Column(Text)
 
-	def verify_password(password, hashed_password, salt):
-		re_hashed, salt = hash_password(password, salt)
+	@staticmethod
+	def list(session):
+		return session.query(Body).all()
 
-		return re_hashed == hashed_password
-
-		@staticmethod
-		def list(session):
-				return session.query(Admin).all()
 
 class Category(Base):
 	'''
@@ -71,25 +66,31 @@ class Category(Base):
 	'''
 	__tablename__ = 'category'
 	id = Column(Integer, primary_key=True)
-	articles = relationship("Article", backref="category")
+	parent_id = Column(Integer, ForeignKey('category.id'))
+	articles = relationship("Article", backref="category", order_by='Article.order')
 	imgs = relationship("Img", backref="category")
-	priority = Column(Integer)
+	layout = Column(String(35), default="default")
+	order = Column(Integer)
+	icon = Column(Integer)
+	lua_tag = Column(Integer)
+	categories = relationship("Category", order_by='Category.order')
 
 	title_en = Column(String(35))
 	description_en = Column(String(255))
-	body_en = Column(Text)
+	body_en = relationship("Body", backref="category_en", order_by='Body.id')
 
 	title_fr = Column(String(35))
 	description_fr = Column(String(255))
-	body_fr = Column(Text)
+	body_fr = relationship("Body", backref="category_fr", order_by='Body.id')
 
 	title_de = Column(String(35))
 	description_de = Column(String(255))
-	body_de = Column(Text)
+	body_de = relationship("Body", backref="category_de", order_by='Body.id')
 
 	@staticmethod
 	def list(session):
 		return session.query(Category).all()
+
 
 class Article(Base):
 	'''
@@ -100,28 +101,30 @@ class Article(Base):
 	__tablename__ = 'article'
 	id = Column(Integer, primary_key=True)
 	category_id = Column(Integer, ForeignKey('category.id'))
-	imgs = relationship("Img", backref="article.id")
-	video = relationship("Video", backref="article.id")
-	layout = Column(String)
-	priority = Column(Integer)
+	imgs = relationship("Img", backref="article", order_by='Img.id')
+	video = relationship("Video", backref="article", order_by='Img.id')
+	layout = Column(String(35), default="default")
+	order = Column(Integer)
+	lua_tag = Column(Integer)
 
 
 	title_en = Column(String(35))
 	description_en = Column(String(255))
-	body_en = Column(Text)
+	body_en = relationship("Body", backref="article_en", order_by='Body.id')
 
 	title_fr = Column(String(35))
 	description_fr = Column(String(255))
-	body_fr = Column(Text)
+	body_fr = relationship("Body", backref="article_fr", order_by='Body.id')
 
 	title_de = Column(String(35))
 	description_de = Column(String(255))
-	body_de = Column(Text)
+	body_de = relationship("Body", backref="article_de", order_by='Body.id')
 
 
 	@staticmethod
 	def list(session):
 		return session.query(Article).all()
+
 
 class Img(Base):
 	'''
@@ -132,7 +135,7 @@ class Img(Base):
 	id = Column(Integer, primary_key=True)
 	category_id = Column(Integer, ForeignKey('category.id'))
 	article_id = Column(Integer, ForeignKey('article.id'))
-	src = Column(String)
+	src = Column(String(35))
 	title = Column(String(55))
 
 	@staticmethod
@@ -148,7 +151,7 @@ class Video(Base):
 	id = Column(Integer, primary_key=True)
 	category_id = Column(Integer, ForeignKey('category.id'))
 	article_id = Column(Integer, ForeignKey('article.id'))
-	src = Column(String)
+	src = Column(String(35))
 	title = Column(String(55))
 
 	@staticmethod

@@ -1,0 +1,44 @@
+class ClientController(object):
+    '''Tutorial client. Views in views/client/_locale'''
+    @cherrypy.expose
+    def index(self):
+        character = {
+            'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
+            'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
+            'language': "_en" # cherrypy.request.headers.get('X-Tsw-Language')
+        }
+
+        result = Category.list(cherrypy.request.db)
+        template = lookup.get_template(("/index"+character['language']+".html"))
+        return template.render(categories=result, character=character, layout='default')
+
+    @cherrypy.expose
+    def category(self, category_id='None'):
+        character = {
+            'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
+            'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
+            'language': "_en" # cherrypy.request.headers.get('X-Tsw-Language')
+        }
+        categories = Category.list(cherrypy.request.db)
+        template = lookup.get_template(("/index"+character['language']+".html"))
+        if category_id == 'None':
+            return template.render(categories=categories, character=character, layout='default')
+
+        category = cherrypy.request.db.query(Category).filter(Category.id == category_id).one()
+        return template.render(categories=categories, character=character, layout='category', category=category)
+
+    @cherrypy.expose
+    def article(self, article_id='None'):
+        character = {
+            'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
+            'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
+            'language': "_en" # cherrypy.request.headers.get('X-Tsw-Language')
+        }
+        categories = Category.list(cherrypy.request.db)
+        template = lookup.get_template(("/index"+character['language']+".html"))
+        if article_id == 'None':
+            return template.render(categories=categories, character=character, layout='default')
+
+        article = cherrypy.request.db.query(Article).filter(Article.id == article_id).one()
+        return template.render(categories=categories, character=character, layout=article.layout, article=article)
+

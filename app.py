@@ -1,8 +1,12 @@
+## -*- coding: utf-8 -*-
 import os
 import json
-import pymysql
+import MySQLdb
 import cherrypy
-from models import Base, Article, Category, Img, Admin, Jsonify
+from admin import AdminController
+from auth import AuthController, require, check_auth
+from api import CategoryAPI, ArticleAPI, ImgAPI
+from models import Base, Article, Category, Body, Img, Admin, Jsonify
 from cherrypy.process import wspbus, plugins
 
 
@@ -37,8 +41,9 @@ class SAEnginePlugin(plugins.SimplePlugin):
         self.bus.subscribe("bind", self.bind)
  
     def start(self):
-        db_path = os.path.abspath(os.path.join(os.curdir, 'my.db'))
-        self.sa_engine = create_engine('sqlite:///%s' % db_path, echo=True)
+        db_path = 'root:normacreedlives@127.0.0.1/tsw_tuts'
+        #db_path = os.path.abspath(os.path.join(os.curdir, 'data/my.db'))
+        self.sa_engine = create_engine('mysql+mysqldb://%s?charset=utf8' % db_path, echo=True)
         Base.metadata.create_all(self.sa_engine)
  
     def stop(self):
@@ -89,66 +94,86 @@ class SATool(cherrypy.Tool):
             raise
         finally:
             self.session.remove()
+
 def get_children(a_dir):
     return [name for name in os.listdir(a_dir)
         if os.path.isdir(os.path.join(a_dir, name))]
 
-### Client Controller ### 
-
-class RootController(object):
-
+### Client/Tutorial Controller ### 
+class ClientController(object):
+    '''Tutorial client. Views in views/client/_locale'''
     @cherrypy.expose
     def index(self):
         character = {
             'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
             'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
-            'language': "_en" # cherrypy.request.headers.get('X-Tsw-Language')
+            'language': "en" # cherrypy.request.headers.get('X-Tsw-Language')
         }
 
-        result = Category.list(cherrypy.request.db)
-        template = lookup.get_template(("/index"+character['language']+".html"))
-        return template.render(categories=result, character=character, layout='default')
+        categories = Category.list(cherrypy.request.db)
+        template = lookup.get_template(("client/index.html"))
+        return template.render(categories=categories, character=character, layout='default', lang=character['language'])
 
     @cherrypy.expose
-    def category(self, category_id='None'):
+    def category(self, category_id=None):
         character = {
             'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
             'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
-            'language': "_en" # cherrypy.request.headers.get('X-Tsw-Language')
+            'language': "en" # cherrypy.request.headers.get('X-Tsw-Language')
         }
+        if category_id == None:
+            raise cherrypy.HTTPRedirect('/')
         categories = Category.list(cherrypy.request.db)
-        template = lookup.get_template(("/index"+character['language']+".html"))
-        if category_id == 'None':
-            return template.render(categories=categories, character=character, layout='default')
-
         category = cherrypy.request.db.query(Category).filter(Category.id == category_id).one()
-        return template.render(categories=categories, character=character, layout='category', category=category)
+        template = lookup.get_template("layouts/"+category.layout+".html")
+        return template.render(categories=categories, category=category, character=character, lang=character['language'])
 
     @cherrypy.expose
     def article(self, article_id='None'):
         character = {
             'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
             'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
-            'language': "_en" # cherrypy.request.headers.get('X-Tsw-Language')
+            'language': "en" # cherrypy.request.headers.get('X-Tsw-Language')
         }
         categories = Category.list(cherrypy.request.db)
-        template = lookup.get_template(("/index"+character['language']+".html"))
+        template = lookup.get_template(("client/index"+character['language']+".html"))
         if article_id == 'None':
             return template.render(categories=categories, character=character, layout='default')
 
         article = cherrypy.request.db.query(Article).filter(Article.id == article_id).one()
         return template.render(categories=categories, character=character, layout=article.layout, article=article)
-
-
-
-
-    @cherrypy.expose
-    def login(self):
-        pass
-
-    ## UNIT TEST DATA ##
+   ## UNIT TEST DATA ##
+      ## UNIT TEST DATA ##
     @cherrypy.expose
     def build_data(self):
+
+        body_1 = Body(
+            text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qu"
+            )
+        body_2 = Body(
+            text="Es gibt im Moment in diese Mannschaft, oh, einige Spieler vergessen ihnen Profi was sie sind. Ich lese nicht sehr viele Zeitungen, aber ich habe gehört viele Situationen. Erstens: wir haben nicht offe"
+            )
+        body_3 = Body(
+            text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
+            )
+        body_4 = Body(
+            text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
+            )
+        body_5 = Body(
+            text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
+            )
+        body_6 = Body(
+            text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
+            )     
+        body_7 = Body(
+            text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
+            )
+        body_8 = Body(
+            text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
+            )
+        body_9 = Body(
+            text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
+            )  
         img_1 = Img(
             src='http://placehold.it/350x200&text=img_1',
             title='Placeholder img 1')
@@ -161,45 +186,65 @@ class RootController(object):
         article_1 = Article(
             title_en='Hero image',
             description_en='Hero image description',
-            body_en="Layout: hero image. A single hero image with a short caption",
-            priority=30,
+            order=30,
             layout='image-hero',
             )
         article_2 = Article(
             title_en='Image asides',
             description_en='How to move',
-            body_en="Layout: image asides",
-            priority=20,
+            order=20,
             layout='image-aside',
             )
         article_3 = Article(
             title_en='Full-width video',
             description_en='Full-width video',
-            body_en="Zombie ipsum brains reversus ab cerebellum viral inferno, brein nam rick mend grimes malum cerveau cerebro.",
-            priority=10,
+            order=10,
             layout='video',
             )
         category_1 = Category(
-            title_en="Image layouts",
-            description_en="Layouts with images",
-            body_en="Category description. Zombie ipsum brains reversus ab cerebellum viral inferno, brein nam rick mend grimes malum cerveau cerebro.",
-            priority=10,
+            title_en="Default category layout",
+            description_en="A section-aside style layout. Default display option for all categories.",
+            order=10,
             )
         category_2 = Category(
             title_en="Video layouts",
             description_en="How to make friends",
-            body_en="Zombie ipsum brains reversus ab cerebellum viral inferno, brein nam rick mend grimes malum cerveau cerebro.",
-            priority=20,
+            order=20,
             )
         category_3 = Category(
             title_en="Dungeons",
             description_en="How to dungeon",
-            body_en="Zombie ipsum brains reversus ab cerebellum viral inferno, brein nam rick mend grimes malum cerveau cerebro.",
-            priority=30,
+            order=30,
             )   
         article_1.imgs.append(img_1)
         article_2.imgs.append(img_2)
+
+
         article_2.imgs.append(img_3)
+
+        article_1.body_en.append(body_1)
+        article_1.body_fr.append(body_2)
+        article_1.body_de.append(body_3)
+
+        article_2.body_en.append(body_4)
+        article_2.body_fr.append(body_5)
+        article_2.body_de.append(body_6)
+
+        article_3.body_en.append(body_7)
+        article_3.body_fr.append(body_8)
+        article_3.body_de.append(body_9)
+
+        category_1.body_en.append(body_1)
+        #category_1.body_fr.append(body_2)
+        #category_1.body_de.append(body_3)
+
+        category_2.body_en.append(body_4)
+        #category_2.body_fr.append(body_5)
+        #category_2.body_de.append(body_6)
+
+        category_3.body_en.append(body_7)
+        #category_3.body_fr.append(body_8)
+        #category_3.body_de.append(body_9)
 
         category_1.articles.append(article_1)
         category_1.articles.append(article_2)
@@ -210,156 +255,50 @@ class RootController(object):
 
         result = cherrypy.request.db.add_all([article_1, article_2, article_3, category_1, category_2, category_3, img_1, img_2, img_3])
         return result
+class AdminController(object):
+    @cherrypy.expose
+    def index(self, lang='en', layout='default'):
+        categories = Category.list(cherrypy.request.db)
+        template = lookup.get_template(('admin/index.html'))
+        return template.render(categories=categories, lang=lang, layout=layout)
 
+    @cherrypy.expose
+    def category(self):
+        pass
 
-### RESTful API Controllers ###
-### ALL RETURNS ON API ROUTES AGONOSTICALLY RETURN `result` ###
+    @cherrypy.expose
+    def article(self):
+        pass
 
-class CategoryAPI(object):
+    @cherrypy.expose
+    def new(self, type=None):
+        '''Serves up views/admin/create.html''' 
+        if type == None:
+            template = lookup.get_template("base.html")
+            return template.render()
+        else:
+            template = lookup.get_template(("admin/create_",type,".html"))
+            return template.render()
 
+    category.new = new()
+    category.edit = edit()
+    article.new = new()
+    article.edit = edit()
+
+class APIController(object):
     exposed = True
-
-    def GET(self, category_id=None):
-        '''
-        Returns category_id if id is supplied OR
-        all category records if no id is supplied
-        '''
-        if category_id == None:
-            result = Category.list(cherrypy.request.db)
-            return json.dumps(result, cls=Jsonify)
-        elif cherrypy.request.db.query(Category).get(category_id):
-            result = cherrypy.request.db.query(Category).get(category_id)
-            return json.dumps(result, cls=Jsonify)
-        return 'Category ID not found.'
-
-    def POST(self, **kwargs):
-        '''
-        If authorized, persist a new Category() to session and return it
-        No validation strategy implemented, use with caution
-        '''
-        result = Category()
-        cherrypy.request.db.add(result)
-        return json.dumps(result, cls=Jsonify)
-
-    def PUT(self, category_id, **kwargs):
-        '''
-        If authorized, persist .update() on session
-        **KWARGS:
-        key=value
-        No validation strategy implemented, use with caution
-        '''
-        result = cherrypy.request.db.query(Category).filter(Category.id == category_id).update(kwargs)
-        return json.dumps(result, cls=Jsonify)
-
-    def DELETE(self, category_id):
-        '''
-        Marks object for delete in session
-        '''
-        result = cherrypy.request.db.query(Category).filter(Category.id == category_id).delete()
-        return json.dumps(result, cls=Jsonify)
-
-
-class ArticleAPI(object):
-
-    exposed = True
-
-    def GET(self, article_id=None):
-        '''
-        Returns article_id if id is supplied OR
-        all article records if no id is supplied
-        '''
-        if article_id == None:
-            result = Article.list(cherrypy.request.db)
-            return json.dumps(result, cls=Jsonify)
-        elif cherrypy.request.db.query(Article).get(article_id):
-            result = cherrypy.request.db.query(Article).get(article_id)
-            return json.dumps(result, cls=Jsonify)
-        return 'Article ID not found.'
-
-    def POST(self, **kwargs):
-        '''
-        If authorized, persist a new Article() to session and return it
-        No validation strategy implemented, use with caution
-        '''
-        result = Article()
-        cherrypy.request.db.add(result)
-        return json.dumps(result, cls=Jsonify)
-
-    def PUT(self, article_id, **kwargs):
-        '''
-        If authorized, persist .update() on session
-        **KWARGS:
-        key=value
-        No validation strategy implemented, use with caution
-        '''
-        result = cherrypy.request.db.query(Article).filter(Article.id == article_id).update(kwargs)
-        return json.dumps(result, cls=Jsonify)
-
-    def DELETE(self, article_id):
-        '''
-        Marks object for delete in session
-        '''
-        result = cherrypy.request.db.query(Article).filter(Article.id == article_id).delete()
-        return json.dumps(result, cls=Jsonify)
-
-
-
-class ImgAPI(object):
-
-    exposed = True
-
-    def GET(self, img_id=None):
-        '''
-        Returns img_id if id is supplied OR
-        all img records if no id is supplied
-        '''
-        if img_id == None:
-            result = Img.list(cherrypy.request.db)
-            return json.dumps(result, cls=Jsonify)
-        elif cherrypy.request.db.query(Img).get(img_id):
-            result = cherrypy.request.db.query(Img).get(img_id)
-            return json.dumps(result, cls=Jsonify)
-        return 'Img ID not found.'
-
-    def POST(self, **kwargs):
-        '''
-        If authorized, persist a new Img() to session and return it
-        No validation strategy implemented, use with caution
-        '''
-        result = Img()
-        cherrypy.request.db.add(result)
-        return json.dumps(result, cls=Jsonify)
-
-    def PUT(self, img_id, **kwargs):
-        '''
-        If authorized, persist .update() on session
-        **KWARGS:
-        key=value
-        No validation strategy implemented, use with caution
-        '''
-        result = cherrypy.request.db.query(Img).filter(Img.id == img_id).update(kwargs)
-        return json.dumps(result, cls=Jsonify)
-
-    def DELETE(self, img_id):
-        '''
-        Marks object for delete in session
-        '''
-        result = cherrypy.request.db.query(Img).filter(Img.id == img_id).delete()
-        return json.dumps(result, cls=Jsonify)
+    category = CategoryAPI()
+    article = ArticleAPI()
 
 ### Config ###
-
-##cherrypy.config.update('app.conf')
 
 if __name__ == '__main__':
     cherrypy.config.update('config/app.conf')
     SAEnginePlugin(cherrypy.engine).subscribe()
     cherrypy.tools.db = SATool()
-    cherrypy.tree.mount(RootController(), '/', config='config/app.conf')
-    cherrypy.tree.mount(CategoryAPI(), '/api/category', config='config/api.conf')
-    cherrypy.tree.mount(Img(), '/api/img', config='config/api.conf')
-    cherrypy.tree.mount(ArticleAPI(), '/api/article', config='config/api.conf')
+    cherrypy.tree.mount(ClientController(), '/', config='config/app.conf')
+    cherrypy.tree.mount(APIController(), '/api', config='config/api.conf')
+    cherrypy.tree.mount(AdminController(), '/admin')
 
-    #cherrypy.engine.subscribe('start_thread', ConnectDB)
 cherrypy.engine.start()
 cherrypy.engine.block()

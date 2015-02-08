@@ -1,0 +1,49 @@
+## served on
+<%inherit file="../base.html"/>
+<%block name='head'>
+${parent.head()}
+<link href='../public/css/normalize.css' rel='stylesheet' type='text/css'>
+<link href="../public/css/style.css" type="text/css" rel="stylesheet"/>
+</%block>
+<%block name='layout'>
+</%block>
+## Select a language
+
+<%block name="content">
+<h1>Welcome to the admin panel</h1>
+<h3>Edit away~!</h3>
+<%block name='language'>
+<fieldset>
+<label for="language">Select preview</label>
+    <select name="language" id="language">
+    	<option value=None>ALL (data, no preview)</option>
+      <option value='en'>EN</option>
+      <option value='fr'>FR</option>
+      <option value='de'>DE</option>
+    </select>
+    <button id='language-submit'>View</button>
+</fieldset>
+
+%if lang == None:
+	View all languages
+	## Serve all languages
+%else:
+	## Serve localized template preview
+	Language is ${lang}
+%endif
+<script type='text/javascript'>
+$( document ).ready(function() {
+
+	//Redirect to localized template set
+	$('#language-submit').click(function(event) {
+		lang = $('#language').val();
+		var pathname = window.location.pathname
+		$(location).attr('href', (pathname+'?language='+lang));
+	});
+});
+</script>
+</%block>
+</%block>
+<%block name='scripts'>
+<script type='text/javascript' src='../public/js/menu.js'></script>
+</%block>
