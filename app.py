@@ -257,33 +257,60 @@ class ClientController(object):
         return result
 class AdminController(object):
     @cherrypy.expose
-    def index(self, lang='en', layout='default'):
+    def index(self, lang='en'):
+        cookie = cherrypy.request.cookie
+        if 'lang' in cookie.keys():
+            lang = cookie['lang'].value
         categories = Category.list(cherrypy.request.db)
         template = lookup.get_template(('admin/index.html'))
-        return template.render(categories=categories, lang=lang, layout=layout)
+        return template.render(categories=categories, lang=lang)
 
     @cherrypy.expose
-    def category(self):
-        pass
+    def category(self, category_id=None, lang='en'):
+        # req lang changes
+        cookie = cherrypy.request.cookie
+        if 'lang' in cookie.keys():
+            lang = cookie['lang'].value
+        elif category_id == None:
+            raise cherrypy.HTTPRedirect('/')
+        categories = Category.list(cherrypy.request.db)
+        category = cherrypy.request.db.query(Category).filter(Category.id == category_id).one()
+        template = lookup.get_template('admin/layouts/'+category.layout+'.html')
+        return template.render(categories=categories, category=category, lang=lang)
 
     @cherrypy.expose
     def article(self):
         pass
 
     @cherrypy.expose
-    def new(self, type=None):
-        '''Serves up views/admin/create.html''' 
-        if type == None:
-            template = lookup.get_template("base.html")
-            return template.render()
-        else:
-            template = lookup.get_template(("admin/create_",type,".html"))
-            return template.render()
+    def new(self, doc_type=None):
+        if doc_type==None:
+            raise cherrypy.HTTPRedirect('/')
+        categories = Category.list(cherrypy.request.db)
+        template = lookup.get_template('admin/partials/new.html')
+        return template.render(categories=categories, doc_type=doc_type)
 
-    category.new = new()
-    category.edit = edit()
-    article.new = new()
-    article.edit = edit()
+    @cherrypy.expose
+    def edit(self, doc_type=None, _id=None, lang="en"):
+        categories = Category.list(cherrypy.request.db)
+        template = lookup.get_template('admin/edit.html')
+        return template.render(categories=categories, doc_type=doc_type, _id=_id, lang=lang)
+    
+    @cherrypy.expose
+    def setLang(self, lang):
+        # Set cookie to send
+        cookie = cherrypy.response.cookie
+
+        cookie['lang'] = lang
+        cookie['lang']['path'] = 'admin'
+        cookie['lang']['max-age'] = 3600
+
+        raise cherrypy.HTTPRedirect('/')
+
+    #category.new = new(type='category')
+    #category.edit = edit(_type='category')
+    #article.new = new(type='article')
+    #article.edit = edit(_type='article')
 
 class APIController(object):
     exposed = True

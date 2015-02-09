@@ -1,0 +1,14 @@
+
+%if doc_type == 'article':
+	
+%elif doc_type == 'category':
+	<%! 
+	from models import Article
+	from sqlalchemy import inspect
+	mapper = inspect(Article)
+	%>
+
+	%for column in mapper.attrs:
+		${column}
+	%endfor
+%endif

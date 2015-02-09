@@ -1,0 +1,11 @@
+<%! 
+from models import Article
+from sqlalchemy import inspect
+mapper = inspect(Article)
+%>
+
+%for column in mapper.attrs:
+	${column}
+%endfor
+
+edit_article not implemented yet

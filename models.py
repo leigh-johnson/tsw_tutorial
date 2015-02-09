@@ -5,7 +5,7 @@ import json
 import hashlib
 from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
 from sqlalchemy.orm import relationship, backref
-from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy import Column, Integer, ForeignKey, Boolean
 from sqlalchemy.types import String, Integer, Text
 
 Base = declarative_base()
@@ -73,6 +73,7 @@ class Category(Base):
 	order = Column(Integer)
 	icon = Column(Integer)
 	lua_tag = Column(Integer)
+	published = Boolean()
 	categories = relationship("Category", order_by='Category.order')
 
 	title_en = Column(String(35))
@@ -106,7 +107,7 @@ class Article(Base):
 	layout = Column(String(35), default="default")
 	order = Column(Integer)
 	lua_tag = Column(Integer)
-
+	published = Boolean()
 
 	title_en = Column(String(35))
 	description_en = Column(String(255))

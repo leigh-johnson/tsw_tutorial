@@ -1,9 +1,15 @@
-<%inherit file="../base.html"/>
+<%inherit file="../index.html"/>
 <%block name='head'>
 ${parent.head()}
 ## load faction-specific stylesheet
 </%block>
+<%block name='menu'>
+${parent.menu()}
+<a href="new/"><span>Create new</span></a>
+</%block>
 <%block name="content">
+${parent.language()}
+
 %if article:
 	<h1>${getattr(article, 'title_'+lang)}</h1>
 	<h3>${getattr(article, 'description_'+lang)}</h3>
@@ -11,6 +17,7 @@ ${parent.head()}
 		${body}
 	%endfor
 %elif category:
+	${lang}
 	<h1>${getattr(category, 'title_'+lang)}</h1>
 	<h3>${getattr(category, 'description_'+lang)}</h3>
 	## Enumerate body text instances

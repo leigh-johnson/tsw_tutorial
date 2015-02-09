@@ -8,13 +8,12 @@
 <script src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
-## <link href='public/css/faction.css' type='stylesheet' />
 </%block>
 </head>
 <body>
 <!-- Navigation -->
-<%block name='menu'>
 <nav id="slide-menu">
+<%block name='menu'>
 <ul>
 %for category in categories:
 	<li><a href="category?category_id=${category.id}" alt="${getattr(category, 'description_'+lang)}">${getattr(category, 'title_'+lang)}</a></li>
@@ -26,7 +25,12 @@
 	</ul>
 %endfor
 </ul>
-</nav>
+<form class='search-bar' role='search'>
+		  <input type='search' placeholder='Enter Search' />
+		  <button type='submit'>
+		  Submit
+		  </button>
+		</form>
 <script type='text/javascript'>
 // GET Menu data
 $( document ).ready(function() {
@@ -36,6 +40,7 @@ $( document ).ready(function() {
 });
 </script>
 </%block>
+</nav>
 
 ${self.body()}
 

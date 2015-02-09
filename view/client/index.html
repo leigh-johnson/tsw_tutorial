@@ -1,12 +1,14 @@
 <%inherit file="../base.html"/>
+<%def name="path()">
+</%def>
 <%block name="head">
-${parent.head()}
-<link href="public/css/style.css" type="text/css" rel="stylesheet"/>
-## load faction-specific stylesheet
+	${parent.head()}
+	<link href="${path()+'public/css/style.css'}" type="text/css" rel="stylesheet"/>
+	## load faction-specific stylesheet
 </%block>
 <%block name="content">
-<h1>Welcome to the TSW tutorials, ${character['name']}</h1>
+	<h1>Welcome to the TSW tutorials, ${character['name']}</h1>
 </%block>
 <%block name='scripts'>
-<script type='text/javascript' src='public/js/menu.js'></script>
+<script type='text/javascript' src="${path()+'public/js/menu.js'}"></script>
 </%block>
