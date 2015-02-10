@@ -113,7 +113,7 @@ class ClientController(object):
 
         categories = Article.list(cherrypy.request.db)
         template = lookup.get_template(("client/index.html"))
-        return template.render(categories=categories, character=character, layout='default', lang=character['language'])
+        return template.render(categories=categories, character=character, lang=character['language'])
 
     @cherrypy.expose
     def article(self, _id=None):
@@ -126,8 +126,8 @@ class ClientController(object):
             raise cherrypy.HTTPRedirect('/')
         categories = Article.list(cherrypy.request.db)
         article = cherrypy.request.db.query(Article).filter(Article._id == _id).one()
-        template = lookup.get_template("client/layouts/"+article.layout+".html")
-        return template.render(categories=categories, category=article, character=character, lang=character['language'])
+        template = lookup.get_template("client/index.html")
+        return template.render(categories=categories, article=article, character=character, lang=character['language'])
 
     @cherrypy.expose
     def build_data(self):

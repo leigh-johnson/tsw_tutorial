@@ -9,6 +9,9 @@
 </%block>
 <%block name="content">
 	<h1>Welcome to the TSW tutorials, ${character['name']}</h1>
+	%for item in article.body_en:
+		${item.text}
+	%endfor
 </%block>
 <%block name='scripts'>
 <script type='text/javascript' src="${path()+'public/js/menu.js'}"></script>
