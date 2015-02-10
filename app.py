@@ -3,7 +3,6 @@ import os
 import json
 import MySQLdb
 import cherrypy
-from admin import AdminController
 from auth import AuthController, require, check_auth
 from api import ArticleAPI
 from models import Base, Article, Body, Admin, Jsonify
