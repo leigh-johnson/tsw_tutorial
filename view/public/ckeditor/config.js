@@ -38,7 +38,6 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Moar plugins
 	config.extraPlugins = 'sourcedialog';
-	config.extraPlugins = 'video';
 
 	// Set the most common block elements.
 	config.format_tags = 'p;h1;h2;h3;pre';
