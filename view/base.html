@@ -15,13 +15,15 @@
 <nav id="slide-menu">
 <%block name='menu'>
 <ul>
-%for category in categories:
-	<li><a href="category?_id=${category._id}" alt="${getattr(category, 'description_'+lang)}">${getattr(category, 'title_'+lang)}</a></li>
+%for row in categories:
+	%if row.is_category == True:
+	<li><a href="article?_id=${row._id}" alt="${getattr(row, 'description_'+lang)}">${getattr(row, 'title_'+lang)}</a></li>
 	<ul>
-	%for article in category.articles:
-		##<span class="${article.icon}"></span>
+	%for article in row.articles:
+		<span class="${article.icon}"></span>
 		<li><a href="article?_id=${article._id}" alt="${getattr(article, 'description_'+lang)}">${getattr(article, 'title_'+lang)}</a></li>	
 	%endfor
+	%endif
 	</ul>
 %endfor
 </ul>
@@ -41,10 +43,7 @@ ${self.body()}
 	<%block name='content'>
 	</%block>
 </div>
-<div id="footer">
-	<%block name='footer'>
-	</%block>
-</div>
+<div id="footer"><%block name='footer'></%block></div>
 <%block name='scripts'>
 </%block>
 </body>

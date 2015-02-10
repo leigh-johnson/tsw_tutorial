@@ -6,7 +6,7 @@ import hashlib
 from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Integer, ForeignKey, Boolean
-from sqlalchemy.types import String, Integer, Text
+from sqlalchemy.types import String, Integer, Text, Enum
 
 Base = declarative_base()
 
@@ -55,7 +55,6 @@ class Body(Base):
 	e.g. body[0] & img[0] will share a CKeditor instance'''
 	__tablename__ = 'body'
 	_id = Column(Integer, primary_key=True)
-	category_id = Column(Integer, ForeignKey('category._id'))
 	article_id = Column(Integer, ForeignKey('article._id'))
 	text = Column(Text)
 
@@ -64,60 +63,20 @@ class Body(Base):
 		return session.query(Body).all()
 
 
-class Category(Base):
-	'''
-	title_en: LOC STRING
-	description_en: LOC STRING
-	body_en: LOC STRING
-	'''
-	__tablename__ = 'category'
-	_id = Column(Integer, primary_key=True)
-	parent_id = Column(Integer, ForeignKey('category._id'))
-	articles = relationship("Article", backref="category", order_by='Article.order')
-	imgs = relationship("Img", backref="category")
-	layout = Column(String(35), default="default")
-	order = Column(Integer)
-	icon = Column(String(50))
-	lua_tag = Column(Integer)
-	publish = Column(Boolean)
-	categories = relationship("Category", order_by='Category.order')
-
-	title_en = Column(String(35))
-	description_en = Column(String(255))
-	body_en = relationship("Body", backref="category_en", order_by='Body._id')
-
-	title_fr = Column(String(35))
-	description_fr = Column(String(255))
-	body_fr = relationship("Body", backref="category_fr", order_by='Body._id')
-
-	title_de = Column(String(35))
-	description_de = Column(String(255))
-	body_de = relationship("Body", backref="category_de", order_by='Body._id')
-
-	@staticmethod
-	def list(session):
-		return session.query(Category).all()
-
-	def toDict():
-		return dict((col, getattr(row, col)) for col in row.__table__.columns.keys())
-
-
-
 class Article(Base):
-	'''
-	title_en: LOC STRING
-	description_en: LOC STRING
-	body_en: LOC STRING
-	'''
 	__tablename__ = 'article'
 	_id = Column(Integer, primary_key=True)
-	category_id = Column(Integer, ForeignKey('category._id'))
-	imgs = relationship("Img", backref="article", order_by='Img._id')
-	video = relationship("Video", backref="article", order_by='Video._id')
-	layout = Column(String(35), default="default")
-	order = Column(Integer)
+	layout = Column(Enum('default', 'video', 'img_hero'), default='default')
+	icon = Column(String(50))
 	lua_tag = Column(Integer)
-	publish = Column(Boolean)
+	public = Column(Boolean)
+	order = Column(Integer)
+
+	is_category = Column(Boolean, default=True)
+	## If parent_id is _id, article is top level
+	parent_id = Column(Integer, ForeignKey('article._id'))
+	articles = relationship("Article", order_by='Article.order')
+
 
 	title_en = Column(String(35))
 	description_en = Column(String(255))
@@ -131,40 +90,9 @@ class Article(Base):
 	description_de = Column(String(255))
 	body_de = relationship("Body", backref="article_de", order_by='Body._id')
 
-
 	@staticmethod
 	def list(session):
 		return session.query(Article).all()
 
-
-class Img(Base):
-	'''
-	NO LOCALIZED STRINGS
-	title for internal use only
-	'''
-	__tablename__ = 'img'
-	_id = Column(Integer, primary_key=True)
-	category_id = Column(Integer, ForeignKey('category._id'))
-	article_id = Column(Integer, ForeignKey('article._id'))
-	src = Column(String(35))
-	title = Column(String(55))
-
-	@staticmethod
-	def list(session):
-		return session.query(Img).all()
-
-class Video(Base):
-	'''
-	NO LOCALIZED STRINGS
-	title for internal use only
-	'''
-	__tablename__ = 'video'
-	_id = Column(Integer, primary_key=True)
-	category_id = Column(Integer, ForeignKey('category._id'))
-	article_id = Column(Integer, ForeignKey('article._id'))
-	src = Column(String(35))
-	title = Column(String(55))
-
-	@staticmethod
-	def list(session):
-		return session.query(Video).all()
+	def toDict():
+		return dict((col, getattr(row, col)) for col in row.__table__.columns.keys())

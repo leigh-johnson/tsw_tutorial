@@ -5,8 +5,8 @@ import MySQLdb
 import cherrypy
 from admin import AdminController
 from auth import AuthController, require, check_auth
-from api import CategoryAPI, ArticleAPI, ImgAPI
-from models import Base, Article, Category, Body, Img, Admin, Jsonify
+from api import ArticleAPI
+from models import Base, Article, Body, Admin, Jsonify
 from sqlalchemy.ext.serializer import loads, dumps
 from sqlalchemy.exc import IntegrityError
 from cherrypy.process import wspbus, plugins
@@ -112,12 +112,12 @@ class ClientController(object):
             'language': "en" # cherrypy.request.headers.get('X-Tsw-Language')
         }
 
-        categories = Category.list(cherrypy.request.db)
+        categories = Article.list(cherrypy.request.db)
         template = lookup.get_template(("client/index.html"))
         return template.render(categories=categories, character=character, layout='default', lang=character['language'])
 
     @cherrypy.expose
-    def category(self, _id=None):
+    def article(self, _id=None):
         character = {
             'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
             'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
@@ -125,30 +125,13 @@ class ClientController(object):
         }
         if _id == None:
             raise cherrypy.HTTPRedirect('/')
-        categories = Category.list(cherrypy.request.db)
-        category = cherrypy.request.db.query(Category).filter(Category._id == _id).one()
-        template = lookup.get_template("layouts/"+category.layout+".html")
-        return template.render(categories=categories, category=category, character=character, lang=character['language'])
-
-    @cherrypy.expose
-    def article(self, _id='None'):
-        character = {
-            'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
-            'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
-            'language': "en" # cherrypy.request.headers.get('X-Tsw-Language')
-        }
-        categories = Category.list(cherrypy.request.db)
-        template = lookup.get_template(("client/index"+character['language']+".html"))
-        if _id == 'None':
-            return template.render(categories=categories, character=character, layout='default')
-
+        categories = Article.list(cherrypy.request.db)
         article = cherrypy.request.db.query(Article).filter(Article._id == _id).one()
-        return template.render(categories=categories, character=character, layout=article.layout, article=article)
-   ## UNIT TEST DATA ##
-      ## UNIT TEST DATA ##
+        template = lookup.get_template("client/layouts/"+article.layout+".html")
+        return template.render(categories=categories, category=article, character=character, lang=character['language'])
+
     @cherrypy.expose
     def build_data(self):
-        '''
         body_1 = Body(
             text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qu"
             )
@@ -175,154 +158,93 @@ class ClientController(object):
             )
         body_9 = Body(
             text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
-            )  
-        '''
-        img_1 = Img(
-            src='http://placehold.it/350x200&text=img_1',
-            title='Placeholder img 1')
-        img_2 = Img(
-            src='http://placehold.it/350x200&text=img_2',
-            title='Placeholder img 2')
-        img_3 = Img(
-            src='http://placehold.it/350x200&text=img_3',
-            title='Placeholder img 3')
+            )
         article_1 = Article(
-            title_en='Hero image',
-            description_en='Hero image description',
+            title_en='English Title 1',
+            description_en='English Description 1',
             order=30,
-            layout='image-hero',
-            publish= True
+            layout='default',
+            public= True,
+            is_category=True
             )
         article_2 = Article(
-            title_en='Image asides',
-            description_en='How to move',
+            title_en='English Title 2',
+            description_en='English Description 2',
             order=20,
-            layout='image-aside',
-            publish=True
+            public=True
             )
         article_3 = Article(
-            title_en='Full-width video',
-            description_en='Full-width video',
+            title_en='English Title 3',
+            description_en='English Description 3',
             order=10,
             layout='video',
-            publish=True
+            public=True
             )
-        category_1 = Category(
-            title_en="Default category layout",
-            description_en="A section-aside style layout. Default display option for all categories.",
-            order=10,
-            publish=True
-            )
-        category_2 = Category(
-            title_en="Video layouts",
-            description_en="How to make friends",
-            order=20,
-            publish=True
-            )
-        category_3 = Category(
-            title_en="Dungeons",
-            description_en="How to dungeon",
-            order=30,
-            publish=True
-            )   
-        article_1.imgs.append(img_1)
-        article_2.imgs.append(img_2)
-
-
-        article_2.imgs.append(img_3)
-        '''
         article_1.body_en.append(body_1)
         article_1.body_fr.append(body_2)
         article_1.body_de.append(body_3)
-
         article_2.body_en.append(body_4)
         article_2.body_fr.append(body_5)
         article_2.body_de.append(body_6)
-
         article_3.body_en.append(body_7)
         article_3.body_fr.append(body_8)
         article_3.body_de.append(body_9)
 
-        category_1.body_en.append(body_1)
-        #category_1.body_fr.append(body_2)
-        #category_1.body_de.append(body_3)
+        article_1.articles.append(article_2)
+        article_1.articles.append(article_3)
 
-        category_2.body_en.append(body_4)
-        #category_2.body_fr.append(body_5)
-        #category_2.body_de.append(body_6)
-
-        category_3.body_en.append(body_7)
-        #category_3.body_fr.append(body_8)
-        #category_3.body_de.append(body_9)
-        '''
-        category_1.articles.append(article_1)
-        category_1.articles.append(article_2)
-        category_2.articles.append(article_3)
-        category_1.imgs.append(img_1)
-        category_2.imgs.append(img_2)
-        category_3.imgs.append(img_3)
-
-        result = cherrypy.request.db.add_all([article_1, article_2, article_3, category_1, category_2, category_3, img_1, img_2, img_3])
+        result = cherrypy.request.db.add_all([article_1, article_2, article_3])
         return result
+
+
+
 class AdminController(object):
     @cherrypy.expose
     def index(self, lang='en'):
         cookie = cherrypy.request.cookie
         if 'lang' in cookie.keys():
             lang = cookie['lang'].value
-        categories = Category.list(cherrypy.request.db)
+        categories = Article.list(cherrypy.request.db)
         template = lookup.get_template(('admin/index.html'))
         return template.render(categories=categories, lang=lang)
 
     @cherrypy.expose
-    def category(self, _id=None, lang='en'):
+    def article(self, _id=None, lang='en'):
         # req lang changes
         cookie = cherrypy.request.cookie
         if 'lang' in cookie.keys():
             lang = cookie['lang'].value
         elif _id == None:
             raise cherrypy.HTTPRedirect('/')
-        categories = Category.list(cherrypy.request.db)
-        category = cherrypy.request.db.query(Category).filter(Category._id == _id).one()
-        template = lookup.get_template('admin/layouts/'+category.layout+'.html')
-        return template.render(categories=categories, category=category, lang=lang)
+        categories = Article.list(cherrypy.request.db)
+        article = cherrypy.request.db.query(Article).filter(Article._id == _id).one()
+        template = lookup.get_template('admin/layouts/'+article.layout+'.html')
+        return template.render(categories=categories, article=article, lang=lang)
 
     @cherrypy.expose
-    def article(self):
-        pass
-
-    @cherrypy.expose
-    def new(self, doc_type=None):
-        categories = Category.list(cherrypy.request.db)
-        template = lookup.get_template('admin/partials/new.html')
-        return template.render(categories=categories, doc_type=doc_type)
-
-    @cherrypy.expose
-    def edit(self, doc_type=None, _id=None, lang="en"):
-        categories = Category.list(cherrypy.request.db)
-        template = lookup.get_template('admin/edit.html')
-        return template.render(categories=categories, doc_type=doc_type, _id=_id, lang=lang)
-    
+    def new(self, lang='en'):
+        '''Serve new article template'''
+        categories = Article.list(cherrypy.request.db)
+        template = lookup.get_template('admin/new.html')
+        return template.render(categories=categories, lang=lang)
+        
     @cherrypy.expose
     def setLang(self, lang):
         # Set cookie to send
+        path = cherrypy.request.path_info
         cookie = cherrypy.response.cookie
 
         cookie['lang'] = lang
         cookie['lang']['path'] = 'admin'
         cookie['lang']['max-age'] = 3600
+        print('*******', path)
+        raise cherrypy.HTTPRedirect(path)
 
-        raise cherrypy.HTTPRedirect('/')
-
-    #category.new = new(type='category')
-    #category.edit = edit(_type='category')
-    #article.new = new(type='article')
-    #article.edit = edit(_type='article')
 
 class APIController(object):
     exposed = True
-    category = CategoryAPI()
     article = ArticleAPI()
+    ## Any other APIs can share this mount point
 
 ### Config ###
 

@@ -1,4 +1,4 @@
-##  actually the category-default template
+##  actually the article-default template
 <%inherit file="../index.html"/>
 <%block name='head'>
 ${parent.head()}
@@ -7,34 +7,27 @@ ${parent.head()}
 </%block>
 <%block name='menu'>
 ${parent.menu()}
-<a href="new/"><span>Create new</span></a>
 </%block>
 <%block name="content">
 
 %if article:
 	<h1 id="${'title_'+lang}" contenteditable="true">${getattr(article, 'title_'+lang)}</h1>
-	<h3 id="${'description'+lang}" contenteditable="true">${getattr(article, 'description_'+lang)}</h3>
-	%for body in getattr(article, 'body_'+lang):
-		<p>${body.text}</p>
-	%endfor
-%elif category:
-	${lang}
-	<h1 id="${'title_'+lang}" contenteditable="true">${getattr(category, 'title_'+lang)}</h1>
-	<h3 id="${'description_'+lang}" contenteditable="true">${getattr(category, 'description_'+lang)}</h3>
+	<h3 id="${'description_'+lang}" contenteditable="true">${getattr(article, 'description_'+lang)}</h3>
 	## Enumerate body text instances
-	%for i, body in enumerate(getattr(category, 'body_'+lang)):
-		<p id="${'body_'+lang+'_'+str(i)}" contenteditable="true">${body.text}</p>
+	%for i, body in enumerate(getattr(article, 'body_'+lang)):
+		<p id="${'body_'+lang+'_'+str(body._id)}" contenteditable="true">${body.text}</p>
 	%endfor
 	## Enumerate article instances
-	%for summary in category.articles:
+	%for summary in article.articles:
 		<figure>
-		<img src="${summary.imgs[0].src}"></img>
 		<figcaption>
 		<h3>${getattr(summary, 'title_'+lang)}</h3>
 		<p>${getattr(summary, 'description_'+lang)}</p>
 		</figcaption>
 		</figure>
 	%endfor
+%else:
+ Missing article data
 %endif
 
 ## Persist ckeditor instances
@@ -42,7 +35,7 @@ ${parent.menu()}
 $(document).ready(function() {
 
     CKEDITOR.disableAutoInline = true;
-   	var category_id = window.location.search
+   	var article_id = window.location.search
     $("[contenteditable='true']").each(function( index ) {
 
         var column_id = $(this).attr('id');
@@ -55,7 +48,7 @@ $(document).ready(function() {
 
                     var request = $.ajax({
                     	type:'PUT',
-                        url: './api/category'+category_id,
+                        url: './api/article'+article_id,
          				headers: {'X-Ckeditor-Edit': JSON.stringify(data)},
                         processData: false,
 					    contentType: 'application/json',

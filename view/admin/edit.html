@@ -1,9 +1,0 @@
-<%inherit file="index.html"/>	
-## if we have an identity, serve it
-%if doc_type && _id !=None:
-	<%inherit file="${'partials/'+doc_type+'.html'}" />
-%else:
-	<%block name='content'>
-	Please choose an article or category to edit
-	</%block>
-%endif

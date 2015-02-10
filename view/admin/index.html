@@ -49,9 +49,8 @@ ${parent.menu()}
 	</script>
 	</%block>
 	<div>
-	Create new instance:
-	<a href='new?doc_type=article'><button>Article</button></a>
-	<a href='new?doc_type=category'><button>Category</button></a>
+	Create new:
+	<a href="${path()+'admin/new'}"><button>Article</button></a>
 	</%block>
 	<%block name='scripts'>
 	<script type='text/javascript' src='${path()+"public/js/menu.js"}'></script>
