@@ -2,8 +2,9 @@
 /node_modules/**/*
 
 .sass-cache
+/config/app.conf
 .git
 .app-bak
 *.sublime*
 *.pyc
-*.db
+*.dbr
