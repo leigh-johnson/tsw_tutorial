@@ -1,1 +1,10 @@
 // admin.scss
+
+div#footer{
+	border-radius: 3px;
+	right: 0;
+	bottom: 0;
+	position: fixed;
+	padding: 20px;
+	background: $content-bg;
+}

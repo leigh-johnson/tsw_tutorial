@@ -7,6 +7,8 @@ from admin import AdminController
 from auth import AuthController, require, check_auth
 from api import CategoryAPI, ArticleAPI, ImgAPI
 from models import Base, Article, Category, Body, Img, Admin, Jsonify
+from sqlalchemy.ext.serializer import loads, dumps
+from sqlalchemy.exc import IntegrityError
 from cherrypy.process import wspbus, plugins
 
 
@@ -115,21 +117,21 @@ class ClientController(object):
         return template.render(categories=categories, character=character, layout='default', lang=character['language'])
 
     @cherrypy.expose
-    def category(self, category_id=None):
+    def category(self, _id=None):
         character = {
             'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
             'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
             'language': "en" # cherrypy.request.headers.get('X-Tsw-Language')
         }
-        if category_id == None:
+        if _id == None:
             raise cherrypy.HTTPRedirect('/')
         categories = Category.list(cherrypy.request.db)
-        category = cherrypy.request.db.query(Category).filter(Category.id == category_id).one()
+        category = cherrypy.request.db.query(Category).filter(Category._id == _id).one()
         template = lookup.get_template("layouts/"+category.layout+".html")
         return template.render(categories=categories, category=category, character=character, lang=character['language'])
 
     @cherrypy.expose
-    def article(self, article_id='None'):
+    def article(self, _id='None'):
         character = {
             'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
             'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
@@ -137,16 +139,16 @@ class ClientController(object):
         }
         categories = Category.list(cherrypy.request.db)
         template = lookup.get_template(("client/index"+character['language']+".html"))
-        if article_id == 'None':
+        if _id == 'None':
             return template.render(categories=categories, character=character, layout='default')
 
-        article = cherrypy.request.db.query(Article).filter(Article.id == article_id).one()
+        article = cherrypy.request.db.query(Article).filter(Article._id == _id).one()
         return template.render(categories=categories, character=character, layout=article.layout, article=article)
    ## UNIT TEST DATA ##
       ## UNIT TEST DATA ##
     @cherrypy.expose
     def build_data(self):
-
+        '''
         body_1 = Body(
             text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qu"
             )
@@ -174,6 +176,7 @@ class ClientController(object):
         body_9 = Body(
             text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
             )  
+        '''
         img_1 = Img(
             src='http://placehold.it/350x200&text=img_1',
             title='Placeholder img 1')
@@ -188,40 +191,46 @@ class ClientController(object):
             description_en='Hero image description',
             order=30,
             layout='image-hero',
+            publish= True
             )
         article_2 = Article(
             title_en='Image asides',
             description_en='How to move',
             order=20,
             layout='image-aside',
+            publish=True
             )
         article_3 = Article(
             title_en='Full-width video',
             description_en='Full-width video',
             order=10,
             layout='video',
+            publish=True
             )
         category_1 = Category(
             title_en="Default category layout",
             description_en="A section-aside style layout. Default display option for all categories.",
             order=10,
+            publish=True
             )
         category_2 = Category(
             title_en="Video layouts",
             description_en="How to make friends",
             order=20,
+            publish=True
             )
         category_3 = Category(
             title_en="Dungeons",
             description_en="How to dungeon",
             order=30,
+            publish=True
             )   
         article_1.imgs.append(img_1)
         article_2.imgs.append(img_2)
 
 
         article_2.imgs.append(img_3)
-
+        '''
         article_1.body_en.append(body_1)
         article_1.body_fr.append(body_2)
         article_1.body_de.append(body_3)
@@ -245,7 +254,7 @@ class ClientController(object):
         category_3.body_en.append(body_7)
         #category_3.body_fr.append(body_8)
         #category_3.body_de.append(body_9)
-
+        '''
         category_1.articles.append(article_1)
         category_1.articles.append(article_2)
         category_2.articles.append(article_3)
@@ -266,15 +275,15 @@ class AdminController(object):
         return template.render(categories=categories, lang=lang)
 
     @cherrypy.expose
-    def category(self, category_id=None, lang='en'):
+    def category(self, _id=None, lang='en'):
         # req lang changes
         cookie = cherrypy.request.cookie
         if 'lang' in cookie.keys():
             lang = cookie['lang'].value
-        elif category_id == None:
+        elif _id == None:
             raise cherrypy.HTTPRedirect('/')
         categories = Category.list(cherrypy.request.db)
-        category = cherrypy.request.db.query(Category).filter(Category.id == category_id).one()
+        category = cherrypy.request.db.query(Category).filter(Category._id == _id).one()
         template = lookup.get_template('admin/layouts/'+category.layout+'.html')
         return template.render(categories=categories, category=category, lang=lang)
 
@@ -284,8 +293,6 @@ class AdminController(object):
 
     @cherrypy.expose
     def new(self, doc_type=None):
-        if doc_type==None:
-            raise cherrypy.HTTPRedirect('/')
         categories = Category.list(cherrypy.request.db)
         template = lookup.get_template('admin/partials/new.html')
         return template.render(categories=categories, doc_type=doc_type)
@@ -324,7 +331,7 @@ if __name__ == '__main__':
     SAEnginePlugin(cherrypy.engine).subscribe()
     cherrypy.tools.db = SATool()
     cherrypy.tree.mount(ClientController(), '/', config='config/app.conf')
-    cherrypy.tree.mount(APIController(), '/api', config='config/api.conf')
+    cherrypy.tree.mount(APIController(), '/admin/api', config='config/api.conf')
     cherrypy.tree.mount(AdminController(), '/admin')
 
 cherrypy.engine.start()

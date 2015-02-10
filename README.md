@@ -18,4 +18,6 @@ Detailed instructions to follow.
 
 ## API
 
-## Web Content
+## Web Services
+
+## X-Ckeditor-Header

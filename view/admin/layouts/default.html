@@ -1,28 +1,29 @@
+##  actually the category-default template
 <%inherit file="../index.html"/>
 <%block name='head'>
 ${parent.head()}
 ## load faction-specific stylesheet
+<script src="../public/ckeditor/ckeditor.js" type="text/javascript"></script>
 </%block>
 <%block name='menu'>
 ${parent.menu()}
 <a href="new/"><span>Create new</span></a>
 </%block>
 <%block name="content">
-${parent.language()}
 
 %if article:
-	<h1>${getattr(article, 'title_'+lang)}</h1>
-	<h3>${getattr(article, 'description_'+lang)}</h3>
+	<h1 id="${'title_'+lang}" contenteditable="true">${getattr(article, 'title_'+lang)}</h1>
+	<h3 id="${'description'+lang}" contenteditable="true">${getattr(article, 'description_'+lang)}</h3>
 	%for body in getattr(article, 'body_'+lang):
-		${body}
+		<p>${body.text}</p>
 	%endfor
 %elif category:
 	${lang}
-	<h1>${getattr(category, 'title_'+lang)}</h1>
-	<h3>${getattr(category, 'description_'+lang)}</h3>
+	<h1 id="${'title_'+lang}" contenteditable="true">${getattr(category, 'title_'+lang)}</h1>
+	<h3 id="${'description_'+lang}" contenteditable="true">${getattr(category, 'description_'+lang)}</h3>
 	## Enumerate body text instances
 	%for i, body in enumerate(getattr(category, 'body_'+lang)):
-		${body.text}
+		<p id="${'body_'+lang+'_'+str(i)}" contenteditable="true">${body.text}</p>
 	%endfor
 	## Enumerate article instances
 	%for summary in category.articles:
@@ -35,4 +36,44 @@ ${parent.language()}
 		</figure>
 	%endfor
 %endif
+
+## Persist ckeditor instances
+<script>
+$(document).ready(function() {
+
+    CKEDITOR.disableAutoInline = true;
+   	var category_id = window.location.search
+    $("[contenteditable='true']").each(function( index ) {
+
+        var column_id = $(this).attr('id');
+
+        CKEDITOR.inline( column_id, {
+            on: {
+                blur: function( event ) {
+                	var data = {}
+                   	data[column_id] = event.editor.getData();
+
+                    var request = $.ajax({
+                    	type:'PUT',
+                        url: './api/category'+category_id,
+         				headers: {'X-Ckeditor-Edit': JSON.stringify(data)},
+                        processData: false,
+					    contentType: 'application/json',
+					    dataType: 'json',
+					    error: function() {
+					    },
+					    success: function() {
+					        alert("success" + editHeader);
+					    }
+                    });
+
+                }
+            }
+        } );
+
+    });
+
+});
+
+</script>
 </%block>

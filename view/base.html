@@ -16,11 +16,11 @@
 <%block name='menu'>
 <ul>
 %for category in categories:
-	<li><a href="category?category_id=${category.id}" alt="${getattr(category, 'description_'+lang)}">${getattr(category, 'title_'+lang)}</a></li>
+	<li><a href="category?_id=${category._id}" alt="${getattr(category, 'description_'+lang)}">${getattr(category, 'title_'+lang)}</a></li>
 	<ul>
 	%for article in category.articles:
 		##<span class="${article.icon}"></span>
-		<li><a href="article?article_id=${article.id}" alt="${getattr(article, 'description_'+lang)}">${getattr(article, 'title_'+lang)}</a></li>	
+		<li><a href="article?_id=${article._id}" alt="${getattr(article, 'description_'+lang)}">${getattr(article, 'title_'+lang)}</a></li>	
 	%endfor
 	</ul>
 %endfor
@@ -31,14 +31,6 @@
 		  Submit
 		  </button>
 		</form>
-<script type='text/javascript'>
-// GET Menu data
-$( document ).ready(function() {
-	$.get( '../api/category', function( data ) {
-		console.log(data)
-	});
-});
-</script>
 </%block>
 </nav>
 
@@ -46,8 +38,12 @@ ${self.body()}
 
 <div id="content">
 	<div class="menu-trigger"></div>
-<%block name='content'>
-</%block>
+	<%block name='content'>
+	</%block>
+</div>
+<div id="footer">
+	<%block name='footer'>
+	</%block>
 </div>
 <%block name='scripts'>
 </%block>

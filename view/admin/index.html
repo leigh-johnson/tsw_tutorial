@@ -11,45 +11,49 @@ ${parent.head()}
 
 <%block name='menu'>
 ${parent.menu()}
-<%block name="language">
-<fieldset>
-<label for="language">Select lang:</label>
-    <select name="language" id="language">
-      <option value='en'>EN</option>
-      <option value='fr'>FR</option>
-      <option value='de'>DE</option>
-    <option value=None>ALL (TODO)</option>
-    </select>
-    <button id='language-submit'>View</button>
-</fieldset>
-
-Current lang: ${lang}
-
-<script type='text/javascript'>
-$( document ).ready(function() {
-
-	//Redirect to localized template set
-	$('#language-submit').click(function(event) {
-		lang = $('#language').val();
-		var pathname = window.location.href
-		$(location).attr('href', ('setLang'+'?lang='+lang));
-	});
-});
-</script>
-</%block>
-
-Create new instance:
-<a href='new?doc_type=article'><button>Article</button></a>
-<a href='new?doc_type=category'><button>Category</button></a>
 </%block>
 ## Select a language
 
 <%block name="content">
 
 <h1>Welcome to the admin panel</h1>
-<p>You're currently editing the <b>${lang}</b> templates.
-<p>Open the menu to begin editing</p>
+<p>Use tutorial goes here</p>
 </%block>
-<%block name='scripts'>
-<script type='text/javascript' src='${path()+"public/js/menu.js"}'></script>
+<%block name="footer">
+	<h3>Hello $admin</h3>
+	<button>Logout</button>
+	<%block name="language">
+	<fieldset>
+	<label for="language">Select lang:</label>
+	    <select name="language" id="language">
+	      <option value='en'>EN</option>
+	      <option value='fr'>FR</option>
+	      <option value='de'>DE</option>
+	    <option value=None>ALL (TODO)</option>
+	    </select>
+	    <button id='language-submit'>View</button>
+	</fieldset>
+
+	Current lang: ${lang}
+
+	<script type='text/javascript'>
+	$( document ).ready(function() {
+
+		//Redirect to localized template set
+		$('#language-submit').click(function(event) {
+			lang = $('#language').val();
+			var pathname = window.location.href
+			$(location).attr('href', ('setLang'+'?lang='+lang));
+		});
+	});
+	</script>
+	</%block>
+	<div>
+	Create new instance:
+	<a href='new?doc_type=article'><button>Article</button></a>
+	<a href='new?doc_type=category'><button>Category</button></a>
+	</%block>
+	<%block name='scripts'>
+	<script type='text/javascript' src='${path()+"public/js/menu.js"}'></script>
+	</div>
 </%block>

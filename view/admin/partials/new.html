@@ -1,4 +1,4 @@
-
+<%inherit file="../../base.html"/>
 %if doc_type == 'article':
 	
 %elif doc_type == 'category':
@@ -7,8 +7,10 @@
 	from sqlalchemy import inspect
 	mapper = inspect(Article)
 	%>
-
+	<fieldset>
 	%for column in mapper.attrs:
-		${column}
+		<label for="${column}">${column}</label>
+		<textarea id="${column}" name="${column}"></textarea><br>
 	%endfor
+	</fieldset>
 %endif
