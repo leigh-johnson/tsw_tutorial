@@ -1,0 +1,9 @@
+/venv/**/*
+/node_modules/**/*
+
+.sass-cache
+.git
+.app-bak
+*.sublime*
+*.pyc
+*.db
