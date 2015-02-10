@@ -1,9 +1,16 @@
-/**
+﻿/**
  * @license Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
 CKEDITOR.editorConfig = function( config ) {
+	
+	// %REMOVE_START%
+	// The configuration options below are needed when running CKEditor from source files.
+	config.plugins = 'basicstyles,blockquote,panel,floatpanel,menu,contextmenu,elementspath,enterkey,entities,popup,filebrowser,floatingspace,listblock,button,richcombo,format,horizontalrule,htmlwriter,dialogui,dialog,image,indent,indentlist,fakeobjects,link,list,magicline,maximize,removeformat,resize,menubutton,scayt,showborders,sourcearea,sourcedialog,specialchar,stylescombo,tab,table,tabletools,templates,toolbar,undo,wsc,wysiwygarea,lineutils,clipboard,widget';
+	config.skin = 'moono';
+	// %REMOVE_END%
+
 	// Define changes to default configuration here.
 	// For complete reference see:
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
@@ -30,14 +37,12 @@ CKEDITOR.editorConfig = function( config ) {
 	// not needed in the Standard(s) toolbar.
 	config.removeButtons = 'Underline,Subscript,Superscript';
 
-	// Prevents <video> and other html5 tags from being stripped
+		// Prevents <video> and other html5 tags from being stripped
 	CKEDITOR.config.allowedContent = true;
 
-	// Turns off automatic <p> wrapping - we'll handle that!
+	// Turns off automatic <p> wrapping - we'll handle that with templating!
 	CKEDITOR.config.autoParagraph = false;
 
-	// Moar plugins
-	config.extraPlugins = 'sourcedialog';
 
 	// Set the most common block elements.
 	config.format_tags = 'p;h1;h2;h3;pre';

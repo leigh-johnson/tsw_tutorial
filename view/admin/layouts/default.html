@@ -34,12 +34,10 @@ ${parent.menu()}
 <script>
 $(document).ready(function() {
 
-    CKEDITOR.disableAutoInline = true;
    	var article_id = window.location.search
     $("[contenteditable='true']").each(function( index ) {
 
         var column_id = $(this).attr('id');
-
         CKEDITOR.inline( column_id, {
             on: {
                 blur: function( event ) {

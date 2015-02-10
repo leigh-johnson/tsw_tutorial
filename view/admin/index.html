@@ -42,8 +42,14 @@ ${parent.menu()}
 		//Redirect to localized template set
 		$('#language-submit').click(function(event) {
 			lang = $('#language').val();
-			var pathname = window.location.href
+			var search
+			var href = window.location.href
 			$(location).attr('href', ('setLang'+'?lang='+lang));
+
+			var request = $.ajax({
+				type: 'GET',
+				url: '.'
+			})
 		});
 	});
 	</script>
