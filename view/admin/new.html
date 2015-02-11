@@ -11,19 +11,22 @@ ${parent.menu()}
 <%block name='content'>
 <form id="new_article">
 	<label for="layout">Layout</label>
-	<select id="layout">
+	<select id="layout" class="new">
 		<option value="default">Default</option>
 		<option value="video">Video</option>
-		<option value="img_hero">Hero Img</option>
 	</select>
 
-		<label for="is_category">Is this a category? A category can have two types of children: articles and other categories. </label>
-		<input type="radio" name="is_category" value="0">No</input>
-		<input type="radio" name="is_category" value="1">Yes</input>
+		<label for="is_category">Is this a category?</label>
+		<select id="is_category">
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+		</select>
 		##if No, assign to parent
 		##if Yes, assign children
 	<label for="lua_tag">LUA Tag</label>
 	<input type="text" id="lua_tag">
+
+	<label for
 
 	<label for="public">Published?</label>
 	<input type="radio" name="public" value="0">No</input>
@@ -55,4 +58,33 @@ ${parent.menu()}
 
 	<input type="submit" value="Submit">
 <form>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	// Add video_src input based on layout choice
+	$('#layout').change(function(){
+		if($('#layout').val() == 'video'){
+			$('#layout').after('<label for="video_src">Video link</label><input id="video_src" type="textarea" placeholder="Video URL">');
+		}
+		if($('#layout').val() != 'video'){
+			$('#video_src').remove();
+			$('label[for="video_src"]').remove();
+		}
+	});
+
+	// Add child/parent selectors 
+	$('#is_category').change(function(){
+		if($('#is_category').val() == 1){
+			$('#is_category').after(
+				'<label for="is_subcategory">Is this a subcategory?</label><select id="is_subcategory"><option value="1">Yes</option><option value="0">No</option>');
+		}
+	});
+
+	$('#submit').click(function(){
+
+	});
+
+});
+
+</script>
 </%block>

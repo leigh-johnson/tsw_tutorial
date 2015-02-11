@@ -27,7 +27,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
-.icon-file-text2:before {
+.icon-file-text:before {
   content: "\e926"; }
 
 .icon-file-picture:before {

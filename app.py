@@ -179,6 +179,12 @@ class ClientController(object):
             layout='video',
             public=True
             )
+        article_4 = Article(
+            title_en='Orphan article qq',
+            description_en='I have no parent',
+            order=30,
+            layout='default',
+            public=True)
         article_1.body_en.append(body_1)
         article_1.body_fr.append(body_2)
         article_1.body_de.append(body_3)
@@ -192,7 +198,7 @@ class ClientController(object):
         article_1.articles.append(article_2)
         article_1.articles.append(article_3)
 
-        result = cherrypy.request.db.add_all([article_1, article_2, article_3])
+        result = cherrypy.request.db.add_all([article_1, article_2, article_3, article_4])
         return result
 
 

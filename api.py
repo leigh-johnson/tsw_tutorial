@@ -11,17 +11,23 @@ class ArticleAPI(object):
 
     exposed = True
     #@require()
-    def GET(self, _id=None):
+    def GET(self, _id=None, **kwargs):
         '''
         Returns _id if id is supplied OR
         all article records if no id is supplied
         '''
-        if _id == None:
+        #supports one non-specific kwarg, womp womp
+        if kwargs:
+            result = cherrypy.request.db.query(Article).filter_by(**kwargs).all()
+            print('**************************')
+            return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
+        # if no id is specified, 
+        elif _id == None:
             result = Article.list(cherrypy.request.db)
             return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
-        elif cherrypy.request.db.query(Article).get(_id):
-            result = cherrypy.request.db.query(Article).get(_id)
-            return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
+
+        result = cherrypy.request.db.query(Article).get(_id)
+        return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
             
     #@require()
     def POST(self, **kwargs):

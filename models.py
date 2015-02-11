@@ -71,8 +71,9 @@ class Article(Base):
 	lua_tag = Column(Integer)
 	public = Column(Boolean)
 	order = Column(Integer)
+	video_src = Column(String(100))
 
-	is_category = Column(Boolean, default=True)
+	is_category = Column(Boolean, default=False)
 	## If parent_id is _id, article is top level
 	parent_id = Column(Integer, ForeignKey('article._id'))
 	articles = relationship("Article", order_by='Article.order')
