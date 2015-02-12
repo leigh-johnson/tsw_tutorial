@@ -10,28 +10,17 @@ ${parent.menu()}
 
 <%block name='content'>
 <form id="new_article">
-	<label for="layout">Layout</label>
+	<label for="layout">Layout & Icon</label>
 	<select id="layout" class="new">
-		<option value="default">Default</option>
+		<option value="default">Category</option>
 		<option value="video">Video</option>
+		<option value="text">Text/Imgs</option>
 	</select>
 
-		<label for="is_category">Is this a category?</label>
-		<select id="is_category">
-		<option value="0">No</option>
-		<option value="1">Yes</option>
-		</select>
-		##if No, assign to parent
-		##if Yes, assign children
-	<label for="lua_tag">LUA Tag</label>
+
+	<label for="lua_tag" placeholder="LUA tag">LUA Tag</label>
 	<input type="text" id="lua_tag">
 
-	<label for
-
-	<label for="public">Published?</label>
-	<input type="radio" name="public" value="0">No</input>
-	<input type="radio" name="public" value="1">Yes</input>
-	## Populate list of siblings, then order
 	<h3>English fields</h3>
 	<label for="title_en">Title_en</label>
 	<input type="textarea" id="title_en" placeholder="English title">
@@ -72,16 +61,20 @@ $(document).ready(function(){
 		}
 	});
 
-	// Add child/parent selectors 
-	$('#is_category').change(function(){
-		if($('#is_category').val() == 1){
-			$('#is_category').after(
-				'<label for="is_subcategory">Is this a subcategory?</label><select id="is_subcategory"><option value="1">Yes</option><option value="0">No</option>');
-		}
-	});
-
-	$('#submit').click(function(){
-
+	// POST
+	$('#new_article').submit(function(){
+		data = {}
+		$('#new_article input,select,textarea').each(function(column){
+			column_id = $(this).attr('id');
+			data[column_id] = $(this).val();
+		});
+		alert(data);
+		/*
+		request = $.ajax({
+			type: 'POST',
+			url: './api/article'
+		});
+		*/
 	});
 
 });

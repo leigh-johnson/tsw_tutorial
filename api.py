@@ -11,7 +11,7 @@ class ArticleAPI(object):
 
     exposed = True
     #@require()
-    def GET(self, _id=None, **kwargs):
+    def GET(self, **kwargs):
         '''
         Returns _id if id is supplied OR
         all article records if no id is supplied
@@ -19,18 +19,13 @@ class ArticleAPI(object):
         #supports one non-specific kwarg, womp womp
         if kwargs:
             result = cherrypy.request.db.query(Article).filter_by(**kwargs).all()
-            print('**************************')
             return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
-        # if no id is specified, 
-        elif _id == None:
-            result = Article.list(cherrypy.request.db)
-            return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
-
-        result = cherrypy.request.db.query(Article).get(_id)
+        #if no kwargs are specified, return the article roll
+        result = Article.list(cherrypy.request.db)
         return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
             
     #@require()
-    def POST(self, **kwargs):
+    def POST(self):
         '''
         If authorized, persist a new Article() to session and return it
         No validation strategy implemented, use with caution

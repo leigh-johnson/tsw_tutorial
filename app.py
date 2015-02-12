@@ -219,8 +219,6 @@ class AdminController(object):
         cookie = cherrypy.request.cookie
         if 'lang' in cookie.keys():
             lang = cookie['lang'].value
-        elif _id == None:
-            raise cherrypy.HTTPRedirect('/')
         categories = Article.list(cherrypy.request.db)
         article = cherrypy.request.db.query(Article).filter(Article._id == _id).one()
         template = lookup.get_template('admin/layouts/'+article.layout+'.html')
@@ -242,9 +240,7 @@ class AdminController(object):
         cookie['lang'] = lang
         cookie['lang']['path'] = 'admin'
         cookie['lang']['max-age'] = 3600
-        print('*******', path)
-        raise cherrypy.HTTPRedirect(path)
-
+        return
 
 class APIController(object):
     exposed = True

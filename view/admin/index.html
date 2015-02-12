@@ -31,25 +31,37 @@ ${parent.menu()}
 	      <option value='de'>DE</option>
 	    <option value=None>ALL (TODO)</option>
 	    </select>
-	    <button id='language-submit'>View</button>
+	    <button id='language_submit'>View</button>
 	</fieldset>
 
 	Current lang: ${lang}
 
 	<script type='text/javascript'>
 	$( document ).ready(function() {
-
-		//Redirect to localized template set
-		$('#language-submit').click(function(event) {
+		// AJAX defaults
+		$.ajaxSetup({
+			contentType: 'application/json; charset=utf-8',
+			dataType: 'text json',
+		error: function(data) {
+			$('#footer').append('<div class="flash-error">CONNECTION ERROR - PLEASE RESAVE!</div>');
+			alert(JSON.stringify(data));		    },
+		success: function() {
+			$('#footer').append('<div class="flash-success">SAVED ^^V</div>');		
+			alert('saved');			       
+			}			
+		});
+		$('#language_submit').click(function(event) {
 			lang = $('#language').val();
-			var search
-			var href = window.location.href
-			$(location).attr('href', ('setLang'+'?lang='+lang));
+			var hostname = window.location.hostname
 
-			var request = $.ajax({
+			//request to AdminController.setLang() route
+			$.ajax({
 				type: 'GET',
-				url: '.'
-			})
+				url: '/admin/setLang?lang='+lang,
+				success: function(){
+					location.reload();
+				}
+			});
 		});
 	});
 	</script>

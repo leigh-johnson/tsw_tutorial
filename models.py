@@ -11,7 +11,7 @@ from sqlalchemy.types import String, Integer, Text, Enum
 Base = declarative_base()
 
 ### Database schema requires 'None' be inserted into columns with null values
-### Default 'None' value can be accessed by declaring Column(default='aDefault') parameter
+### Default 'None' value can be accessed via Column(default='aDefaultValue) parameter
 
 def Jsonify():
     _visited_objs = []
@@ -38,6 +38,8 @@ def Jsonify():
 class Admin(Base):
 	'''
 	Admins are policy-permitted to POST, PUT, DELETE on access routes
+
+	Policies & handlers on auth.py
 	'''
 	__tablename__ = 'admin'
 	_id = Column(Integer, primary_key=True)
@@ -50,8 +52,8 @@ class Admin(Base):
 		return session.query(Admin).all()
 
 class Body(Base):
-	'''Body exists so body_$language columns can contain many entries
-	serialized with model.imgs[]
+	'''Body exists so body_$language columns can contain many serialized entries
+	
 	e.g. body[0] & img[0] will share a CKeditor instance'''
 	__tablename__ = 'body'
 	_id = Column(Integer, primary_key=True)
@@ -69,15 +71,15 @@ class Article(Base):
 	layout = Column(Enum('default', 'video', 'img_hero'), default='default')
 	icon = Column(String(50))
 	lua_tag = Column(Integer)
-	public = Column(Boolean)
+	public = Column(Boolean, default=False)
 	order = Column(Integer)
 	video_src = Column(String(100))
 
 	is_category = Column(Boolean, default=False)
+
 	## If parent_id is _id, article is top level
 	parent_id = Column(Integer, ForeignKey('article._id'))
 	articles = relationship("Article", order_by='Article.order')
-
 
 	title_en = Column(String(35))
 	description_en = Column(String(255))

@@ -75,6 +75,7 @@ class AuthController(object):
         pass
 
     def get_loginform(self, username, msg="Need an account? Contact Romain", from_page='/'):
+        '''Serves login template and inspects request path'''
         username = escape(username, True)
         from_page = escape(from_page, True)
         #mako template
@@ -84,6 +85,7 @@ class AuthController(object):
 
     @cherrypy.expose
     def login(self, username=None, password=None, from_page='/'):
+        '''Checks creds and inspects request path'''
         if username is None or password is None:
             return self.get_loginform("", from_page=from_page)
 
