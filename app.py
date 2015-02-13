@@ -173,7 +173,7 @@ class ClientController(object):
             public=True
             )
         article_3 = Article(
-            title_en='English video thing'
+            title_en='English video thing',
             description_en='English Description 3',
             order=10,
             layout='video',
