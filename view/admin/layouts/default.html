@@ -17,11 +17,11 @@ ${parent.menu()}
 	## Enumerate body text instances
 
 	%for i, body in enumerate(getattr(article, 'body_'+lang)):
-		<div id="${'body_'+lang+'_'+str(body._id)}" contenteditable="true">${body.text}</div>
+		<div class="article-body" id="${'body_'+lang+'_'+str(body._id)}" contenteditable="true">${body.text}</div>
 	%endfor
 
-	<p><a href="#">Add</a> another widget? (TODO)</p>
-	
+	<button>Add Widget (TODO)</button>
+
 	## Enumerate article instances
 	%for summary in article.articles:
 		<figure>

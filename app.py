@@ -132,31 +132,31 @@ class ClientController(object):
     @cherrypy.expose
     def build_data(self):
         body_1 = Body_en(
-            text="<p>Plateosaurus Gobiceratops Beishanlong Avipes Orthomerus Ouranosaurus Camarillasaurus Melanorosaurus Shuvuuia Tanycolagreus Zuniceratops Nipponosaurus Bactrosaurus Ferganocephale Bicentenaria Rhodanosaurus Gojirasaurus Jainosaurus Anchisaurus Lapparentosaurus.</p>"
+            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
             )
         body_2 = Body_en(
-            text="<p>Ancient alien star people ancient civilization foo fighter, gods golden disk mercury grey megoliths, Sumerian texts foo fighter weightless DNA manipulation. Flying vessels mercury clearly star people portal kachina doll elongated skull, vimana pyramids gods alien earth mound Annunaki spaceships Ezekiel, space travel extraterrestrial origin space travel ancient alien theorists.</p>"
+            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
             )
         body_3 = Body_en(
-            text="<p>Servus Buam und Maderln. Warum nicht mal einen bissl gemütlicheren Blindtext verwenden? Auf geht’s, probiert’s den bairischen Blindtext!</p>"
+            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
             )
         body_4 = Body_en(
-            text="<p>Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus.</p>"
+            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
             )
         body_5 = Body_en(
-            text="<p>Ancient alien Indian texts spaceships ancient alien Chariot of the Gods crystal skull, mainstream archaelogy otherworldly visitors earth mound Machu Picchu space time, flying vessels targeted mutation portal Mahabharata Vymaanika-Shaastra ancient religions cover up.</p>"
+            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
             )
         body_6 = Body_en(
-            text="<p>Bavaria ipsum dolor sit amet Foidweg i hob di narrisch gean Lewakaas, san gor. Brotzeit is da Brezn griasd eich midnand? I hob di liab Breihaus naa Kuaschwanz Watschnpladdla jo mei is des schee.</p>"
+            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
             )     
         body_7 = Body_en(
-            text="<p>Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus.</p>"
+            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
             )
         body_8 = Body_en(
-            text="<p>Ancient alien King Soloman otherworldly visitors space travel, sky people gods anti-gravity the vedas electromagnetic, extraterrestrial ancient religions spaceships the vedas. Extraterrestrial inter-dimensional Easter island Vymaanika-Shaastra sanskrit, star gates golden disk, contend foo fighter.</p>"
+            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
             )
         body_9 = Body_en(
-            text="<p>Sepp mogsd a Bussal resch, hod um Godds wujn hod Blosmusi nix Gwiass woass ma ned sog i. Gidarn Heimatland Gstanzl Broadwurschtbudn oans, zwoa, gsuffa, Bladl i i moan scho aa Schaung kost nix. </p>"
+            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
             )
         article_1 = Article(
             title_en='Category of Things',
@@ -167,13 +167,13 @@ class ClientController(object):
             is_category=True
             )
         article_2 = Article(
-            title_en='English thing 1',
+            title_en='English text/img thing',
             description_en='An English description lorem ipsum sic dolor.',
             order=20,
             public=True
             )
         article_3 = Article(
-            title_en='English Title 3',
+            title_en='English video thing'
             description_en='English Description 3',
             order=10,
             layout='video',
