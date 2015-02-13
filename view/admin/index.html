@@ -8,10 +8,34 @@ ${parent.head()}
 <link href="${path()+'public/css/reset.css'}" rel='stylesheet' type='text/css' />
 <link href="${path()+'public/css/style.css'}" rel='stylesheet' type='text/css' />
 <link href="${path()+'public/css/admin.css'}" rel='stylesheet' />
-</%block>
 
+<script src="${path()+'public/js/jquery-sortable.js'}" type='text/javascript'></script>
+</%block>
 <%block name='menu'>
-${parent.menu()}
+<div id="accordion" class="connected-sortable">
+<div id="accordion">
+<ol id="sortable-public" class="sortable">
+Published
+%for row in categories:
+	%if row.is_category == True & row.public == True:
+	<li class="accordion-header" id="${row._id}"><a href="article?_id=${row._id}" alt="${getattr(row, 'description_'+lang)}">${getattr(row, 'title_'+lang)}</a></li>
+	<ol class="accordion-content">
+	%for article in row.articles:
+		<li><span class="${article.icon}"></span>
+	<a href="article?_id=${article._id}" alt="${getattr(article, 'description_'+lang)}">${getattr(article, 'title_'+lang)}</a></li>	
+	%endfor
+	%endif
+	</ol>
+%endfor
+</ol>
+</div>
+<ol id="sortable-private" class="sortable">Private
+	%for row in categories:
+		%if row.public == False:
+		<li><a href="article?_id=${row._id}" alt="${getattr(row, 'description_'+lang)}">${getattr(row, 'title_'+lang)}</a></li>
+		%endif
+	%endfor
+</ol>
 </%block>
 ## Select a language
 
@@ -39,15 +63,15 @@ ${parent.menu()}
 
 	<script type='text/javascript'>
 	$( document ).ready(function() {
-		// AJAX defaults
+		// AJAX defaolts
 		$.ajaxSetup({
 			contentType: 'application/json; charset=utf-8',
 			dataType: 'text json',
 		error: function(data) {
-			$('<div class="flash-error"><span>CONNECTION ERROR - PLEASE RESAVE!</span></div>').appendTo($('#footer')).fadeIn(500).delay(1600).fadeOut(500);
+			$('<div class="flash-error"><span>CONNECTION ERROR - PLEASE RESAVE!</span></div>').appendTo($('#footer')).fadeIn(500).delay(2600).fadeOut(500);
 		    },
 		success: function() {
-			$('<div class="flash-success"><span>SAVED ^^V</span></div>').appendTo($('#footer')).fadeIn(500).delay(1600).fadeOut(500);	
+			$('<div class="flash-success"><span>SAVED ^^V</span></div>').appendTo($('#footer')).fadeIn(500).delay(2600).fadeOut(500);	
 
 			}			
 		});
@@ -63,6 +87,43 @@ ${parent.menu()}
 					location.reload();
 				}
 			});
+		});
+
+		$('')
+
+		// jquery-sortable http://github.com/johnny/jquery-sortable
+		var adjustment;
+		$("ol.sortable").sortable({
+			group: 'sortable',
+			pullPlaceholder: false,
+			// animation on drop
+			onDrop: function(item, targetContainer, _super){
+				var clonedItem = $('<li/>').css({height:0});
+				item.before(clonedItem)
+				clonedItem.animate({'height': item.height()})
+
+				item.animate(clonedItem.position(), function (){
+					clonedItem.detach()
+					_super(item)
+				});
+			},
+			onDragStart: function($item, container, _super){
+				var offset = $item.offset(),
+				pointer = container.rootGroup.pointer
+
+				adjustment = {
+					left: pointer.left - offset.left,
+					top: pointer.top - offset.top
+				}
+				_super($item, container)
+			},
+
+			onDrag: function($item, position){
+				$item.css({
+					left: position.left - adjustment.left,
+					top: position.top - adjustment.top
+				})
+			}
 		});
 	});
 	</script>

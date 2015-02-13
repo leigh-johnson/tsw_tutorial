@@ -18,7 +18,7 @@ from mako.lookup import TemplateLookup
 #mako.runtime.UNDEFINED = ''
 
 path = os.path.abspath(os.path.dirname(__file__))
-lookup = TemplateLookup(directories=[os.path.join(os.path.abspath(os.curdir)+'/view')], output_encoding='utf-8',collection_size=500)
+lookup = TemplateLookup(directories=[os.path.join(os.path.abspath(os.curdir)+'/view')], output_encoding='utf-8',collection_size=500, strict_undefined=True)
 
 ### Plugins/Tools ###
 
@@ -134,28 +134,28 @@ class ClientController(object):
         body_1 = Body_en(
             text="<p>Plateosaurus Gobiceratops Beishanlong Avipes Orthomerus Ouranosaurus Camarillasaurus Melanorosaurus Shuvuuia Tanycolagreus Zuniceratops Nipponosaurus Bactrosaurus Ferganocephale Bicentenaria Rhodanosaurus Gojirasaurus Jainosaurus Anchisaurus Lapparentosaurus.</p>"
             )
-        body_2 = Body_fr(
+        body_2 = Body_en(
             text="<p>Ancient alien star people ancient civilization foo fighter, gods golden disk mercury grey megoliths, Sumerian texts foo fighter weightless DNA manipulation. Flying vessels mercury clearly star people portal kachina doll elongated skull, vimana pyramids gods alien earth mound Annunaki spaceships Ezekiel, space travel extraterrestrial origin space travel ancient alien theorists.</p>"
             )
-        body_3 = Body_de(
+        body_3 = Body_en(
             text="<p>Servus Buam und Maderln. Warum nicht mal einen bissl gemütlicheren Blindtext verwenden? Auf geht’s, probiert’s den bairischen Blindtext!</p>"
             )
         body_4 = Body_en(
             text="<p>Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus.</p>"
             )
-        body_5 = Body_fr(
+        body_5 = Body_en(
             text="<p>Ancient alien Indian texts spaceships ancient alien Chariot of the Gods crystal skull, mainstream archaelogy otherworldly visitors earth mound Machu Picchu space time, flying vessels targeted mutation portal Mahabharata Vymaanika-Shaastra ancient religions cover up.</p>"
             )
-        body_6 = Body_de(
+        body_6 = Body_en(
             text="<p>Bavaria ipsum dolor sit amet Foidweg i hob di narrisch gean Lewakaas, san gor. Brotzeit is da Brezn griasd eich midnand? I hob di liab Breihaus naa Kuaschwanz Watschnpladdla jo mei is des schee.</p>"
             )     
         body_7 = Body_en(
             text="<p>Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus.</p>"
             )
-        body_8 = Body_fr(
+        body_8 = Body_en(
             text="<p>Ancient alien King Soloman otherworldly visitors space travel, sky people gods anti-gravity the vedas electromagnetic, extraterrestrial ancient religions spaceships the vedas. Extraterrestrial inter-dimensional Easter island Vymaanika-Shaastra sanskrit, star gates golden disk, contend foo fighter.</p>"
             )
-        body_9 = Body_de(
+        body_9 = Body_en(
             text="<p>Sepp mogsd a Bussal resch, hod um Godds wujn hod Blosmusi nix Gwiass woass ma ned sog i. Gidarn Heimatland Gstanzl Broadwurschtbudn oans, zwoa, gsuffa, Bladl i i moan scho aa Schaung kost nix. </p>"
             )
         article_1 = Article(
@@ -186,14 +186,14 @@ class ClientController(object):
             layout='default',
             public=False)
         article_1.body_en.append(body_1)
-        article_1.body_fr.append(body_2)
-        article_1.body_de.append(body_3)
+        article_1.body_en.append(body_2)
+        article_1.body_en.append(body_3)
         article_2.body_en.append(body_4)
-        article_2.body_fr.append(body_5)
-        article_2.body_de.append(body_6)
+        article_2.body_en.append(body_5)
+        article_2.body_en.append(body_6)
         article_3.body_en.append(body_7)
-        article_3.body_fr.append(body_8)
-        article_3.body_de.append(body_9)
+        article_3.body_en.append(body_8)
+        article_3.body_en.append(body_9)
 
         article_1.articles.append(article_2)
         article_1.articles.append(article_3)

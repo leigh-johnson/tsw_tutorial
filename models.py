@@ -102,19 +102,19 @@ tag_association = Table('tag_association', Base.metadata,
 class Tag(Base):
 	__tablename__='tag'
 	_id = Column(Integer, primary_key=True)
-	title_en = Column(String(50))
-	title_en = Column(String(50))
-	title_en = Column(String(50))
-
+	title_en = Column(String(100))
+	title_en = Column(String(100))
+	title_en = Column(String(100))
 
 class Article(Base):
 	__tablename__ = 'article'
 	_id = Column(Integer, primary_key=True)
 	layout = Column(Enum('default', 'video', 'img_hero'), default='default')
-	icon = Column(String(50), default='icon-file-text')
+	icon = Column(String(100), default='icon-file-text')
 	lua_tag = Column(Integer)
 	public = Column(Boolean, default=False)
 	order = Column(Integer)
+	banner_src = Column(String(100), default="http://placehold.it/620x175/1e1e1e/ffffff/620x175&text=620x175px")
 	video_src = Column(String(100))
 
 	is_category = Column(Boolean, default=False)

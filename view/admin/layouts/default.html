@@ -12,12 +12,16 @@ ${parent.menu()}
 
 %if article:
 	<h1 id="${'title_'+lang}" contenteditable="true">${getattr(article, 'title_'+lang)}</h1>
-	<h3 id="${'description_'+lang}" contenteditable="true">${getattr(article, 'description_'+lang)}</h3>
+	##<h3 id="${'description_'+lang}" contenteditable="true">${getattr(article, 'description_'+lang)}</h3>
+	<img src="${article.banner_src}"></img>
 	## Enumerate body text instances
-	
+
 	%for i, body in enumerate(getattr(article, 'body_'+lang)):
 		<div id="${'body_'+lang+'_'+str(body._id)}" contenteditable="true">${body.text}</div>
 	%endfor
+
+	<p><a href="#">Add</a> another widget? (TODO)</p>
+	
 	## Enumerate article instances
 	%for summary in article.articles:
 		<figure>

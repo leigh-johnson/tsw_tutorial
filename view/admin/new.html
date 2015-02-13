@@ -17,23 +17,29 @@ ${parent.menu()}
 		<option value="text">Text/Imgs</option>
 	</select>
 
+	<label for="is_category">Is this a category? Warning: <strong>categories are automatically public</strong>! To make a private category, select "no" to create an article. You can convert to a category later.</label>
+	<select id="is_category" required>
+		<option value=false>No</option>
+		<option value=true>Yes</option>
+	</select>
+
 	<p>TODO: tagging/keywords</p>
 
 	<label for="icon">Menu Icon</label>
-	<select id="icon" required>
-	<option value="icon-file-text"><span class="icon-file-text"></span></option>
-	<option value="icon-file-picture"><span class="icon-file-picture"></span></option>
-	<option value="icon-file-video"><span class="icon-file-video"></span></option>
+	<select id="icon" style="font-family:'icomoon'; font-size: 1em;"required>
+	<option value="icon-file-text">&#xe926;</span></option>
+	<option value="icon-file-picture">&#xe927;</option>
+	<option value="icon-file-video">&#xe92a;</option>
 	</select>
 
-	<label for="lua_tag" placeholder="LUA tag" required>LUA Tag</label>
+	<label for="lua_tag" placeholder="LUA tag">LUA Tag</label>
 	<input type="text" id="lua_tag">
 
 	<h3>English fields</h3>
 	<label for="title_en">Title_en</label>
 	<input type="textarea" id="title_en" placeholder="English title" required>
 	<label for="description_en">Description_en</label>
-	<input type="textarea" id="description_en" placeholder="English description" required>
+	<input type="textarea" id="description_en" placeholder="English description">
 	<label for="body_en">Body_en</label>
 	<textarea id="body_en" rows="5" cols="50" placeholder="English body" required></textarea>
 
