@@ -2,12 +2,14 @@ import cherrypy
 import json
 from sqlalchemy import update
 from sqlalchemy.ext.serializer import loads, dumps
-from models import Admin, Article, Body, Jsonify
+from models import Admin, Article, Body_en, Body_fr, Body_de, Jsonify
 ### RESTful API Controllers ###
 ### ALL RETURNS ON API ROUTES AGONOSTICALLY RETURN `result` ###
 
 
 class ArticleAPI(object):
+    '''To integrate with AJAX requests, API should ALWAYS return valid JSON
+    In cases where values are None/null, data should be sanitized or AJAX response expectations should be text and not JSON'''
 
     exposed = True
     #@require()
@@ -22,7 +24,7 @@ class ArticleAPI(object):
             return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
         #if no kwargs are specified, return the article roll
         result = Article.list(cherrypy.request.db)
-        return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
+        return json.dumps(result, cls=Jsonify(),check_circular=False, skipkeys=True, indent=2)
             
     #@require()
     def POST(self):
@@ -32,10 +34,21 @@ class ArticleAPI(object):
         '''
         result = Article()
         data = cherrypy.request.headers.get('X-Ckeditor-New')
+        data = json.loads(data, encoding="utf-8")
+        bodies = {"body_en":Body_en, "body_fr":Body_fr, "body_de":Body_de}
         for key in data:
-            setattr(result, key, data[key])
+            if key.startswith("body"):
+                body = bodies[key]()
+                body.text = data[key]
+                getattr(result, key).append(body)
+            else:
+                setattr(result, key, data[key])
+        ### Set each body
+        #for key, value in bodies.iteritems():
+            #alist = [value]
+            #setattr(result, key, alist)
         cherrypy.request.db.add(result)
-        return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
+        return json.dumps({"responseText": "Created!"})
 
     #@require()
     def PUT(self, _id):
@@ -46,15 +59,20 @@ class ArticleAPI(object):
         result = cherrypy.request.db.query(Article).get(_id)
         data = cherrypy.request.headers.get('X-Ckeditor-Edit')
         data = json.loads(data, encoding="utf-8")
+        bodies = {"body_en":Body_en, "body_fr":Body_fr, "body_de":Body_de}
         for key in data:
             if key.startswith("body"):
+                # Unpackage request  from Body_$language_$id to Body_$language.get(_id)
                 split = key.split('_')
+                lang = "_".join(split[0:2])
+                body = bodies[lang]
                 _id = split[2]
-                result = cherrypy.request.db.query(Body).get(_id)
+                result = cherrypy.request.db.query(body).get(_id)
                 setattr(result,'text',data[key])
             else:
                 setattr(result,key,data[key])
-        return cherrypy.request.db.add(result)
+        cherrypy.request.db.add(result)
+        return json.dumps({"responseText":"Saved!"})
 
 
     def DELETE(self, _id=None):

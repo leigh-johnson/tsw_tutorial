@@ -190,14 +190,6 @@ body.menu-active div#content {
 body.menu-active div#content .menu-trigger {
   left: 294px; }
 
-div#footer {
-  border-radius: 3px;
-  right: 0;
-  bottom: 0;
-  position: fixed;
-  padding: 20px;
-  background: #fcfeff; }
-
 #content h1, #content h2, #content h3 {
   text-align: center; }
 

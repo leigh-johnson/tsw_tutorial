@@ -6,7 +6,7 @@
 <%block name='head'>
 ${parent.head()}
 <link href="${path()+'public/css/style.css'}" rel='stylesheet' type='text/css' />
-##<link href="${self.path+'public/css/style.css'}" type="text/css" rel="stylesheet"/>
+<link href="${path()+'public/css/admin.css'}" rel='stylesheet' />
 </%block>
 
 <%block name='menu'>
@@ -43,11 +43,11 @@ ${parent.menu()}
 			contentType: 'application/json; charset=utf-8',
 			dataType: 'text json',
 		error: function(data) {
-			$('#footer').append('<div class="flash-error">CONNECTION ERROR - PLEASE RESAVE!</div>');
-			alert(JSON.stringify(data));		    },
+			$('<div class="flash-error"><span>CONNECTION ERROR - PLEASE RESAVE!</span></div>').appendTo($('#footer')).fadeIn(500).delay(1600).fadeOut(500);
+		    },
 		success: function() {
-			$('#footer').append('<div class="flash-success">SAVED ^^V</div>');		
-			alert('saved');			       
+			$('<div class="flash-success"><span>SAVED ^^V</span></div>').appendTo($('#footer')).fadeIn(500).delay(1600).fadeOut(500);	
+
 			}			
 		});
 		$('#language_submit').click(function(event) {

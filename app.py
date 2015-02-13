@@ -5,7 +5,7 @@ import MySQLdb
 import cherrypy
 from auth import AuthController, require, check_auth
 from api import ArticleAPI
-from models import Base, Article, Body, Admin, Jsonify
+from models import Base, Article, Body_en, Body_fr, Body_de, Admin, Jsonify
 from sqlalchemy.ext.serializer import loads, dumps
 from sqlalchemy.exc import IntegrityError
 from cherrypy.process import wspbus, plugins
@@ -131,44 +131,44 @@ class ClientController(object):
 
     @cherrypy.expose
     def build_data(self):
-        body_1 = Body(
-            text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qu"
+        body_1 = Body_en(
+            text="<p>Plateosaurus Gobiceratops Beishanlong Avipes Orthomerus Ouranosaurus Camarillasaurus Melanorosaurus Shuvuuia Tanycolagreus Zuniceratops Nipponosaurus Bactrosaurus Ferganocephale Bicentenaria Rhodanosaurus Gojirasaurus Jainosaurus Anchisaurus Lapparentosaurus.</p>"
             )
-        body_2 = Body(
-            text="Es gibt im Moment in diese Mannschaft, oh, einige Spieler vergessen ihnen Profi was sie sind. Ich lese nicht sehr viele Zeitungen, aber ich habe gehört viele Situationen. Erstens: wir haben nicht offe"
+        body_2 = Body_fr(
+            text="<p>Ancient alien star people ancient civilization foo fighter, gods golden disk mercury grey megoliths, Sumerian texts foo fighter weightless DNA manipulation. Flying vessels mercury clearly star people portal kachina doll elongated skull, vimana pyramids gods alien earth mound Annunaki spaceships Ezekiel, space travel extraterrestrial origin space travel ancient alien theorists.</p>"
             )
-        body_3 = Body(
-            text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
+        body_3 = Body_de(
+            text="<p>Servus Buam und Maderln. Warum nicht mal einen bissl gemütlicheren Blindtext verwenden? Auf geht’s, probiert’s den bairischen Blindtext!</p>"
             )
-        body_4 = Body(
-            text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
+        body_4 = Body_en(
+            text="<p>Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus.</p>"
             )
-        body_5 = Body(
-            text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
+        body_5 = Body_fr(
+            text="<p>Ancient alien Indian texts spaceships ancient alien Chariot of the Gods crystal skull, mainstream archaelogy otherworldly visitors earth mound Machu Picchu space time, flying vessels targeted mutation portal Mahabharata Vymaanika-Shaastra ancient religions cover up.</p>"
             )
-        body_6 = Body(
-            text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
+        body_6 = Body_de(
+            text="<p>Bavaria ipsum dolor sit amet Foidweg i hob di narrisch gean Lewakaas, san gor. Brotzeit is da Brezn griasd eich midnand? I hob di liab Breihaus naa Kuaschwanz Watschnpladdla jo mei is des schee.</p>"
             )     
-        body_7 = Body(
-            text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
+        body_7 = Body_en(
+            text="<p>Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus.</p>"
             )
-        body_8 = Body(
-            text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
+        body_8 = Body_fr(
+            text="<p>Ancient alien King Soloman otherworldly visitors space travel, sky people gods anti-gravity the vedas electromagnetic, extraterrestrial ancient religions spaceships the vedas. Extraterrestrial inter-dimensional Easter island Vymaanika-Shaastra sanskrit, star gates golden disk, contend foo fighter.</p>"
             )
-        body_9 = Body(
-            text="En se réveillant un matin après des rêves agités, Gregor Samsa se retrouva, dans son lit, métamorphosé en un monstrueux insecte. Il était sur le dos, un dos aussi dur qu’une carapace, et, en relevant."
+        body_9 = Body_de(
+            text="<p>Sepp mogsd a Bussal resch, hod um Godds wujn hod Blosmusi nix Gwiass woass ma ned sog i. Gidarn Heimatland Gstanzl Broadwurschtbudn oans, zwoa, gsuffa, Bladl i i moan scho aa Schaung kost nix. </p>"
             )
         article_1 = Article(
-            title_en='English Title 1',
-            description_en='English Description 1',
+            title_en='Category of Things',
+            description_en='English description of things. ',
             order=30,
             layout='default',
             public= True,
             is_category=True
             )
         article_2 = Article(
-            title_en='English Title 2',
-            description_en='English Description 2',
+            title_en='English thing 1',
+            description_en='An English description lorem ipsum sic dolor.',
             order=20,
             public=True
             )
@@ -181,10 +181,10 @@ class ClientController(object):
             )
         article_4 = Article(
             title_en='Orphan article qq',
-            description_en='I have no parent',
+            description_en='I have no parent and am unpublished.',
             order=30,
             layout='default',
-            public=True)
+            public=False)
         article_1.body_en.append(body_1)
         article_1.body_fr.append(body_2)
         article_1.body_de.append(body_3)
@@ -227,6 +227,9 @@ class AdminController(object):
     @cherrypy.expose
     def new(self, lang='en'):
         '''Serve new article template'''
+        cookie = cherrypy.request.cookie
+        if 'lang' in cookie.keys():
+            lang = cookie['lang'].value
         categories = Article.list(cherrypy.request.db)
         template = lookup.get_template('admin/new.html')
         return template.render(categories=categories, lang=lang)
@@ -240,7 +243,7 @@ class AdminController(object):
         cookie['lang'] = lang
         cookie['lang']['path'] = 'admin'
         cookie['lang']['max-age'] = 3600
-        return
+        return json.dumps({'responseText':"Language set!"})
 
 class APIController(object):
     exposed = True

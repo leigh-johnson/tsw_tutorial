@@ -11,42 +11,42 @@ ${parent.menu()}
 <%block name='content'>
 <form id="new_article">
 	<label for="layout">Layout & Icon</label>
-	<select id="layout" class="new">
+	<select id="layout" class="new" required>
 		<option value="default">Category</option>
 		<option value="video">Video</option>
 		<option value="text">Text/Imgs</option>
 	</select>
 
 
-	<label for="lua_tag" placeholder="LUA tag">LUA Tag</label>
+	<label for="lua_tag" placeholder="LUA tag" required>LUA Tag</label>
 	<input type="text" id="lua_tag">
 
 	<h3>English fields</h3>
 	<label for="title_en">Title_en</label>
-	<input type="textarea" id="title_en" placeholder="English title">
+	<input type="textarea" id="title_en" placeholder="English title" required>
 	<label for="description_en">Description_en</label>
-	<input type="textarea" id="description_en" placeholder="English description">
+	<input type="textarea" id="description_en" placeholder="English description" required>
 	<label for="body_en">Body_en</label>
-	<textarea id="body_en" rows="5" cols="50" placeholder="English body"></textarea>
+	<textarea id="body_en" rows="5" cols="50" placeholder="English body" required></textarea>
 
 	<h3>French fields</h3>
 	<label for="title_fr">Title_fr</label>
-	<input type="textarea" id="title_fr" placeholder="French title">
+	<input type="textarea" id="title_fr" placeholder="French title" required>
 	<label for="description_fr">Description_fr</label>
-	<input type="textarea" id="description_fr" placeholder="French description">
+	<input type="textarea" id="description_fr" placeholder="French description" required>
 	<label for="body_fr">Body_fr</label>
-	<textarea id="body_fr" rows="5" cols="50" placeholder="French body"></textarea>
+	<textarea id="body_fr" rows="5" cols="50" placeholder="French body" required></textarea>
 
 	<h3>German fields</h3>
 	<label for="title_de">Title_de</label>
-	<input type="textarea" id="title_de" placeholder="German title">
+	<input type="textarea" id="title_de" placeholder="German title" required>
 	<label for="description_de">Description_de</label>
-	<input type="textarea" id="description_de" placeholder="German description">
+	<input type="textarea" id="description_de" placeholder="German description" required>
 	<label for="body_de">Body_de</label>
-	<textarea id="body_de" rows="5" cols="50" placeholder="German body"></textarea>
+	<textarea id="body_de" rows="5" cols="50" placeholder="German body" required></textarea>
 
-	<input type="submit" value="Submit">
-<form>
+	<button id="new_submit">Submit</button>
+</form>
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -62,19 +62,21 @@ $(document).ready(function(){
 	});
 
 	// POST
-	$('#new_article').submit(function(){
+	$('#new_submit').click(function(e){
+		e.preventDefault();
 		data = {}
-		$('#new_article input,select,textarea').each(function(column){
-			column_id = $(this).attr('id');
-			data[column_id] = $(this).val();
+		$('#new_article input, #new_article select, #new_article textarea').each(function(column){
+			column_name = $(this).attr('id');
+			data[column_name] = $(this).val();
 		});
-		alert(data);
-		/*
-		request = $.ajax({
+		$.ajax({
 			type: 'POST',
-			url: './api/article'
+			url: './api/article',
+			headers: {'X-CKeditor-New' : JSON.stringify(data)},
+			processData: false,
+			dataType: 'json'
 		});
-		*/
+
 	});
 
 });
