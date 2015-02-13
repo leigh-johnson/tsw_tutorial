@@ -7,12 +7,13 @@ import copy
 from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Integer, ForeignKey, Boolean
-from sqlalchemy.types import String, Integer, Text, Enum
+from sqlalchemy import String, Integer, Text, Enum, Table
 
-Base = declarative_base()
 
 ### Database schema requires "None" be inserted into columns with null values
 ### Default "None" / "null" value can be accessed via Column(default='aDefaultValue) parameter
+
+Base = declarative_base()
 
 def Jsonify():
 	_visited_objs = []
@@ -92,13 +93,25 @@ class Body_de(Base):
 	def list(session):
 		return session.query(Body).all()
 
+## Association table
+
+tag_association = Table('tag_association', Base.metadata,
+	Column('article_id', Integer, ForeignKey('article._id')),
+	Column('tag_id', Integer, ForeignKey('tag._id'))
+	)
+class Tag(Base):
+	__tablename__='tag'
+	_id = Column(Integer, primary_key=True)
+	title_en = Column(String(50))
+	title_en = Column(String(50))
+	title_en = Column(String(50))
 
 
 class Article(Base):
 	__tablename__ = 'article'
 	_id = Column(Integer, primary_key=True)
 	layout = Column(Enum('default', 'video', 'img_hero'), default='default')
-	icon = Column(String(50))
+	icon = Column(String(50), default='icon-file-text')
 	lua_tag = Column(Integer)
 	public = Column(Boolean, default=False)
 	order = Column(Integer)
@@ -109,6 +122,9 @@ class Article(Base):
 	## If parent_id is _id, article is top level
 	parent_id = Column(Integer, ForeignKey('article._id'))
 	articles = relationship("Article", order_by='Article.order')
+
+	## Many to many
+	tags = relationship("Tag", secondary=tag_association, backref='articles')
 
 	title_en = Column(String(35))
 	description_en = Column(String(255))

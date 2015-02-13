@@ -4,6 +4,7 @@
 <head>
 <%block name='head'>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<!-- CDN resources can go here, but relative paths need to be delclared in client/index or admin/index-->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <!-- JS -->
 <script src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
@@ -14,27 +15,27 @@
 <body>
 <!-- Navigation -->
 <nav id="slide-menu">
+<form class='search-bar' role='search'>
+	<input type='search' placeholder='Enter Search' />
+	<button type='submit'>Submit</button>
+</form>
 <%block name='menu'>
+<div id="accordion">
 <ul>
 %for row in categories:
 	%if row.is_category == True:
-	<li><a href="article?_id=${row._id}" alt="${getattr(row, 'description_'+lang)}">${getattr(row, 'title_'+lang)}</a></li>
-	<ul>
+	<li class="accordion-header"><a href="article?_id=${row._id}" alt="${getattr(row, 'description_'+lang)}">${getattr(row, 'title_'+lang)}</a></li>
+	<ul class="accordion-content">
 	%for article in row.articles:
-		<span class="${article.icon}"></span>
-		<li><a href="article?_id=${article._id}" alt="${getattr(article, 'description_'+lang)}">${getattr(article, 'title_'+lang)}</a></li>	
+		<li><span class="${article.icon}"></span>
+<a href="article?_id=${article._id}" alt="${getattr(article, 'description_'+lang)}">${getattr(article, 'title_'+lang)}</a></li>	
 	%endfor
 	%endif
 	</ul>
 %endfor
 </ul>
-<form class='search-bar' role='search'>
-		  <input type='search' placeholder='Enter Search' />
-		  <button type='submit'>
-		  Submit
-		  </button>
-		</form>
 </%block>
+</div>
 </nav>
 
 ${self.body()}
@@ -46,6 +47,7 @@ ${self.body()}
 </div>
 <div id="footer"><%block name='footer'></%block></div>
 <%block name='scripts'>
+
 </%block>
 </body>
 </html>

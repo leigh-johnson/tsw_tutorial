@@ -14,7 +14,21 @@ body {
 h1, h2, h3 { color: #FF6B6B; margin: 0 0 27px; }
 
 /*
-  Menu
+Accordion
+*/
+
+#accordion {
+	ul,li{
+	list-style: none;}
+	li{
+		padding-left: 2em;
+	}
+	ul{
+	}
+}
+
+/*
+Menu
 */
 nav#slide-menu {
 	position: fixed;
@@ -127,12 +141,12 @@ div#content {
 		transition: all 300ms;
 
 		&:before { 
-			content: '\e801';
+			content: "\e9bd";
 			display: inline-block;
 			width: 36px;
 			height: 36px;
 			color: black;
-			font-family: "ico";
+			font-family: "icomoon";
 			font-style: normal;
 			font-size: 1.2em;
 			font-weight: normal;

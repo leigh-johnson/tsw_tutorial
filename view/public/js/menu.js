@@ -10,5 +10,20 @@
             $body.className = ( $body.className == 'menu-active' )? '' : 'menu-active';
         });
     }
+      var icons = {
+      header: "icon-folder",
+      activeHeader: "icon-folder-open"
+    };
+    $( "#accordion").accordion({
+
+      icons: icons,
+      header: ".accordion-header",
+      collapsible: true,
+      active: false,
+    });
+    $('.accordion-header a').click(function(){
+    	window.location = $(this).attr('href');
+    	return false;
+    });
 
 }).call(this);

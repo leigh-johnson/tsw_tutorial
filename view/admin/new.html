@@ -10,13 +10,21 @@ ${parent.menu()}
 
 <%block name='content'>
 <form id="new_article">
-	<label for="layout">Layout & Icon</label>
-	<select id="layout" class="new" required>
+	<label for="layout">Layout</label>
+	<select id="layout" required>
 		<option value="default">Category</option>
 		<option value="video">Video</option>
 		<option value="text">Text/Imgs</option>
 	</select>
 
+	<p>TODO: tagging/keywords</p>
+
+	<label for="icon">Menu Icon</label>
+	<select id="icon" required>
+	<option value="icon-file-text"><span class="icon-file-text"></span></option>
+	<option value="icon-file-picture"><span class="icon-file-picture"></span></option>
+	<option value="icon-file-video"><span class="icon-file-video"></span></option>
+	</select>
 
 	<label for="lua_tag" placeholder="LUA tag" required>LUA Tag</label>
 	<input type="text" id="lua_tag">

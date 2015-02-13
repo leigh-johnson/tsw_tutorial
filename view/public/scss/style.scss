@@ -1,11 +1,15 @@
 @import 'bourbon/bourbon';
 @import 'neat/neat';
 @import 'partials/variables';
-@import 'partials/icons';
+@import 'partials/_icons';
 @import 'partials/_menu';
 
 #content{
 	h1,h2,h3{
 		text-align: center;
 	}
+}
+
+.hide {
+	display:none;
 }
