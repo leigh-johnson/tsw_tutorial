@@ -8,6 +8,12 @@ html {
   -moz-box-sizing: inherit;
   box-sizing: inherit; }
 
+.sortable-placeholder {
+  height: 40px;
+  width: 100%;
+  background: #fcfeff;
+  box-shadow: 0 0 0 4px #e74c3c, 2px 1px 6px 4px rgba(10, 10, 0, 0.5); }
+
 div#footer {
   border-radius: 3px;
   right: 0;

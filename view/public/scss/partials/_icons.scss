@@ -23,7 +23,7 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.icon-file-text2:before {
+.icon-file-text:before {
 	content: "\e926";
 }
 
@@ -35,20 +35,20 @@
 	content: "\e92a";
 }
 
-.icon-folder:before {
-	content: "\e92f";
-}
-
-.icon-folder-open:before {
-	content: "\e930";
-}
-
 .icon-menu:before {
 	content: "\e9bd";
 }
 
 .icon-link:before {
 	content: "\e9cb";
+}
+
+.icon-plus:before {
+	content: "\ea0a";
+}
+
+.icon-minus:before {
+	content: "\ea0b";
 }
 
 .icon-arrow-right2:before {

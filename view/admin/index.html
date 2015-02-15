@@ -8,31 +8,43 @@ ${parent.head()}
 <link href="${path()+'public/css/reset.css'}" rel='stylesheet' type='text/css' />
 <link href="${path()+'public/css/style.css'}" rel='stylesheet' type='text/css' />
 <link href="${path()+'public/css/admin.css'}" rel='stylesheet' />
-
-<script src="${path()+'public/js/jquery-sortable.js'}" type='text/javascript'></script>
 </%block>
 <%block name='menu'>
-<div id="accordion" class="connected-sortable">
-<div id="accordion">
-<ol id="sortable-public" class="sortable">
+<div id="accordion-top">
+<ol id="sortable-public" class="sortable sortable-item">
 Published
 %for row in categories:
-	%if row.is_category == True & row.public == True:
-	<li class="accordion-header" id="${row._id}"><a href="article?_id=${row._id}" alt="${getattr(row, 'description_'+lang)}">${getattr(row, 'title_'+lang)}</a></li>
-	<ol class="accordion-content">
-	%for article in row.articles:
-		<li><span class="${article.icon}"></span>
-	<a href="article?_id=${article._id}" alt="${getattr(article, 'description_'+lang)}">${getattr(article, 'title_'+lang)}</a></li>	
-	%endfor
-	%endif
+	 ##Top level categories
+	%if row.is_category == True & row.public == True & (row.parent_id is None):
+	<li class="accordion-top-header sortable-item" id="${row._id}"><a href="article?_id=${row._id}" data-order="${row.order}">${getattr(row, 'title_'+lang)}</a></li>
+	<ol>
+	##children 
+		%for article in row.articles:
+			##If child has children
+			%if article.is_category == True:
+				<div id="accordion-sub">
+				<li class="sortable-item accordion-sub-header" data-order="${article.order}"><a href="article?_id=${article._id}" data-order="${row.order}">${getattr(article, 'title_'+lang)}</a></li>
+				<ol class="sortable sortable-item">
+				%for nested_article in article.articles:
+					<li class="sortable-item" data-order="${article.order}"><span class="${article.icon}"></span>${getattr(nested_article, 'title_'+lang)}</li>
+				%endfor
+				</ol>
+				</div>
+			%else:
+			<li class="sortable-item" data-order="${article.order}"><span class="${article.icon}"></span>${getattr(article, 'title_'+lang)}</li>
+			%endif
+		%endfor
+
 	</ol>
+	%endif
 %endfor
 </ol>
 </div>
 <ol id="sortable-private" class="sortable">Private
+	<li><a href="/admin/new">Create new...</a></li>
 	%for row in categories:
 		%if row.public == False:
-		<li><a href="article?_id=${row._id}" alt="${getattr(row, 'description_'+lang)}">${getattr(row, 'title_'+lang)}</a></li>
+		<li class="sortable-item" id="${row._id}" data-order="${row.order}"><a href="article?_id=${row._id}">${getattr(row, 'title_'+lang)}</a></li>
 		%endif
 	%endfor
 </ol>
@@ -63,7 +75,7 @@ Published
 
 	<script type='text/javascript'>
 	$( document ).ready(function() {
-		// AJAX defaolts
+		// AJAX defaults
 		$.ajaxSetup({
 			contentType: 'application/json; charset=utf-8',
 			dataType: 'text json',
@@ -79,7 +91,7 @@ Published
 			lang = $('#language').val();
 			var hostname = window.location.hostname
 
-			//request to AdminController.setLang() route
+			//req to AdminController.setLang() 
 			$.ajax({
 				type: 'GET',
 				url: '/admin/setLang?lang='+lang,
@@ -91,40 +103,13 @@ Published
 
 		$('')
 
-		// jquery-sortable http://github.com/johnny/jquery-sortable
-		var adjustment;
-		$("ol.sortable").sortable({
-			group: 'sortable',
-			pullPlaceholder: false,
-			// animation on drop
-			onDrop: function(item, targetContainer, _super){
-				var clonedItem = $('<li/>').css({height:0});
-				item.before(clonedItem)
-				clonedItem.animate({'height': item.height()})
-
-				item.animate(clonedItem.position(), function (){
-					clonedItem.detach()
-					_super(item)
-				});
-			},
-			onDragStart: function($item, container, _super){
-				var offset = $item.offset(),
-				pointer = container.rootGroup.pointer
-
-				adjustment = {
-					left: pointer.left - offset.left,
-					top: pointer.top - offset.top
-				}
-				_super($item, container)
-			},
-
-			onDrag: function($item, position){
-				$item.css({
-					left: position.left - adjustment.left,
-					top: position.top - adjustment.top
-				})
-			}
-		});
+		// jquery sortable
+		$('#sortable-public, #sortable-private').sortable({
+			connectWith: '.sortable',
+			placeholder: 'sortable-placeholder',
+			forcePlaceholderSize: true,
+			items: '.sortable-item'
+	    	});    	
 	});
 	</script>
 	</%block>

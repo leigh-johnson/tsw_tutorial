@@ -11,17 +11,28 @@
         });
     }
       var icons = {
-      header: "icon-folder",
-      activeHeader: "icon-folder-open"
+      header: "icon-plus",
+      activeHeader: "icon-minus"
     };
-    $( "#accordion").accordion({
-
+    $( "#accordion-top").accordion({
+    	heightStyle: "content",
       icons: icons,
-      header: ".accordion-header",
+      header: ".accordion-top-header",
       collapsible: true,
       active: false,
     });
-    $('.accordion-header a').click(function(){
+    $('.accordion-top-header a').click(function(){
+    	window.location = $(this).attr('href');
+    	return false;
+    });
+    $( "#accordion-sub").accordion({
+    	heightStyle: "content",
+      icons: icons,
+      header: ".accordion-sub-header",
+      collapsible: true,
+      active: false,
+    });
+    $('.accordion-sub-header a').click(function(){
     	window.location = $(this).attr('href');
     	return false;
     });

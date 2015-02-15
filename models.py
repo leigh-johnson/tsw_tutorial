@@ -108,7 +108,7 @@ class Tag(Base):
 
 class Article(Base):
 	__tablename__ = 'article'
-	_id = Column(Integer, primary_key=True)
+	_id = Column('_id', Integer, primary_key=True)
 	layout = Column(Enum('default', 'video', 'img_hero'), default='default')
 	icon = Column(String(100), default='icon-file-text')
 	lua_tag = Column(Integer)
@@ -127,20 +127,18 @@ class Article(Base):
 	tags = relationship("Tag", secondary=tag_association, backref='articles')
 
 	title_en = Column(String(35))
-	description_en = Column(String(255))
 	body_en = relationship("Body_en", backref="article_en", order_by='Body_en._id')
 
 	title_fr = Column(String(35))
-	description_fr = Column(String(255))
 	body_fr = relationship("Body_fr", backref="article_fr", order_by='Body_fr._id')
 
 	title_de = Column(String(35))
-	description_de = Column(String(255))
 	body_de = relationship("Body_de", backref="article_de", order_by='Body_de._id')
 
 	@staticmethod
 	def list(session):
-		return session.query(Article).all()
+		'''Returns an ordered list'''
+		return session.query(Article).order_by(Article.order).all()
 
 	def toDict():
 		return dict((col, getattr(row, col)) for col in row.__table__.columns.keys())

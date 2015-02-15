@@ -160,7 +160,6 @@ class ClientController(object):
             )
         article_1 = Article(
             title_en='Category of Things',
-            description_en='English description of things. ',
             order=30,
             layout='default',
             public= True,
@@ -168,23 +167,29 @@ class ClientController(object):
             )
         article_2 = Article(
             title_en='English text/img thing',
-            description_en='An English description lorem ipsum sic dolor.',
             order=20,
             public=True
             )
         article_3 = Article(
             title_en='English video thing',
-            description_en='English Description 3',
             order=10,
             layout='video',
             public=True
             )
         article_4 = Article(
             title_en='Orphan article qq',
-            description_en='I have no parent and am unpublished.',
             order=30,
             layout='default',
             public=False)
+        article_5 = Article(
+            title_en="Sub-category of things",
+            order=10,
+            public=True,
+            is_category=True)
+        article_6 = Article(
+            title_en="Article in a subcategory",
+            order=10,
+            public=True,)
         article_1.body_en.append(body_1)
         article_1.body_en.append(body_2)
         article_1.body_en.append(body_3)
@@ -192,13 +197,17 @@ class ClientController(object):
         article_2.body_en.append(body_5)
         article_2.body_en.append(body_6)
         article_3.body_en.append(body_7)
-        article_3.body_en.append(body_8)
-        article_3.body_en.append(body_9)
+
+
+        article_6.body_en.append(body_8)
+        article_6.body_en.append(body_9)
 
         article_1.articles.append(article_2)
         article_1.articles.append(article_3)
+        article_1.articles.append(article_5)
+        article_5.articles.append(article_6)
 
-        result = cherrypy.request.db.add_all([article_1, article_2, article_3, article_4])
+        result = cherrypy.request.db.add_all([article_1, article_2, article_3, article_4, article_5, article_6])
         return result
 
 

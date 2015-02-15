@@ -27,7 +27,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
-.icon-file-text2:before {
+.icon-file-text:before {
   content: "\e926"; }
 
 .icon-file-picture:before {
@@ -36,17 +36,17 @@ html {
 .icon-file-video:before {
   content: "\e92a"; }
 
-.icon-folder:before {
-  content: "\e92f"; }
-
-.icon-folder-open:before {
-  content: "\e930"; }
-
 .icon-menu:before {
   content: "\e9bd"; }
 
 .icon-link:before {
   content: "\e9cb"; }
+
+.icon-plus:before {
+  content: "\ea0a"; }
+
+.icon-minus:before {
+  content: "\ea0b"; }
 
 .icon-arrow-right2:before {
   content: "\ea3c"; }
@@ -67,10 +67,15 @@ h1, h2, h3 {
 /*
 Accordion
 */
-#accordion ol, #accordion li {
+#accordion-sub ol, #accordion-sub li, #accordion-top ol, #accordion-top li {
   list-style: none; }
-#accordion li {
-  padding-left: 2em; }
+#accordion-sub .accordion-top-header, #accordion-top .accordion-top-header {
+  margin-left: 5px; }
+#accordion-sub .accordion-sub-header, #accordion-sub li, #accordion-top .accordion-sub-header, #accordion-top li {
+  margin-left: 25px; }
+
+#accordion-sub ol {
+  margin-left: 35px; }
 
 /*
 Menu
@@ -85,53 +90,7 @@ nav#slide-menu {
   width: 100%;
   max-width: 283px;
   height: 100%;
-  -moz-transition: all 300ms;
-  -webkit-transition: all 300ms;
-  transition: all 300ms; }
-  nav#slide-menu > ol {
-    display: block;
-    margin: 40px;
-    padding: 0;
-    list-style: none;
-    opacity: 0.5;
-    -moz-transition: all 300ms;
-    -webkit-transition: all 300ms;
-    transition: all 300ms; }
-    nav#slide-menu > ol li {
-      color: #dfe5eb;
-      padding: 6px 0;
-      cursor: pointer; }
-      nav#slide-menu > ol li:hover {
-        color: #59e9df; }
-    nav#slide-menu > ol li:before {
-      font-family: "ico";
-      font-style: normal;
-      font-weight: normal;
-      speak: none;
-      display: inline-block;
-      text-decoration: inherit;
-      width: 1em;
-      color: #59e9df;
-      margin-right: 12px;
-      text-align: center;
-      font-variant: normal;
-      font-size: 0.75em;
-      text-transform: none;
-      line-height: 1em; }
-    nav#slide-menu > ol li.sep {
-      margin-top: 7px;
-      padding-top: 14px;
-      border-top: 1px solid #6b7b8d; }
-    nav#slide-menu > ol li.timeline:before {
-      content: '\f1c6'; }
-    nav#slide-menu > ol li.events:before {
-      content: '\f1c7'; }
-    nav#slide-menu > ol li.calendar:before {
-      content: '\f1c9'; }
-    nav#slide-menu > ol li.settings:before {
-      content: '\f1c9'; }
-    nav#slide-menu > ol li.logout:before {
-      content: '\f1c9'; }
+  font-size: 14px; }
 
 body.menu-active nav#slide-menu {
   left: 0px; }

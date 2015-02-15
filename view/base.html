@@ -24,18 +24,18 @@
 <ul>
 %for row in categories:
 	%if row.is_category == True:
-	<li class="accordion-header"><a href="article?_id=${row._id}" alt="${getattr(row, 'description_'+lang)}">${getattr(row, 'title_'+lang)}</a></li>
+	<li class="accordion-header"><a href="article?_id=${row._id}">${getattr(row, 'title_'+lang)}</a></li>
 	<ul class="accordion-content">
 	%for article in row.articles:
 		<li><span class="${article.icon}"></span>
-<a href="article?_id=${article._id}" alt="${getattr(article, 'description_'+lang)}">${getattr(article, 'title_'+lang)}</a></li>	
+<a href="article?_id=${article._id}">${getattr(article, 'title_'+lang)}</a></li>	
 	%endfor
 	%endif
 	</ul>
 %endfor
 </ul>
-</%block>
 </div>
+</%block>
 </nav>
 
 ${self.body()}

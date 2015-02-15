@@ -20,7 +20,7 @@ class ArticleAPI(object):
         '''
         #supports one non-specific kwarg, womp womp
         if kwargs:
-            result = cherrypy.request.db.query(Article).filter_by(**kwargs).all()
+            result = cherrypy.request.db.query(Article).filter_by(**kwargs).distinct()
             return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
         #if no kwargs are specified, return the article roll
         result = Article.list(cherrypy.request.db)

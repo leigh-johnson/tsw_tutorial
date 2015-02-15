@@ -3,6 +3,18 @@
 @import 'neat/neat';
 @import 'partials/variables';
 
+
+// sortable
+
+.sortable-placeholder{
+  height: $li-height;
+  width: 100%;
+  background: $content-bg;
+  box-shadow: 0 0 0 4px #e74c3c, 2px 1px 6px 4px rgba(10, 10, 0, 0.5);
+
+}
+
+// Admin panel 
 div#footer{
 	border-radius: 3px;
 	right: 0;
@@ -18,6 +30,7 @@ $error-color: #fbe3e4 !default;
 $notice-color: #e5edf8 !default;
 $success-color: #e6efc2 !default;
 
+// Error flashes 
 @mixin flash($color) {
   background-color: $color;
   color: darken($color, 60%);

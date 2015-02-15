@@ -27,7 +27,6 @@ ${parent.menu()}
 		<figure>
 		<figcaption>
 		<h3>${getattr(summary, 'title_'+lang)}</h3>
-		<p>${getattr(summary, 'description_'+lang)}</p>
 		</figcaption>
 		</figure>
 	%endfor
@@ -38,7 +37,7 @@ ${parent.menu()}
 ## Persist ckeditor instances
 <script>
 $(document).ready(function() {
-
+	// Ckeditor 
    	var article_id = window.location.search
     $("[contenteditable='true']").each(function( index ) {
 
@@ -62,6 +61,8 @@ $(document).ready(function() {
         } );
 
     });
+
+    // Add widget
 
 });
 
