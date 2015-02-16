@@ -18,9 +18,8 @@ class ArticleAPI(object):
         Returns _id if id is supplied OR
         all article records if no id is supplied
         '''
-        #supports one non-specific kwarg, womp womp
         if kwargs:
-            result = cherrypy.request.db.query(Article).filter_by(**kwargs).distinct()
+            result = cherrypy.request.db.query(Article).filter_by(**kwargs).all()
             return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
         #if no kwargs are specified, return the article roll
         result = Article.list(cherrypy.request.db)
@@ -77,7 +76,7 @@ class ArticleAPI(object):
 
     def DELETE(self, _id=None):
         result = cherrypy.request.db.query(Article).filter(Article._id == _id).delete()
-        return result
+        return json.dumps({"responseText": "Deleted!"})
 
 
 """

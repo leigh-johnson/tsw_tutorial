@@ -8,19 +8,63 @@ html {
   -moz-box-sizing: inherit;
   box-sizing: inherit; }
 
-.sortable-placeholder {
-  height: 40px;
-  width: 100%;
-  background: #fcfeff;
-  box-shadow: 0 0 0 4px #e74c3c, 2px 1px 6px 4px rgba(10, 10, 0, 0.5); }
+.switch-button-label {
+  float: left;
+  font-size: 10pt;
+  cursor: pointer; }
+
+.switch-button-label.off {
+  color: #adadad; }
+
+.switch-button-label.on {
+  color: #0088CC; }
+
+.switch-button-background {
+  float: left;
+  position: relative;
+  background: #ccc;
+  border: 1px solid #aaa;
+  margin: 1px 10px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  cursor: pointer; }
+
+.switch-button-button {
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  background: #FAFAFA;
+  border: 1px solid #aaa;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px; }
+
+body.dragging, body.dragging * {
+  cursor: move !important; }
+
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000; }
+
+ol.example li.placeholder {
+  position: relative;
+  /** More li styles **/ }
+
+ol.example li.placeholder:before {
+  position: absolute; }
 
 div#footer {
+  width: 23%;
+  height: 100%;
   border-radius: 3px;
   right: 0;
   bottom: 0;
   position: fixed;
   padding: 20px;
-  background: #fcfeff; }
+  background: #fcfeff;
+  overflow-y: auto; }
 
 .flash-alert {
   background-color: #fff6bf;
@@ -77,5 +121,33 @@ div#footer {
     text-decoration: underline; }
     .flash-success a:focus, .flash-success a:hover {
       color: black; }
+
+.toggle {
+  display: inline-block;
+  position: relative;
+  top: 3px; }
+
+#article_options {
+  display: none; }
+
+.divider {
+  color: #bbb;
+  width: 70%;
+  margin: 20px auto;
+  overflow: hidden;
+  text-align: center;
+  line-height: 1.2em; }
+
+.divider:before, .divider:after {
+  content: "";
+  vertical-align: top;
+  display: inline-block;
+  width: 50%;
+  height: 0.65em;
+  border-bottom: 1px solid #ccc;
+  margin: 0 2% 0 -55%; }
+
+.divider:after {
+  margin: 0 -55% 0 2%; }
 
 /*# sourceMappingURL=admin.css.map */

@@ -10,36 +10,35 @@ ${parent.head()}
 <link href="${path()+'public/css/admin.css'}" rel='stylesheet' />
 </%block>
 <%block name='menu'>
-<div id="accordion-top">
-<ol id="sortable-public" class="sortable sortable-item">
-Published
+<ol>Published
+
+<div class='accordion'>
 %for row in categories:
 	 ##Top level categories
 	%if row.is_category == True & row.public == True & (row.parent_id is None):
-	<li class="accordion-top-header sortable-item" id="${row._id}"><a href="article?_id=${row._id}" data-order="${row.order}">${getattr(row, 'title_'+lang)}</a></li>
+	<li class="accordion-header" id="${row._id}"><span class="icon-plus"></span><a href="article?_id=${row._id}" data-order="${row.order}">${getattr(row, 'title_'+lang)}</a></li>
 	<ol>
 	##children 
 		%for article in row.articles:
 			##If child has children
 			%if article.is_category == True:
-				<div id="accordion-sub">
-				<li class="sortable-item accordion-sub-header" data-order="${article.order}"><a href="article?_id=${article._id}" data-order="${row.order}">${getattr(article, 'title_'+lang)}</a></li>
-				<ol class="sortable sortable-item">
+				<div class="accordion">
+				<li class="accordion-header" data-order="${article.order}"><span class="icon-plus"><a href="article?_id=${article._id}">${getattr(article, 'title_'+lang)}</a></li>
+				<ol class="sortable">
 				%for nested_article in article.articles:
-					<li class="sortable-item" data-order="${article.order}"><span class="${article.icon}"></span>${getattr(nested_article, 'title_'+lang)}</li>
+					<li data-order="${nested_article.order}"><span class="${article.icon}"></span><a href="article?_id=${nested_article._id}">${getattr(nested_article, 'title_'+lang)}</a></li>
 				%endfor
 				</ol>
 				</div>
 			%else:
-			<li class="sortable-item" data-order="${article.order}"><span class="${article.icon}"></span>${getattr(article, 'title_'+lang)}</li>
+			<li data-order="${article.order}"><span class="${article.icon}"></span><a href="article?_id=${article._id}">${getattr(article, 'title_'+lang)}</a></li>
 			%endif
 		%endfor
-
 	</ol>
 	%endif
 %endfor
-</ol>
 </div>
+</ol>
 <ol id="sortable-private" class="sortable">Private
 	<li><a href="/admin/new">Create new...</a></li>
 	%for row in categories:
@@ -60,62 +59,73 @@ Published
 	<h3>Hello $admin</h3>
 	<button>Logout</button>
 	<%block name="language">
+	<div class="divider">View Options</div>
 	<fieldset>
 	<label for="language">Select lang:</label>
 	    <select name="language" id="language">
 	      <option value='en'>EN</option>
 	      <option value='fr'>FR</option>
 	      <option value='de'>DE</option>
-	    <option value=None>ALL (TODO)</option>
+	    <option value=None>ALL @todo</option>
 	    </select>
 	    <button id='language_submit'>View</button>
 	</fieldset>
 
 	Current lang: ${lang}
-
-	<script type='text/javascript'>
-	$( document ).ready(function() {
-		// AJAX defaults
-		$.ajaxSetup({
-			contentType: 'application/json; charset=utf-8',
-			dataType: 'text json',
-		error: function(data) {
-			$('<div class="flash-error"><span>CONNECTION ERROR - PLEASE RESAVE!</span></div>').appendTo($('#footer')).fadeIn(500).delay(2600).fadeOut(500);
-		    },
-		success: function() {
-			$('<div class="flash-success"><span>SAVED ^^V</span></div>').appendTo($('#footer')).fadeIn(500).delay(2600).fadeOut(500);	
-
-			}			
-		});
-		$('#language_submit').click(function(event) {
-			lang = $('#language').val();
-			var hostname = window.location.hostname
-
-			//req to AdminController.setLang() 
-			$.ajax({
-				type: 'GET',
-				url: '/admin/setLang?lang='+lang,
-				success: function(){
-					location.reload();
-				}
-			});
-		});
-
-		$('')
-
-		// jquery sortable
-		$('#sortable-public, #sortable-private').sortable({
-			connectWith: '.sortable',
-			placeholder: 'sortable-placeholder',
-			forcePlaceholderSize: true,
-			items: '.sortable-item'
-	    	});    	
-	});
+	<script type='text/javascript' src='${path()+"public/js/jquery.switchButton.js"}'></script>
+	<script src="${path()+'public/js/menu-admin.js'}"type='text/javascript'>
 	</script>
 	</%block>
 	<div>
 	Create new:
 	<a href="${path()+'admin/new'}"><button>Article</button></a>
+	## Article options
+
+	## Change layout
+	<div class="divider">Article Options</div>
+	<div class="toggle"><input type="checkbox" value="1" checked></div>
+	## Assign to parent
+	<div id="article_options">
+	<select id="assign_parent">
+	<option value="" disabled selected>Assign to Category</option>
+	%for row in categories:
+		%if row.is_category == True and (row.parent_id is None):
+			<option value="${row._id}">${row.title_en}</option>
+			%for article in row.articles:
+				%if article.is_category == True & (row._id == article.parent_id):
+				<option value="${article._id}"> >>${article.title_en}</option>
+				%endif
+			%endfor
+		%endif
+	%endfor
+	</select>
+
+	<select id="is_category">
+		<option value="" disabled selected>Is this a category?</option>
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+	</select>
+
+	<div class="divider">Template, Icons</div>
+	<select id="set_layout">
+		<option value="" disabled selected>Template</option>
+		<option value="default">Text+Imgs</option>
+		<option value="video">Video</option>
+		<option value="text">Text base</option>
+	</select>
+
+	<label for="set_icon">Menu Icon</label>
+	<select id="set_icon" style="font-family:'icomoon'; font-size: 1em;"required>
+	<option value="icon-file-text">&#xe926;</span></option>
+	<option value="icon-file-picture">&#xe927;</option>
+	<option value="icon-file-video">&#xe92a;</option>
+	</select>
+
+	<div class="divider">LUA, Tags</div>
+		
+	<div class="divider">Delete</div>
+	<button id="delete_article">Delete</button>
+	</div>
 	</%block>
 	<%block name='scripts'>
 	<script type='text/javascript' src='${path()+"public/js/menu.js"}'></script>

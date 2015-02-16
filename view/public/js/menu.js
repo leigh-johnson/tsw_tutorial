@@ -14,25 +14,12 @@
       header: "icon-plus",
       activeHeader: "icon-minus"
     };
-    $( "#accordion-top").accordion({
-    	heightStyle: "content",
-      icons: icons,
-      header: ".accordion-top-header",
-      collapsible: true,
-      active: false,
-    });
-    $('.accordion-top-header a').click(function(){
-    	window.location = $(this).attr('href');
-    	return false;
-    });
-    $( "#accordion-sub").accordion({
-    	heightStyle: "content",
-      icons: icons,
-      header: ".accordion-sub-header",
-      collapsible: true,
-      active: false,
-    });
-    $('.accordion-sub-header a').click(function(){
+	$('.accordion .accordion-header').click(function() {
+    	$("span",this).toggleClass('icon-plus icon-minus');
+		$(this).next().toggle('slow');
+		return false;
+	}).next().hide()
+    $('.accordion-header a').click(function(){
     	window.location = $(this).attr('href');
     	return false;
     });

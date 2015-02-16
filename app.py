@@ -254,6 +254,20 @@ class AdminController(object):
         cookie['lang']['max-age'] = 3600
         return json.dumps({'responseText':"Language set!"})
 
+    @cherrypy.expose
+    def assign(self, p_id, c_id):
+        new_parent = cherrypy.request.db.query(Article).filter(Article._id == p_id).one()
+        child = cherrypy.request.db.query(Article).filter(Article._id == c_id).one()
+        old_parent = cherrypy.request.db.query(Article).filter(Article._id == child.parent_id).one()
+        old_parent.articles.remove(child)
+        new_parent.articles.append(child)
+        return json.dumps({'responseText': "Category assigned"})
+
+    @cherrypy.expose
+    def setLayout(self, _id, layout):
+        article = cherrypy.request.db.query(Article).get(_id)
+        article.layout = layout
+        return json.dumps({'responseText': "Layout changed to %s" %layout})
 class APIController(object):
     exposed = True
     article = ArticleAPI()

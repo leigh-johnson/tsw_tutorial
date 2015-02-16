@@ -17,17 +17,20 @@ h1, h2, h3 { color: #FF6B6B; margin: 0 0 27px; }
 Accordion
 */
 
-#accordion-sub,#accordion-top {
-	ol,li{
-	list-style: none;
+.accordion{
+	list-style:none;
+	ol{
+		margin-left:5px;
+	}
+	ol>ol{
+		margin-left:20px;
+	}
+	.sortable-sub{
+		margin-left:25px;
 	}
 
-	.accordion-top-header{margin-left: 5px;}
-	.accordion-sub-header,li{margin-left: 25px;}
 }
-#accordion-sub ol {
-	margin-left: 35px;
-}
+
 
 /*
 Menu

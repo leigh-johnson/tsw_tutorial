@@ -67,15 +67,14 @@ h1, h2, h3 {
 /*
 Accordion
 */
-#accordion-sub ol, #accordion-sub li, #accordion-top ol, #accordion-top li {
+.accordion {
   list-style: none; }
-#accordion-sub .accordion-top-header, #accordion-top .accordion-top-header {
-  margin-left: 5px; }
-#accordion-sub .accordion-sub-header, #accordion-sub li, #accordion-top .accordion-sub-header, #accordion-top li {
-  margin-left: 25px; }
-
-#accordion-sub ol {
-  margin-left: 35px; }
+  .accordion ol {
+    margin-left: 5px; }
+  .accordion ol > ol {
+    margin-left: 20px; }
+  .accordion .sortable-sub {
+    margin-left: 25px; }
 
 /*
 Menu

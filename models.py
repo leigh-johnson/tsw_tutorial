@@ -26,7 +26,7 @@ def Jsonify():
 				_visited_objs.append(obj)
 				# an SQLAlchemy class
 				fields = {}
-				for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata']:
+				for field in [x for x in dir(obj) if not x.startswith(('__', '_sa', '_dec')) and x != 'metadata']:
 					fields[field] = obj.__getattribute__(field)
 				# a json-encodable dict
 				return fields
@@ -60,7 +60,7 @@ class Body_en(Base):
 	e.g. body[0] & img[0] will share a CKeditor instance'''
 	__tablename__ = 'body_en'
 	_id = Column(Integer, primary_key=True)
-	article_id = Column(Integer, ForeignKey('article._id'))
+	article_id = Column(Integer, ForeignKey('article._id', ondelete='CASCADE'))
 	text = Column(Text)
 
 	@staticmethod
@@ -73,7 +73,7 @@ class Body_fr(Base):
 	e.g. body[0] & img[0] will share a CKeditor instance'''
 	__tablename__ = 'body_fr'
 	_id = Column(Integer, primary_key=True)
-	article_id = Column(Integer, ForeignKey('article._id'))
+	article_id = Column(Integer, ForeignKey('article._id', ondelete='CASCADE'))
 	text = Column(Text)
 
 	@staticmethod
@@ -86,7 +86,7 @@ class Body_de(Base):
 	e.g. body[0] & img[0] will share a CKeditor instance'''
 	__tablename__ = 'body_de'
 	_id = Column(Integer, primary_key=True)
-	article_id = Column(Integer, ForeignKey('article._id'))
+	article_id = Column(Integer, ForeignKey('article._id', ondelete='CASCADE'))
 	text = Column(Text)
 
 	@staticmethod
@@ -108,7 +108,7 @@ class Tag(Base):
 
 class Article(Base):
 	__tablename__ = 'article'
-	_id = Column('_id', Integer, primary_key=True)
+	_id = Column(Integer, primary_key=True)
 	layout = Column(Enum('default', 'video', 'img_hero'), default='default')
 	icon = Column(String(100), default='icon-file-text')
 	lua_tag = Column(Integer)
@@ -127,13 +127,13 @@ class Article(Base):
 	tags = relationship("Tag", secondary=tag_association, backref='articles')
 
 	title_en = Column(String(35))
-	body_en = relationship("Body_en", backref="article_en", order_by='Body_en._id')
+	body_en = relationship("Body_en", backref="article_en", cascade_backrefs=False, order_by='Body_en._id', passive_deletes=True)
 
 	title_fr = Column(String(35))
-	body_fr = relationship("Body_fr", backref="article_fr", order_by='Body_fr._id')
+	body_fr = relationship("Body_fr", backref="article_fr", order_by='Body_fr._id',passive_deletes=True)
 
 	title_de = Column(String(35))
-	body_de = relationship("Body_de", backref="article_de", order_by='Body_de._id')
+	body_de = relationship("Body_de", backref="article_de", order_by='Body_de._id',passive_deletes=True)
 
 	@staticmethod
 	def list(session):
