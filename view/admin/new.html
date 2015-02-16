@@ -12,27 +12,31 @@ ${parent.menu()}
 <form id="new_article">
 <h1>Create a new article</h1>
 	<div class="divider">English Fields</div>
-	<label for="title_en">Title_en</label>
-	<input type="textarea" id="title_en" placeholder="English title" required>
-	<label for="body_en">Body_en</label>
-	<textarea id="body_en" rows="5" cols="50" placeholder="English body" required></textarea>
-	<button id="add_body_en">Add Widget</button>
+	<fieldset>
+		<label for="title_en">Title_en</label>
+		<input type="textarea" id="title_en" placeholder="English title" required>
+		<label for="body_en">Body_en</label>
+		<textarea id="body_en" rows="5" cols="50" placeholder="English body" required></textarea>
+		<button id="add_body_en">Add Widget</button>
+	</fieldset>
 
 	<div class="divider">French Fields</div>
+	<fieldset>
 	<label for="title_fr">Title_fr</label>
 	<input type="textarea" id="title_fr" placeholder="French title" required>
 	<label for="body_fr">Body_fr</label>
 	<textarea id="body_fr" rows="5" cols="50" placeholder="French body" required></textarea>
 	<button id="add_body_fr">Add Widget</button>
+	</fieldset>
 
 	<div class="divider">German Fields</div>
+	<fieldset>
 	<label for="title_de">Title_de</label>
 	<input type="textarea" id="title_de" placeholder="German title" required>
 	<label for="body_de">Body_de</label>
 	<textarea id="body_de" rows="5" cols="50" placeholder="German body" required></textarea>
 	<button id="add_body_fr">Add Widget</button>
-
-	<div class="divider">English Fields</div>
+	</fieldset>
 	<button id="new_submit">Submit</button>
 </form>
 

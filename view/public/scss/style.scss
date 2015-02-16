@@ -1,4 +1,5 @@
 @import 'bourbon/bourbon';
+@import 'base/base';
 @import 'neat/neat';
 @import 'partials/variables';
 @import 'partials/_icons';
@@ -17,4 +18,28 @@
 .article-body{
 	margin-top: 2em;
 	margin-left: 0.3em;
+}
+
+// Dividers
+
+.divider{
+    color: $divider-color;
+    width:70%;
+    margin:20px auto;
+    overflow:hidden;
+    text-align:center;   
+    line-height:1.2em;
+}
+
+.divider:before, .divider:after{
+    content:"";
+    vertical-align:top;
+    display:inline-block;
+    width:50%;
+    height:0.65em;
+    border-bottom:1px solid #ccc;
+    margin:0 2% 0 -55%;
+}
+.divider:after{
+    margin:0 -55% 0 2%;
 }

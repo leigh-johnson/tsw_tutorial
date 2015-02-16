@@ -1,0 +1,13 @@
+##  actually the article-default template
+<%inherit file="../index.html"/>
+<%block name='head'>
+${parent.head()}
+## load faction-specific stylesheet
+<script src="../public/ckeditor/ckeditor.js" type="text/javascript"></script>
+</%block>
+<%block name='menu'>
+${parent.menu()}
+</%block>
+<%block name="content">
+text-only layout
+</%block>

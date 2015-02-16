@@ -189,7 +189,7 @@ class ClientController(object):
         article_6 = Article(
             title_en="Article in a subcategory",
             order=10,
-            public=True,)
+            public=True)
         article_1.body_en.append(body_1)
         article_1.body_en.append(body_2)
         article_1.body_en.append(body_3)
