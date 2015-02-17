@@ -63,7 +63,7 @@ $(document).ready(function(){
 		});
 		$.ajax({
 			type: 'POST',
-			url: '/admin/api/article',
+			url: './api/article',
 			headers: {'X-CKeditor-New' : JSON.stringify(data)},
 			processData: false,
 			dataType: 'json',
