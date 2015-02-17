@@ -259,8 +259,9 @@ class AdminController(object):
         '''Removes a child Article() from parent, assigns to new parent'''
         new_parent = cherrypy.request.db.query(Article).filter(Article._id == p_id).one()
         child = cherrypy.request.db.query(Article).filter(Article._id == c_id).one()
-        old_parent = cherrypy.request.db.query(Article).filter(Article._id == child.parent_id).one()
-        old_parent.articles.remove(child)
+        if child.parent_id != None:
+            old_parent = cherrypy.request.db.query(Article).filter(Article._id == child.parent_id).one()
+            old_parent.articles.remove(child)
         new_parent.articles.append(child)
         return json.dumps({'responseText': "Category assigned"})
 
