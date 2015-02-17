@@ -101,10 +101,5 @@ $( document ).ready(function() {
 	});
 
 	// Hierarchy sortables
-	$("#menu ol").sortable({
-   	 connectWith: "#menu ol",
-    	placeholder: "ui-state-highlight",
-    	toleranceElement: '.sortable-handle'
-	});
 
 });

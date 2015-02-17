@@ -14,7 +14,7 @@ ${parent.menu()}
 	<h1 id="${'title_'+lang}" contenteditable="true">${getattr(article, 'title_'+lang)}</h1>
 	##<h3 id="${'description_'+lang}" contenteditable="true">${getattr(article, 'description_'+lang)}</h3>
 	%if article.banner_src:
-		<div contenteditable="true"><img src="${article.banner_src}"></img></div>
+		<div contenteditable="true" id="banner_src"><img src="${article.banner_src}"></img></div>
 	%endif
 	
 	## Enumerate body text instances
@@ -49,7 +49,14 @@ $(document).ready(function() {
             on: {
                 blur: function( event ) {
                 	var data = {}
+                	// strip surrounding html from banner
+                	if(column_id != 'banner_src'){
                    	data[column_id] = event.editor.getData();
+                  	}
+                  	else{
+                  		var banner_img = $('#banner_src img');
+                  		data[column_id] = banner_img.attr('src');
+                  	}
 
                     var request = $.ajax({
                     	type:'PUT',
