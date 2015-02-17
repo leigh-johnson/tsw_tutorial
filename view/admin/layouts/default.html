@@ -13,7 +13,9 @@ ${parent.menu()}
 %if article:
 	<h1 id="${'title_'+lang}" contenteditable="true">${getattr(article, 'title_'+lang)}</h1>
 	##<h3 id="${'description_'+lang}" contenteditable="true">${getattr(article, 'description_'+lang)}</h3>
-	<div contenteditable="true"><img src="${article.banner_src}"></img></div>
+	%if article.banner_src:
+		<div contenteditable="true"><img src="${article.banner_src}"></img></div>
+	%endif
 	
 	## Enumerate body text instances
 	%for i, body in enumerate(getattr(article, 'body_'+lang)):
@@ -31,8 +33,6 @@ ${parent.menu()}
 		</figure>
 	%endfor
 
-	%for tag in article.tags:
-		<div class="badge">${(getattr(tag, 'title'_en))}</div>
 %else:
  Missing article data
 %endif
