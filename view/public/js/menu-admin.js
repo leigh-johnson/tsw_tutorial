@@ -100,6 +100,6 @@ $( document ).ready(function() {
 		});
 	});
 
-	// Hierarchy sortables
+    // Add widget
 
 });

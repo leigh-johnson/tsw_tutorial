@@ -101,7 +101,7 @@ ${parent.head()}
 
 	<label for="is_category">Is this a category?</label>
 	<select id="is_category">
-		<option value="" disabled selected>Is this a category?</option>
+		<option value="" disabled selected></option>
 		<option value=0>No</option>
 		<option value=1>Yes</option>
 	</select>
@@ -136,10 +136,10 @@ ${parent.head()}
 	<button id="delete_article">Delete</button>
 	</div>
 
-	<div class="divider">Info</div>
+	<div class="divider" id="info">Info</div>
 	@todo
-	Info about this article, last edited, etc
-
+	Info about this article
+	Last edited, current settings, parents, children
 	<%block name="error">
 	<div id="error"></div>
 	</%block>
