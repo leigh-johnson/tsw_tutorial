@@ -37,11 +37,16 @@ div#footer{
 	padding: 20px;
 	background: $content-bg;
   overflow-y: auto;
+  text-align: center;
 }
 
 label{
-  font-size: 0.5em;
+  font-size: 0.6em;
   text-transform: uppercase;
+}
+
+input, select{
+  display: inline-block;
 }
 
 $base-spacing: 1.5em !default;
@@ -69,6 +74,18 @@ $success-color: #e6efc2 !default;
       color: darken($color, 90%);
     }
   }
+}
+
+// Error box & flashes
+
+#error{
+  width: 18%;
+  height: 90px;
+  z-index: 1;
+  bottom: 0;
+  right: 20;
+  position: fixed;
+  pointer-events: none
 }
 
 .flash-alert {

@@ -103,8 +103,8 @@ class Tag(Base):
 	__tablename__='tag'
 	_id = Column(Integer, primary_key=True)
 	title_en = Column(String(100))
-	title_en = Column(String(100))
-	title_en = Column(String(100))
+	title_fr = Column(String(100))
+	title_de = Column(String(100))
 
 class Article(Base):
 	__tablename__ = 'article'

@@ -279,6 +279,13 @@ nav#slide-menu {
   max-width: 283px;
   height: 100%;
   font-size: 14px; }
+  nav#slide-menu a {
+    font-weight: 600;
+    color: #aaa;
+    text-decoration: none;
+    transition: color 0.1s linear; }
+    nav#slide-menu a:active, nav#slide-menu a:focus, nav#slide-menu a:hover {
+      color: #19232d; }
 
 body.menu-active nav#slide-menu {
   left: 0px; }

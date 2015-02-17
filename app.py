@@ -256,6 +256,7 @@ class AdminController(object):
 
     @cherrypy.expose
     def assign(self, p_id, c_id):
+        '''Removes a child Article() from parent, assigns to new parent'''
         new_parent = cherrypy.request.db.query(Article).filter(Article._id == p_id).one()
         child = cherrypy.request.db.query(Article).filter(Article._id == c_id).one()
         old_parent = cherrypy.request.db.query(Article).filter(Article._id == child.parent_id).one()
@@ -265,9 +266,26 @@ class AdminController(object):
 
     @cherrypy.expose
     def setLayout(self, _id, layout):
+        '''Sets the layout of an Article() instance'''
         article = cherrypy.request.db.query(Article).get(_id)
         article.layout = layout
         return json.dumps({'responseText': "Layout changed to %s" %layout})
+
+    @cherrypy.expose
+    def setIsCategory(self, _id, is_category):
+        '''Sets the is_category bool of an Article() instance'''
+        article = cherrypy.request.db.query(Article).get(_id)
+        article.is_category = is_category
+        return json.dumps({'responseText' : "is_category bool set to %s" % is_category})
+
+    @cherrypy.expose
+    def setIsPublic(self, _id, is_public):
+        '''Sets the is_public bool of an Article() instance'''
+        article = cherrypy.request.db.query(Article).get(_id)
+        article.public = is_public
+        return json.dumps({'responseText' : "is_public bool set to %s" % is_public})
+
+
 class APIController(object):
     exposed = True
     article = ArticleAPI()

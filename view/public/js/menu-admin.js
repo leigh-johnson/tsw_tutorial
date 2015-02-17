@@ -1,16 +1,19 @@
 $( document ).ready(function() {
-		// AJAX defaults
+	// AJAX defaults
 		$.ajaxSetup({
 			contentType: 'application/json; charset=utf-8',
 			dataType: 'text json',
 		error: function(data) {
-			$('<div class="flash-error"><span>CONNECTION ERROR - PLEASE RESAVE!</span></div>').appendTo($('#footer')).fadeIn(500).delay(2600).fadeOut(500);
+			$('<div class="flash-error"><span>CONNECTION ERROR - PLEASE RESAVE!</span></div>').appendTo($('#error')).fadeIn(500).delay(2600).fadeOut(500);
 		    },
 		success: function() {
-			$('<div class="flash-success"><span>SAVED ^^V</span></div>').appendTo($('#footer')).fadeIn(500).delay(2600).fadeOut(500);	
+			$('<div class="flash-success"><span>SAVED ^^V</span></div>').appendTo($('#error')).fadeIn(500).delay(2600).fadeOut(500);	
 
 			}			
 		});
+
+	// Admin panel
+	// Change language
 		$('#language_submit').click(function(event) {
 			lang = $('#language').val();
 			var hostname = window.location.hostname
@@ -24,7 +27,7 @@ $( document ).ready(function() {
 				}
 			});
 		});
-
+	// Assign new category/parent to article
 	$('#assign_parent').change(function(){
 		// parent and child identities
 		p_id = $(this).val();
@@ -36,6 +39,7 @@ $( document ).ready(function() {
 		});
 	});
 
+	// Toggle switch
 	$('.toggle input').switchButton({
 		on_label: 'Edit',
   		off_label: 'Lock',
@@ -46,6 +50,7 @@ $( document ).ready(function() {
 		$('#article_options').slideToggle('slow');
 	});
 
+	// Set new layout
 	$('#set_layout').change(function(){
 		layout = $(this).val();
 		path = window.location.search;
@@ -59,6 +64,7 @@ $( document ).ready(function() {
 		});
 	});
 
+	// Delete article @todo PROMPT CASCADE WARNING
 	$('#delete_article').click(function() {
 	    if (confirm('Really delete this article? CANNOT BE UNDONE!')) {
 			path = window.location.search;
@@ -74,6 +80,31 @@ $( document ).ready(function() {
 
 	});
 
+	// Set parental hierarchy
+	$('#is_category').change(function(){
+		val = $(this).val();
+		path = window.location.search;
+		_id = path.split('?')[1].split('=')[1];
+		$.ajax({
+			url: '/admin/setIsCategory?_id='+_id+'&is_category='+val	
+		});
+	});
 
+	// Set viewer privs
+	$('#is_public').change(function(){
+		val = $(this).val();
+		path = window.location.search;
+		_id = path.split('?')[1].split('=')[1];
+		$.ajax({
+			url: '/admin/setIsPublic?_id='+_id+'&is_public='+val
+		});
+	});
+
+	// Hierarchy sortables
+	$("#menu ol").sortable({
+   	 connectWith: "#menu ol",
+    	placeholder: "ui-state-highlight",
+    	toleranceElement: '.sortable-handle'
+	});
 
 });

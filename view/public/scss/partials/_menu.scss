@@ -46,6 +46,19 @@ nav#slide-menu {
 	max-width: $menu-width;
 	height: 100%;
 	font-size: $p-size;
+
+a {
+	font-weight: 600;
+  color: #aaa;
+  text-decoration: none;
+  transition: color 0.1s linear;
+
+  &:active,
+  &:focus,
+  &:hover {
+    color: darken($action-color, 15%);
+  }
+}
 }
 
 body.menu-active nav#slide-menu { left: 0px; }

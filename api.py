@@ -47,7 +47,8 @@ class ArticleAPI(object):
             #alist = [value]
             #setattr(result, key, alist)
         cherrypy.request.db.add(result)
-        return json.dumps({"responseText": "Created!"})
+        cherrypy.request.db.flush()
+        return json.dumps({"_id": result._id})
 
     #@require()
     def PUT(self, _id):
