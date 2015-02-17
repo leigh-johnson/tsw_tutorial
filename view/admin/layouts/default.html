@@ -49,7 +49,7 @@ $(document).ready(function() {
             on: {
                 blur: function( event ) {
                 	var data = {}
-                	// strip surrounding html from banner
+                	// strip surrounding html from banner, save only src
                 	if(column_id != 'banner_src'){
                    	data[column_id] = event.editor.getData();
                   	}
