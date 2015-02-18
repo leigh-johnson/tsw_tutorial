@@ -287,6 +287,13 @@ class AdminController(object):
         article.is_public = is_public
         return json.dumps({'responseText' : "is_public bool set to %s" % is_public})
 
+    @cherrypy.expose
+    def setIcon(self, _id, icon):
+        ''' Sets the icon-class string, which is rendered in accordion menu'''
+        article = cherrypy.request.db.query(Article).get(_id)
+        article.icon = icon
+        return json.dumps({'responseText': 'icon class seto to %s' % icon})
+
 
 class APIController(object):
     exposed = True

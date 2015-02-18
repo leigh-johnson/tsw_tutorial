@@ -64,6 +64,16 @@ $( document ).ready(function() {
 		});
 	});
 
+	$('#set_icon').change(function(){
+		icon = $(this).val();
+		path = window.location.search;
+		_id = path.split('?')[1].split('=')[1];
+		$.ajax({
+			url: '/admin/setIcon',
+			data: '_id='+_id+'&'+'icon='+icon
+		});
+	});
+
 	// Delete article @todo PROMPT CASCADE WARNING
 	$('#delete_article').click(function() {
 	    if (confirm('Really delete this article? CANNOT BE UNDONE!')) {
