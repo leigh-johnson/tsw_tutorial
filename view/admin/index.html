@@ -99,14 +99,14 @@ ${parent.head()}
 	%endfor
 	</select>
 
-	<label for="is_category">Is this a category?</label>
+	<label for="is_category">Is this a category? Only categories can have children.</label>
 	<select id="set_is_category">
-		<option value="" disabled selected></option>
+		<option value="" disabled selected>Is this a category?</option>
 		<option value=0>No</option>
 		<option value=1>Yes</option>
 	</select>
 
-	<label for="is_public">Publish?</label>
+	<label for="set_is_public">Publish?</label>
 	<select id="set_is_public">
 		<option value="" disabled selected>Publish this article?</option>
 		<option value=0>No</option>

@@ -283,7 +283,7 @@ class AdminController(object):
     def setIsPublic(self, _id, is_public):
         '''Sets the is_public bool of an Article() instance'''
         article = cherrypy.request.db.query(Article).get(_id)
-        article.public = is_public
+        article.is_public = is_public
         return json.dumps({'responseText' : "is_public bool set to %s" % is_public})
 
 
