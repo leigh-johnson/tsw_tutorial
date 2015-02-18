@@ -9,6 +9,7 @@ from models import Base, Article, Body_en, Body_fr, Body_de, Admin, Jsonify
 from sqlalchemy.ext.serializer import loads, dumps
 from sqlalchemy.exc import IntegrityError
 from cherrypy.process import wspbus, plugins
+from cherrypy.process.plugins import Daemonizer
 
 
 ### Mako Templates ###
@@ -295,6 +296,8 @@ class APIController(object):
 ### Config ###
 
 if __name__ == '__main__':
+    daemon = Daemonizer(cherrypy.engine)
+    daemon.subscribe()
     cherrypy.config.update('config/app.conf')
     SAEnginePlugin(cherrypy.engine).subscribe()
     cherrypy.tools.db = SATool()
