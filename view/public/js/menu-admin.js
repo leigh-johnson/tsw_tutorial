@@ -28,7 +28,7 @@ $( document ).ready(function() {
 			});
 		});
 	// Assign new category/parent to article
-	$('#assign_parent').change(function(){
+	$('#set_parent_id').change(function(){
 		// parent and child identities
 		p_id = $(this).val();
 		path = window.location.search;
@@ -81,7 +81,7 @@ $( document ).ready(function() {
 	});
 
 	// Set parental hierarchy
-	$('#is_category').change(function(){
+	$('#set_is_category').change(function(){
 		val = $(this).val();
 		path = window.location.search;
 		_id = path.split('?')[1].split('=')[1];
@@ -91,7 +91,7 @@ $( document ).ready(function() {
 	});
 
 	// Set viewer privs
-	$('#is_public').change(function(){
+	$('#set_is_public').change(function(){
 		val = $(this).val();
 		path = window.location.search;
 		_id = path.split('?')[1].split('=')[1];
@@ -100,6 +100,37 @@ $( document ).ready(function() {
 		});
 	});
 
-    // Add widget
+
+    // Adjust article info in main panel
+    if(window.location.search != ''){
+
+    	function getArticle(){
+	    	// GET request based on current window.location.search
+	    	// Used to display current settings
+	    	// returns a promise
+	    	var query = window.location.search;
+	    	return $.ajax({
+	    		url: '/admin/api/article'+query,
+	    	});
+	    }
+
+	    function displayData(callback){
+	    	//Bakes data into html elements
+	    	callback.success(function (data) {
+	    		data = data[0]
+	    		var options = ['icon', 'layout', 'lua_tag', 'is_public', 'is_category', 'parent_id', 'articles'];
+		  		 for (var key in data){
+		  		 	if(options.indexOf(key) > -1){
+		  		 	$("#set_"+key).after("<p class='flash-notice'>"+key+": "+ data[key]+"</p>");
+		  		 	console.log(key)
+		  		 	}
+	   			 }
+			});
+	    }
+
+	    var promise = getArticle();
+	    var data = displayData(promise);
+
+    }
 
 });

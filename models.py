@@ -112,7 +112,7 @@ class Article(Base):
 	layout = Column(Enum('default', 'video', 'img_hero'), default='default')
 	icon = Column(String(100), default='icon-file-text')
 	lua_tag = Column(Integer)
-	public = Column(Boolean, default=False)
+	is_public = Column(Boolean, default=False)
 	order = Column(Integer)
 	banner_src = Column(String(100), default="http://placehold.it/620x175/1e1e1e/ffffff/620x175&text=620x175px")
 	video_src = Column(String(100))

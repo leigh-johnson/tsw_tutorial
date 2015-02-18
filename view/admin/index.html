@@ -16,7 +16,7 @@ ${parent.head()}
 <div class='accordion'>
 %for row in categories:
 	 ##Top level categories
-	%if row.is_category == True & row.public == True & (row.parent_id is None):
+	%if row.is_category == True & row.is_public == True & (row.parent_id is None):
 	<li class="accordion-header sortable-handle" id="${row._id}"><div><span class="icon-plus"></span><a href="article?_id=${row._id}" data-order="${row.order}">${getattr(row, 'title_'+lang)}</div></a></li>
 	<ol>
 	##children 
@@ -43,7 +43,7 @@ ${parent.head()}
 <ol id="sortable-private" class="sortable">Private
 	<li><a href="/admin/new">Create new...</a></li>
 	%for row in categories:
-		%if row.public == False:
+		%if row.is_public == False:
 		<li class="sortable-item" id="${row._id}" data-order="${row.order}"><a href="article?_id=${row._id}">${getattr(row, 'title_'+lang)}</a></li>
 		%endif
 	%endfor
@@ -71,9 +71,9 @@ ${parent.head()}
 	    <option value=None>ALL @todo</option>
 	    </select>
 	    <button id='language_submit'>View</button>
-	</fieldset>
+	<p>	Current lang: ${lang}</p>
 
-	Current lang: ${lang}
+	</fieldset>
 	</%block>
 	<div>
 
@@ -85,7 +85,7 @@ ${parent.head()}
 	<div class="toggle"><input type="checkbox" value="1" checked></div>
 	## Assign to parent
 	<div id="article_options">
-	<select id="assign_parent">
+	<select id="set_parent_id">
 	<option value="" disabled selected>Assign to Category</option>
 	%for row in categories:
 		%if row.is_category == True and (row.parent_id is None):
@@ -100,14 +100,14 @@ ${parent.head()}
 	</select>
 
 	<label for="is_category">Is this a category?</label>
-	<select id="is_category">
+	<select id="set_is_category">
 		<option value="" disabled selected></option>
 		<option value=0>No</option>
 		<option value=1>Yes</option>
 	</select>
 
 	<label for="is_public">Publish?</label>
-	<select id="is_public">
+	<select id="set_is_public">
 		<option value="" disabled selected>Publish this article?</option>
 		<option value=0>No</option>
 		<option value=1>Yes</option>
@@ -139,8 +139,6 @@ ${parent.head()}
 
 	<div class="divider" id="info">Info</div>
 	@todo
-	Info about this article
-	Last edited, current settings, parents, children
 	<%block name="error">
 	<div id="error"></div>
 	</%block>

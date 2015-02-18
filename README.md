@@ -20,4 +20,7 @@ Detailed instructions to follow.
 
 ## Web Services
 
-## X-Ckeditor-Headerlo
+## X-Ckeditor-Headers
+
+## Improvements for the future
+* xhr-reponses aren't standardized, especially if an error.
