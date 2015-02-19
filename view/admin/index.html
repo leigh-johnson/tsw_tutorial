@@ -10,41 +10,59 @@ ${parent.head()}
 <link href="${path()+'public/css/admin.css'}" rel='stylesheet' />
 </%block>
 <%block name='menu'>
-<div id="menu">
-<ol>Published
+<div id="menu" class="accordion">
+<ol class="sortable">Published
 
-<div class='accordion'>
+## categories sorted by SQLalchemy's order_by()
 %for row in categories:
 	 ##Top level categories
 	%if row.is_category == True & row.is_public == True & (row.parent_id is None):
-	<li class="accordion-header sortable-handle" id="${row._id}"><div><span class="icon-plus"></span><a href="article?_id=${row._id}" data-order="${row.order}">${getattr(row, 'title_'+lang)}</div></a></li>
-	<ol>
-	##children 
-		%for article in row.articles:
-			##If child has children
-			%if article.is_category == True:
-				<div class="accordion">
-				<li class="accordion-header sortable-handle" data-order="${article.order}"><div><span class="icon-plus"><a href="article?_id=${article._id}">${getattr(article, 'title_'+lang)}</div></a></li>
-				<ol class="sortable">
-				%for nested_article in article.articles:
-					<li class="sortable-handle" data-order="${nested_article.order}"><div><span class="${article.icon}"></span><a href="article?_id=${nested_article._id}">${getattr(nested_article, 'title_'+lang)}</div></a></li>
-				%endfor
-				</ol>
-				</div>
-			%else:
-			<li data-order="${article.order}"><span class="${article.icon}"></span><a href="article?_id=${article._id}">${getattr(article, 'title_'+lang)}</a></li>
-			%endif
-		%endfor
-	</ol>
+	<li id="${row._id}">
+		<div class="sortable-wrapper accordion-header">
+			<span class="icon-plus accordion-icon">
+			</span>
+			<a href="article?_id=${row._id}" data-order="${row.order}">${getattr(row, 'title_'+lang)}</a>
+		</div>
+		<ol>
+		##children 
+			%for article in row.articles:
+				##If child has children
+				%if article.is_category == True:
+					<li data-order="${article.order}">
+						<div class="accordion-header sortable-wrapper">
+							<span class="icon-plus accordion-icon"></span>
+							<a href="article?_id=${article._id}">${getattr(article, 'title_'+lang)}</a>
+						</div>
+						<ol>
+						%for nested_article in article.articles:
+							<li data-order="${nested_article.order}">
+								<div class="accordion-header sortable-wrapper">
+									<span class="${article.icon}"></span>
+									<a href="article?_id=${nested_article._id}">${getattr(nested_article, 'title_'+lang)}</a>
+								</div>
+							</li>
+						%endfor
+						</ol>
+					</li>
+				%else:
+				<li data-order="${article.order}">
+					<div class="sortable-wrapper">
+					<span class="${article.icon}"></span>
+					<a href="article?_id=${article._id}">${getattr(article, 'title_'+lang)}</a>
+					</div>
+				</li>
+				%endif
+			%endfor
+		</ol>
+	</li>
 	%endif
 %endfor
-</div>
 </ol>
-<ol id="sortable-private" class="sortable">Private
+<ol>Private
 	<li><a href="/admin/new">Create new...</a></li>
 	%for row in categories:
 		%if row.is_public == False:
-		<li class="sortable-item" id="${row._id}" data-order="${row.order}"><a href="article?_id=${row._id}">${getattr(row, 'title_'+lang)}</a></li>
+		<li id="${row._id}" data-order="${row.order}"><a href="article?_id=${row._id}">${getattr(row, 'title_'+lang)}</a></li>
 		%endif
 	%endfor
 </ol>
@@ -81,6 +99,7 @@ ${parent.head()}
 	## Article options
 
 	## Change layout
+	<div id="edit_article">
 	<div class="divider">Article Options</div>
 	<div class="toggle"><input type="checkbox" value="1" checked></div>
 	## Assign to parent
@@ -99,7 +118,7 @@ ${parent.head()}
 	%endfor
 	</select>
 
-	<label for="is_category">Is this a category? Only categories can have children.</label>
+	<label for="is_category">Is this a category? <br>Only categories can have children.</label>
 	<select id="set_is_category">
 		<option value="" disabled selected>Is this a category?</option>
 		<option value=0>No</option>
@@ -136,15 +155,14 @@ ${parent.head()}
 	<div class="divider">Delete</div>
 	<button id="delete_article">Delete</button>
 	</div>
-
-	<div class="divider" id="info">Info</div>
-	@todo
 	<%block name="error">
 	<div id="error"></div>
+	</div>
 	</%block>
 	</%block>
 
 <%block name='scripts'>
+	<script type='text/javascript' src='${path() + "public/js/jquery-nestedSortable.js"}'></script>
 	<script type='text/javascript' src='${path()+"public/js/menu.js"}'></script>
 	<script type='text/javascript' src='${path()+"public/js/jquery.switchButton.js"}'></script>
 	<script src="${path()+'public/js/menu-admin.js'}"type='text/javascript'>

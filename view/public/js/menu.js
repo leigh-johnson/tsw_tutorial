@@ -10,12 +10,9 @@
             $body.className = ( $body.className == 'menu-active' )? '' : 'menu-active';
         });
     }
-      var icons = {
-      header: "icon-plus",
-      activeHeader: "icon-minus"
-    };
+
 	$('.accordion .accordion-header').click(function() {
-    	$("span",this).toggleClass('icon-plus icon-minus');
+    $(".accordion-icon",this).toggleClass('icon-plus icon-minus');
 		$(this).next().toggle('slow');
 		return false;
 	}).next().hide()

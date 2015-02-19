@@ -358,7 +358,7 @@ body.menu-active div#content .menu-trigger {
 #content h1, #content h2, #content h3 {
   text-align: center; }
 
-.hide {
+.hidden {
   display: none; }
 
 .article-body {

@@ -34,7 +34,7 @@ $( document ).ready(function() {
 		path = window.location.search;
 		c_id = path.split('?')[1].split('=')[1];
 		$.ajax({
-			url: '/admin/assign',
+			url: '/admin/setParentId',
 			data: 'p_id='+p_id+'&'+'c_id='+c_id
 		});
 	});
@@ -110,6 +110,18 @@ $( document ).ready(function() {
 		});
 	});
 
+	// Nested Sortable ordering
+	$('#menu .sortable').nestedSortable({
+		handle: 'div',
+		items: 'li',
+		toleranceElement: '> .sortable-wrapper'
+	});
+	
+	
+	// Hide admin panel on non-editable pages
+	if(window.location.search == ''){
+		$('#edit_article').addClass('hidden');
+	}
 
     // Adjust article info in main panel
     if(window.location.search != ''){
@@ -132,7 +144,6 @@ $( document ).ready(function() {
 		  		 for (var key in data){
 		  		 	if(options.indexOf(key) > -1){
 		  		 	$("#set_"+key).after("<p class='flash-notice'>"+key+": "+ data[key]+"</p>");
-		  		 	console.log(key)
 		  		 	}
 	   			 }
 			});

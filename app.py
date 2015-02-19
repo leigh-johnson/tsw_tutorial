@@ -256,7 +256,7 @@ class AdminController(object):
         return json.dumps({'responseText':"Language set!"})
 
     @cherrypy.expose
-    def assign(self, p_id, c_id):
+    def setParentId(self, p_id, c_id):
         '''Removes a child Article() from parent, assigns to new parent'''
         new_parent = cherrypy.request.db.query(Article).filter(Article._id == p_id).one()
         child = cherrypy.request.db.query(Article).filter(Article._id == c_id).one()
