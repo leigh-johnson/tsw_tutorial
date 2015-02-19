@@ -14,6 +14,7 @@ ${parent.head()}
 <ol class="sortable">Published
 
 ## categories sorted by SQLalchemy's order_by()
+## @todo should really be recursively exploring article children
 %for row in categories:
 	 ##Top level categories
 	%if row.is_category == True & row.is_public == True & (row.parent_id is None):
@@ -23,19 +24,20 @@ ${parent.head()}
 			</span>
 			<a href="article?_id=${row._id}" data-order="${row.order}">${getattr(row, 'title_'+lang)}</a>
 		</div>
+		## Category roll of articles
 		<ol>
-		##children 
 			%for article in row.articles:
 				##If child has children
 				%if article.is_category == True:
-					<li data-order="${article.order}">
+					<li data-order="${article.order}" id="${article._id}">
 						<div class="accordion-header sortable-wrapper">
 							<span class="icon-plus accordion-icon"></span>
 							<a href="article?_id=${article._id}">${getattr(article, 'title_'+lang)}</a>
 						</div>
+						## Article roll, if subcategory
 						<ol>
 						%for nested_article in article.articles:
-							<li data-order="${nested_article.order}">
+							<li data-order="${nested_article.order}" id="${nested_article._id}">
 								<div class="accordion-header sortable-wrapper">
 									<span class="${article.icon}"></span>
 									<a href="article?_id=${nested_article._id}">${getattr(nested_article, 'title_'+lang)}</a>
@@ -45,7 +47,7 @@ ${parent.head()}
 						</ol>
 					</li>
 				%else:
-				<li data-order="${article.order}">
+				<li data-order="${article.order}" id="${article._id}">
 					<div class="sortable-wrapper">
 					<span class="${article.icon}"></span>
 					<a href="article?_id=${article._id}">${getattr(article, 'title_'+lang)}</a>

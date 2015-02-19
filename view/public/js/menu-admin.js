@@ -111,10 +111,15 @@ $( document ).ready(function() {
 	});
 
 	// Nested Sortable ordering
-	$('#menu .sortable').nestedSortable({
+	var sortable = $('#menu .sortable').nestedSortable({
 		handle: 'div',
 		items: 'li',
-		toleranceElement: '> .sortable-wrapper'
+		toleranceElement: '> .sortable-wrapper',
+		relocate: function(event, ui){
+			hierarchy = sortable.toArray({
+			}); 
+			console.log(hierarchy);
+		}
 	});
 	
 	
