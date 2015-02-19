@@ -340,8 +340,8 @@ class APIController(object):
 ### Config ###
 
 if __name__ == '__main__':
-    #daemon = Daemonizer(cherrypy.engine)
-    #daemon.subscribe()
+    daemon = Daemonizer(cherrypy.engine)
+    daemon.subscribe()
     cherrypy.config.update('config/app.conf')
     SAEnginePlugin(cherrypy.engine).subscribe()
     cherrypy.tools.db = SATool()
