@@ -115,10 +115,15 @@ $( document ).ready(function() {
 		handle: 'div',
 		items: 'li',
 		toleranceElement: '> .sortable-wrapper',
+		maxlevels: 3,
+		opacity: 0.6,
 		relocate: function(event, ui){
-			hierarchy = sortable.toArray({
-			}); 
-			console.log(hierarchy);
+			data = $('#menu .sortable').nestedSortable('serialize');
+			console.log(data);
+			$.ajax({
+				url: '/admin/setOrder',
+				data: data
+			});
 		}
 	});
 	

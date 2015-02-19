@@ -3,6 +3,7 @@ import os
 import json
 import MySQLdb
 import cherrypy
+import re
 from auth import AuthController, require, check_auth
 from api import ArticleAPI
 from models import Base, Article, Body_en, Body_fr, Body_de, Admin, Jsonify
@@ -294,6 +295,42 @@ class AdminController(object):
         article.icon = icon
         return json.dumps({'responseText': 'icon class seto to %s' % icon})
 
+    # @todo remove this function
+    @cherrypy.expose
+    def buildOrder(self):
+        '''A temporary patch to no default set on Article.order. Our javascript requires this value to be not null'''
+        categories = Article.list(cherrypy.request.db)
+        count = 0
+        for article in categories:
+            article.order = count
+            count +=1 
+        return json.dumps(categories, cls=Jsonify(),check_circular=False, skipkeys=True, indent=2)
+
+    @cherrypy.expose
+    def setOrder(self, **kwargs):
+        '''Accepts a serialized string where article[_id]=parent_id
+        Using a simple counter to cascade data order'''
+        count = 0
+        for k,v in kwargs.iteritems():
+            c_id = ''.join(x for x in k if x.isdigit())
+            c_id = int(c_id)
+
+            if v != 'null':
+                child = cherrypy.request.db.query(Article).get(c_id)
+                child.order = count
+                if child.parent_id:
+                    old_parent = cherrypy.request.db.query(Article).filter(Article._id == child.parent_id).one()
+                    old_parent.articles.remove(child)
+                p_id = int(v)
+                parent = cherrypy.request.db.query(Article).get(v)
+                parent.order = count
+                parent.articles.append(child)
+                count += 1
+            else:
+                top = cherrypy.request.db.query(Article).get(c_id)
+                top.parent_id = None
+                top.order = count
+        return json.dumps({'responseText': 'reorders and reparented'})
 
 class APIController(object):
     exposed = True
@@ -303,8 +340,8 @@ class APIController(object):
 ### Config ###
 
 if __name__ == '__main__':
-    daemon = Daemonizer(cherrypy.engine)
-    daemon.subscribe()
+    #daemon = Daemonizer(cherrypy.engine)
+    #daemon.subscribe()
     cherrypy.config.update('config/app.conf')
     SAEnginePlugin(cherrypy.engine).subscribe()
     cherrypy.tools.db = SATool()
