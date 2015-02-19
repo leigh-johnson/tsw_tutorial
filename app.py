@@ -327,9 +327,11 @@ class AdminController(object):
                 parent.articles.append(child)
                 count += 1
             else:
+                print('***************')
                 top = cherrypy.request.db.query(Article).get(c_id)
                 top.parent_id = None
                 top.order = count
+                count += 1
         return json.dumps({'responseText': 'reorders and reparented'})
 
 class APIController(object):
