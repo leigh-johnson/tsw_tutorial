@@ -118,11 +118,13 @@ $( document ).ready(function() {
 		maxlevels: 3,
 		opacity: 0.6,
 		relocate: function(event, ui){
-			data = $('#menu .sortable').nestedSortable('serialize');
+			data = $('#menu .sortable').nestedSortable('toHierarchy');
 			console.log(data);
 			$.ajax({
 				url: '/admin/setOrder',
-				data: data
+				headers: {'X-Admin-setOrder': JSON.stringify(data)},
+				processData: false,
+				dataType: 'json'
 			});
 		}
 	});

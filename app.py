@@ -4,6 +4,7 @@ import json
 import MySQLdb
 import cherrypy
 import re
+from collections import OrderedDict
 from auth import AuthController, require, check_auth
 from api import ArticleAPI
 from models import Base, Article, Body_en, Body_fr, Body_de, Admin, Jsonify
@@ -307,32 +308,41 @@ class AdminController(object):
         return json.dumps(categories, cls=Jsonify(),check_circular=False, skipkeys=True, indent=2)
 
     @cherrypy.expose
-    def setOrder(self, **kwargs):
-        '''Accepts a serialized string where article[_id]=parent_id
-        Using a simple counter to cascade data order'''
-        count = 0
-        for k,v in kwargs.iteritems():
-            c_id = ''.join(x for x in k if x.isdigit())
-            c_id = int(c_id)
+    def setOrder(self):
+        '''Accepts an xhr request header X-Admin-setOrder and serializes Article() instances by order with children
+        @todo Should really be a recursive algorithm instead of this nested monstrosity. This is easily the least well-written piece of code I have ever authored. '''
+        data = cherrypy.request.headers.get('X-Admin-setOrder')
+        data = json.loads(data)
+        # top level categories
+        for idx_a,a in enumerate(data):
+            top_p_id = int(a.get("id"))
+            top_parent = cherrypy.request.db.query(Article).get(top_p_id)
+            top_parent.parent_id = None
+            top_parent.order = idx_a
+            # children of top-level
+            if a.get("children") != None:
+                for idx_b,b in enumerate(a.get("children")):
+                    top_c_id = int(b.get("id"))
+                    top_child = cherrypy.request.db.query(Article).get(top_c_id)
+                    top_child.order = idx_b
+                    if top_child.parent_id != None:
+                        old_parent = cherrypy.request.db.query(Article).filter(Article._id == top_child.parent_id).one()
+                        old_parent.articles.remove(top_child)
+                    top_child.parent_id = top_parent._id
+                    top_parent.articles.append(top_child)
+                    # second children
+                    if b.get("children") != None:
+                        for idx_c,c in enumerate(b.get("children")):
+                            second_c_id = int(b.get("id"))
+                            second_child = cherrypy.request.db.query(Article).get(second_c_id)
+                            second_child.order = idx_c
+                            if second_child.parent_id != None:
+                                old_parent = cherrypy.request.db.query(Article).filter(Article._id == second_child.parent_id).one()
+                                old_parent.articles.remove(second_child)
+                            second_child.parent_id = top_child._id
+                            top_child.articles.append(second_child)
+        return json.dumps({"responseText": "Order & children set"})
 
-            if v != 'null':
-                child = cherrypy.request.db.query(Article).get(c_id)
-                child.order = count
-                if child.parent_id:
-                    old_parent = cherrypy.request.db.query(Article).filter(Article._id == child.parent_id).one()
-                    old_parent.articles.remove(child)
-                p_id = int(v)
-                parent = cherrypy.request.db.query(Article).get(v)
-                parent.order = count
-                parent.articles.append(child)
-                count += 1
-            else:
-                print('***************')
-                top = cherrypy.request.db.query(Article).get(c_id)
-                top.parent_id = None
-                top.order = count
-                count += 1
-        return json.dumps({'responseText': 'reorders and reparented'})
 
 class APIController(object):
     exposed = True
@@ -342,8 +352,8 @@ class APIController(object):
 ### Config ###
 
 if __name__ == '__main__':
-    daemon = Daemonizer(cherrypy.engine)
-    daemon.subscribe()
+    #daemon = Daemonizer(cherrypy.engine)
+    #daemon.subscribe()
     cherrypy.config.update('config/app.conf')
     SAEnginePlugin(cherrypy.engine).subscribe()
     cherrypy.tools.db = SATool()
