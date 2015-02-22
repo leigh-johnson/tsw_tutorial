@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Oxygen:400,700);
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Bitter:400,700,400italic);
 input[type="button"], input[type="reset"], input[type="submit"],
 button {
   -webkit-appearance: none;
@@ -13,7 +13,7 @@ button {
   color: #fff;
   cursor: pointer;
   display: inline-block;
-  font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 0.9em;
   font-weight: 600;
   line-height: 0.65;
@@ -43,7 +43,7 @@ input,
 label,
 select {
   display: block;
-  font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 0.9em; }
 
 label {
@@ -62,7 +62,7 @@ textarea {
   border-radius: 3px;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
   box-sizing: border-box;
-  font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 0.9em;
   margin-bottom: 0.75em;
   padding: 0.5em;
@@ -148,9 +148,101 @@ body {
   font-feature-settings: "kern", "liga", "pnum";
   -webkit-font-smoothing: antialiased;
   color: #333;
-  font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 0.9em;
   line-height: 1.5; }
+
+article {
+  text-align: left; }
+  article h1, article h2, article h3, article p {
+    margin: 0; }
+  article hr {
+    border-bottom: 1px solid #ddd;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    margin: 1.5em 0; }
+  article p {
+    color: #333;
+    line-height: 1.5; }
+  article a {
+    color: #477DCA;
+    text-decoration: none; }
+  article:after {
+    content: "";
+    display: table;
+    clear: both; }
+  article .type {
+    border-bottom: 1px solid;
+    display: inline-block;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 0.7em;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 2em;
+    padding: 0.1em 0;
+    text-align: left;
+    text-transform: uppercase; }
+  article h1 {
+    font-family: "Bitter", serif;
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 0.6em; }
+  article h2 {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 1.2em;
+    font-weight: 400;
+    line-height: 1.4em;
+    margin-bottom: 1.2em; }
+  article code {
+    background: #F7F7F7;
+    border-radius: 4.5px;
+    border: 1px solid #E0E0E0;
+    font-family: monaco;
+    font-size: 0.65em;
+    font-style: normal;
+    padding: 0.1em 0.4em;
+    white-space: nowrap; }
+  article h3 {
+    font-family: "Bitter", serif;
+    font-size: 1em;
+    font-weight: 700;
+    line-height: 1.4em;
+    margin-bottom: 0.5em;
+    text-transform: uppercase; }
+  article p.date {
+    color: rgba(51, 51, 51, 0.4);
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 0.8em;
+    margin-bottom: 0.5em; }
+  article p {
+    font-family: "Source Sans Pro", sans-serif;
+    font-weight: 300;
+    letter-spacing: 1;
+    margin-bottom: 1.5em; }
+    article p span {
+      font-family: "Source Sans Pro", sans-serif;
+      font-size: 0.8em;
+      font-weight: 600;
+      text-transform: uppercase; }
+  article hr {
+    width: 3em; }
+  article a.read-more {
+    display: inline-block;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 0.8em;
+    font-weight: 700;
+    margin-left: 0.2em;
+    position: relative;
+    text-transform: uppercase; }
+    article a.read-more span {
+      font-size: 1.7em;
+      position: absolute;
+      right: -10px;
+      top: -2px; }
+  article p.author {
+    font-family: "Source Sans Pro", sans-serif;
+    font-style: italic; }
 
 h1,
 h2,
@@ -158,8 +250,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
-  font-size: 1em;
+  font-family: "Bitter", serif;
+  font-size: 2.5em;
   line-height: 1.2;
   margin: 0 0 0.75em;
   text-transform: uppercase; }
@@ -243,27 +335,40 @@ html {
 .icon-arrow-left2:before {
   content: "\ea40"; }
 
-body {
-  margin: 0;
-  background: #556270;
-  color: #353d46;
-  font: 18px/27px 'Oxygen', sans-serif; }
-
-h1, h2, h3 {
-  color: #FF6B6B;
-  margin: 0 0 27px; }
-
 /*
 Accordion
 */
 .accordion {
-  list-style: none; }
-  .accordion ol {
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+  color: #f2fbff;
+  background-color: #404a55;
+  border: 1px solid #333;
+  margin-bottom: 1.5em; }
+  .accordion li {
+    list-style: none; }
+  .accordion li ol li div {
+    padding: 0 20px; }
+  .accordion li ol li ol li div {
+    padding: 0 40px; }
+  .accordion p, .accordion span {
+    color: #f2fbff;
+    line-height: 1.5;
+    padding: 0.15em; }
+  .accordion a {
+    color: #f2fbff;
+    text-decoration: none; }
+  .accordion a:hover {
+    color: #b0e4ff; }
+  .accordion li:last-child, .accordion li ol:last-child {
+    border: none; }
+  .accordion li:focus, .accordion li:hover, .accordion li.is-expanded {
+    background-color: #4f5b69; }
+  .accordion li div span {
     margin-left: 5px; }
-  .accordion ol > ol {
-    margin-left: 20px; }
-  .accordion .sortable-sub {
-    margin-left: 25px; }
+  .accordion div {
+    border-bottom: 1px solid #333; }
 
 /*
 Menu
@@ -276,16 +381,8 @@ nav#slide-menu {
   display: block;
   float: left;
   width: 100%;
-  max-width: 283px;
-  height: 100%;
-  font-size: 14px; }
-  nav#slide-menu a {
-    font-weight: 600;
-    color: #aaa;
-    text-decoration: none;
-    transition: color 0.1s linear; }
-    nav#slide-menu a:active, nav#slide-menu a:focus, nav#slide-menu a:hover {
-      color: #19232d; }
+  max-width: 290px;
+  height: 100%; }
 
 body.menu-active nav#slide-menu {
   left: 0px; }
@@ -344,16 +441,25 @@ div#content {
       text-transform: none;
       line-height: 36px; }
     div#content div.menu-trigger:hover {
-      background: #556270; }
+      background: #4f5b69; }
       div#content div.menu-trigger:hover:before {
         color: #fcfeff; }
 
 body.menu-active div#content {
-  left: 283px;
+  left: 290px;
   border-radius: 7px 0 0 7px; }
 
 body.menu-active div#content .menu-trigger {
   left: 294px; }
+
+body {
+  margin: 0;
+  background: #353d46;
+  font: 18px/27px 'Obuntu Mono'; }
+
+h1, h2, h3 {
+  color: #FF6B6B;
+  margin: 0 0 27px; }
 
 #content h1, #content h2, #content h3 {
   text-align: center; }

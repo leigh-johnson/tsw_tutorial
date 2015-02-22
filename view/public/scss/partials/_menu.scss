@@ -1,34 +1,61 @@
-@import url(http://fonts.googleapis.com/css?family=Oxygen:400,700);
-
-// Var
-
-$menu-width: 283px;
-
-body {
-	margin: 0;
-	background: #556270;
-	color: #353d46;
-	font: 18px/27px 'Oxygen', sans-serif;
-}
-
-h1, h2, h3 { color: #FF6B6B; margin: 0 0 27px; }
-
 /*
 Accordion
 */
 
-.accordion{
-	list-style:none;
-	ol{
-		margin-left:5px;
-	}
-	ol>ol{
-		margin-left:20px;
-	}
-	.sortable-sub{
-		margin-left:25px;
-	}
+.accordion {  
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+  color: $accordion-menu-color;
+  li {
+    list-style: none;
+  }
+  li ol li div{
+  	padding: 0 20px;
+  }
+  li ol li ol li div{
+  	 padding: 0 40px;
+  }
 
+  p,span {
+    color: $accordion-menu-color;
+    line-height: $base-line-height;
+    padding: $accordion-menu-list-padding;
+
+  }
+
+  a {
+    color: $accordion-menu-color;
+    text-decoration: none;
+  }
+  a:hover{
+  	color: darken($content-bg, 15%);
+  }
+  
+  
+  background-color: darken($accordion-menu-background, 5%);
+  border: $accordion-menu-border;
+  margin-bottom: $base-spacing;
+
+  li{
+
+    &:last-child, ol:last-child {
+      border: none;
+    }
+
+    &:focus,
+    &:hover,
+    &.is-expanded {
+      background-color: $accordion-menu-hover;
+    }
+
+    div span{
+    	margin-left: 5px;
+    }
+  }
+  div{
+  	border-bottom: $accordion-menu-border;
+  }
 }
 
 
@@ -45,21 +72,8 @@ nav#slide-menu {
 	width: 100%;
 	max-width: $menu-width;
 	height: 100%;
-	font-size: $p-size;
-
-a {
-	font-weight: 600;
-  color: #aaa;
-  text-decoration: none;
-  transition: color 0.1s linear;
-
-  &:active,
-  &:focus,
-  &:hover {
-    color: darken($action-color, 15%);
-  }
 }
-}
+
 
 body.menu-active nav#slide-menu { left: 0px; }
 body.menu-active nav#slide-menu ol { left: 0px; opacity: 1; }
@@ -122,7 +136,7 @@ div#content {
 			line-height: 36px;
 		}
 
-		&:hover { background: #556270; &:before { color: #fcfeff; } }
+		&:hover { background: $accordion-menu-hover; &:before { color: #fcfeff; } }
 	}
 }
 

@@ -1,9 +1,16 @@
 @import 'bourbon/bourbon';
 @import 'base/base';
 @import 'neat/neat';
-@import 'partials/variables';
 @import 'partials/_icons';
 @import 'partials/_menu';
+
+body {
+    margin: 0;
+    background: $base-bg;
+    font: 18px/27px 'Obuntu Mono';
+}
+
+h1, h2, h3 { color: #FF6B6B; margin: 0 0 27px; }
 
 #content{
 	h1,h2,h3{

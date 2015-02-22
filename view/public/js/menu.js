@@ -13,9 +13,12 @@
 
 	$('.accordion .accordion-header').click(function() {
     $(".accordion-icon",this).toggleClass('icon-plus icon-minus');
-		$(this).next().toggle('slow');
+    $(this).parent().toggleClass('is-expanded');
+		$(this).next().toggle('fast');
 		return false;
 	}).next().hide()
+
+
     $('.accordion-header a').click(function(){
     	window.location = $(this).attr('href');
     	return false;
