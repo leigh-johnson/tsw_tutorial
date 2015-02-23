@@ -12,6 +12,11 @@ body {
 
 h1, h2, h3 { color: #FF6B6B; margin: 0 0 27px; }
 
+#wrapper{
+    height: $height;
+    width: $width;
+    overflow-y: auto;
+}
 #content{
 	h1,h2,h3{
 		text-align: center;

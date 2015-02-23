@@ -384,7 +384,7 @@ nav#slide-menu {
   float: left;
   width: 100%;
   max-width: 290px;
-  height: 100%; }
+  overflow-y: auto; }
 
 body.menu-active nav#slide-menu {
   left: 0px; }
@@ -462,6 +462,11 @@ body {
 h1, h2, h3 {
   color: #FF6B6B;
   margin: 0 0 27px; }
+
+#wrapper {
+  height: 580px;
+  width: 780px;
+  overflow-y: auto; }
 
 #content h1, #content h2, #content h3 {
   text-align: center; }
