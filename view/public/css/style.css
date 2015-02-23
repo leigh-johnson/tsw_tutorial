@@ -352,6 +352,8 @@ Accordion
     padding: 0 20px; }
   .accordion li ol li ol li div {
     padding: 0 40px; }
+  .accordion li ol li ol li ol li div {
+    padding: 0 60px; }
   .accordion p, .accordion span {
     color: #f2fbff;
     line-height: 1.5;

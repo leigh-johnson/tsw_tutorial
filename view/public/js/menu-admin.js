@@ -115,7 +115,7 @@ $( document ).ready(function() {
 		handle: 'div',
 		items: 'li',
 		toleranceElement: '> .sortable-wrapper',
-		maxlevels: 3,
+		maxlevels: 4,
 		opacity: 0.6,
 		relocate: function(event, ui){
 			data = $('#menu .sortable').nestedSortable('toHierarchy');

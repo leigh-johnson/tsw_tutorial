@@ -309,39 +309,61 @@ class AdminController(object):
 
     @cherrypy.expose
     def setOrder(self):
-        '''Accepts an xhr request header X-Admin-setOrder and serializes Article() instances by order with children
-        @todo Should really be a recursive algorithm instead of this nested monstrosity. This is easily the least well-written piece of code I have ever authored. '''
+        '''Accepts an xhr request header X-Admin-setOrder and serializes Article() instances by order with children'''
         data = cherrypy.request.headers.get('X-Admin-setOrder')
         data = json.loads(data)
-        # top level categories
-        for idx_a,a in enumerate(data):
-            top_p_id = int(a.get("id"))
-            top_parent = cherrypy.request.db.query(Article).get(top_p_id)
-            top_parent.parent_id = None
-            top_parent.order = idx_a
-            # children of top-level
-            if a.get("children") != None:
-                for idx_b,b in enumerate(a.get("children")):
-                    top_c_id = int(b.get("id"))
-                    top_child = cherrypy.request.db.query(Article).get(top_c_id)
-                    top_child.order = idx_b
-                    if top_child.parent_id != None:
-                        old_parent = cherrypy.request.db.query(Article).filter(Article._id == top_child.parent_id).one()
-                        old_parent.articles.remove(top_child)
-                    top_child.parent_id = top_parent._id
-                    top_parent.articles.append(top_child)
-                    # second children
-                    if b.get("children") != None:
-                        for idx_c,c in enumerate(b.get("children")):
-                            second_c_id = int(b.get("id"))
-                            second_child = cherrypy.request.db.query(Article).get(second_c_id)
-                            second_child.order = idx_c
-                            if second_child.parent_id != None:
-                                old_parent = cherrypy.request.db.query(Article).filter(Article._id == second_child.parent_id).one()
-                                old_parent.articles.remove(second_child)
-                            second_child.parent_id = top_child._id
-                            top_child.articles.append(second_child)
+        order=0
+        for _id in self.setOrder_generator(data):
+            if type(_id) == int:
+                article = cherrypy.request.db.query(Article).get(_id)
+                if article.parent_id != None:
+                    old_parent = cherrypy.request.db.query(Article).filter(Article._id == article.parent_id).one()
+                    old_parent.articles.remove(article)
+                article.parent_id = None
+                article.order = order
+                order += 1
+                print("int", _id)
+            else:
+                _tuple = self.setOrder_unwrap(_id)
+                a_id = _tuple[-1]
+                p_id = _tuple[0]
+                article = cherrypy.request.db.query(Article).get(a_id)
+                if article.parent_id != None:
+                    old_parent = cherrypy.request.db.query(Article).filter(Article._id == article.parent_id).one()
+                    old_parent.articles.remove(article)
+                parent = cherrypy.request.db.query(Article).get(p_id)
+                article.parent_id = parent._id
+                article.order = order
+                parent.articles.append(article)
+                order += 1
+
         return json.dumps({"responseText": "Order & children set"})
+
+    def setOrder_unwrap(self, aDict):
+        for k,v in aDict.iteritems():
+            if type(v) == int:
+                return k,v
+            else:
+                return self.setOrder_unwrap(v)
+
+    def setOrder_generator(self, flat):
+        '''Explores flattened array of JSON objects
+        [0: object
+            {"id": "aNum",
+            "children": [0: object
+            ..]
+            }
+        ..]
+        '''
+        for i in flat:
+            for k, v in i.items():
+                #top level
+                if k == "id":
+                    yield int(v)
+                elif k == "children":
+                    for child in self.setOrder_generator(v):
+                        _id = int(i["id"])
+                        yield {_id: child}
 
 
 class APIController(object):
