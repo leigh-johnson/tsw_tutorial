@@ -1,3 +1,4 @@
+## -*- coding: utf-8 -*-
 <%inherit file="index.html" />
 
 <%block name='head'>
@@ -10,7 +11,7 @@ ${parent.menu()}
 </%block>
 
 <%block name='content'>
-<form id="new_tag">
+<form id="new-tag">
 <h3>Create a new tag</h3>
 <fieldset>
 	<label for="title_en">English</label>
@@ -19,7 +20,7 @@ ${parent.menu()}
 	<input id="title_fr" placeholder="Enter French tag.."></input>
 	<label for="title_de">German</label>
 	<input id="title_de" placeholder="Enter German tag.."></input>
-	<br><button id="new_submit">Submit</button>
+	<br><button id="new-tag-submit">Submit</button>
 </fieldset>
 </form>
 <h3>Edit an existing tag</h3>
@@ -40,7 +41,7 @@ ${parent.menu()}
       <td contenteditable='true' data-attr="title_en">${tag.title_en}</td>
       <td contenteditable='true' data-attr="title_fr">${tag.title_fr}</td>
       <td contenteditable='true' data-attr="title_de">${tag.title_de}</td>
-      <td><button>Delete</button></td>
+      <td><button class="tag-delete" data-attr="${tag._id}">Delete</button></td>
     </tr>
 %endfor
 </tbody>
@@ -48,46 +49,4 @@ ${parent.menu()}
 <%block name='scripts'>
 ${parent.scripts()}
 </%block>
-<script type="text/javascript">
-$(document).ready(function(){
-	// POST
-	$('#new_submit').click(function(e){
-		e.preventDefault();
-		data = {}
-		$('#new_tag input').each(function(column){
-			column_name = $(this).attr('id');
-			data[column_name] = $(this).val();
-		});
-		$.ajax({
-			type: 'POST',
-			url: '/admin/api/tag',
-			headers: {'X-Admin-Tag-New' : JSON.stringify(data)},
-			processData: false,
-			dataType: 'json',
-			success: function(){
-				location.reload();
-			}
-		});
-
-	});
-
-	// PUT
-	$(".tables [contenteditable='true']").each(function(index){
-		var column_id = $(this).attr('data-attr');
-		var tag_id = $(this).parent().attr('id');
-		$(this).blur(function(){
-			data = {}
-			data[column_id] = $(this).html();
-			$.ajax({
-				type: 'PUT',
-				url: './api/tag?_id='+tag_id,
-				headers: {'X-Admin-Tag-Edit': JSON.stringify(data)},
-				processData: false,
-				dataType: 'json'
-			});
-		});
-	});
-});
-
-</script>
 </%block>

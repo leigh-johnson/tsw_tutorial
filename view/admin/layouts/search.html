@@ -12,7 +12,7 @@ ${parent.menu()}
 %if query.startswith("tag="):
 ## query ?tag=
 %for result in results.articles:
-	<fieldset>
+	<fieldset class="search-results">
 	<a href="article?_id=${result._id}">
 	<div class="result">
 	<h3>${getattr(result, "title_"+lang)}</h3>
@@ -30,6 +30,9 @@ ${parent.menu()}
 %if query.startswith("term="):
 ## query ?term=
 ## results are returned as tuple (Body_$lang(), Article())
+%if results == []:
+<p>No results found. </p>
+%endif
 %for n in results:
 	<% result = n[0] %>
 	<fieldset>

@@ -9,7 +9,7 @@ ${parent.menu()}
 </%block>
 
 <%block name='content'>
-<form id="new_article">
+<form id="new-article">
 <h1>Create a new article</h1>
 	<div class="divider">English Fields</div>
 	<fieldset>
@@ -37,45 +37,6 @@ ${parent.menu()}
 	<textarea id="body_de" rows="5" cols="50" placeholder="German body"></textarea>
 	<button id="add_body_fr">Add Widget @todo</button>
 	</fieldset>
-	<button id="new_submit">Submit</button>
+	<button id="new-article-submit">Submit</button>
 </form>
-
-<script type="text/javascript">
-$(document).ready(function(){
-	// Add video_src input based on layout choice
-	$('#layout').change(function(){
-		if($('#layout').val() == 'video'){
-			$('#layout').after('<label for="video_src">Video link</label><input id="video_src" type="textarea" placeholder="Video URL">');
-		}
-		if($('#layout').val() != 'video'){
-			$('#video_src').remove();
-			$('label[for="video_src"]').remove();
-		}
-	});
-
-	// POST
-	$('#new_submit').click(function(e){
-		e.preventDefault();
-		data = {}
-		$('#new_article input, #new_article select, #new_article textarea').each(function(column){
-			column_name = $(this).attr('id');
-			data[column_name] = $(this).val();
-		});
-		$.ajax({
-			type: 'POST',
-			url: '/admin/api/article',
-			headers: {'X-CKeditor-Article-New' : JSON.stringify(data)},
-			processData: false,
-			dataType: 'json',
-			success: function(response){
-				_id = response['_id']
-				window.location.replace('/admin/article?_id='+_id)
-			}
-		});
-
-	});
-
-});
-
-</script>
 </%block>

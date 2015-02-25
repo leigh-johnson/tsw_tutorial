@@ -1,5 +1,6 @@
 import cherrypy
 import json
+import chardet
 from sqlalchemy import update
 from sqlalchemy.ext.serializer import loads, dumps
 from models import Admin, Article, Body_en, Body_fr, Body_de, Tag, Jsonify
@@ -26,51 +27,46 @@ class ArticleAPI(object):
         return json.dumps(result, cls=Jsonify(),check_circular=False, skipkeys=True, indent=2)
             
     #@require()
-    def POST(self):
+    def POST(self, **kwargs):
         '''
         If authorized, persist a new Article() to session and return it
         No validation strategy implemented, use with caution
         '''
         result = Article()
-        data = cherrypy.request.headers.get('X-Admin-Article-New')
-        data = json.loads(data, encoding="utf-8")
         bodies = {"body_en":Body_en, "body_fr":Body_fr, "body_de":Body_de}
-        for key in data:
-            if key.startswith("body"):
-                body = bodies[key]()
+        for k,v in kwargs.iteritems():
+            if k.startswith("body"):
+                body = bodies[k]()
                 body.text = data[key]
-                getattr(result, key).append(body)
+                getattr(result, k).append(body)
             else:
-                setattr(result, key, data[key])
+                setattr(result, k, v)
         ### Set each body
         #for key, value in bodies.iteritems():
             #alist = [value]
             #setattr(result, key, alist)
         cherrypy.request.db.add(result)
-        cherrypy.request.db.flush()
         return json.dumps({"_id": result._id})
 
     #@require()
-    def PUT(self, _id):
+    def PUT(self, _id, **kwargs):
         '''
         If authorized, retrieve Article() and persist on session
         No validation strategy implemented, use with caution
         '''
         result = cherrypy.request.db.query(Article).get(_id)
-        data = cherrypy.request.headers.get('X-Ckeditor-Article-Edit')
-        data = json.loads(data, encoding="utf-8")
         bodies = {"body_en":Body_en, "body_fr":Body_fr, "body_de":Body_de}
-        for key in data:
-            if key.startswith("body"):
+        for k,v in kwargs.iteritems():
+            if k.startswith("body"):
                 # Unpackage request  from Body_$language_$id to Body_$language.get(_id)
-                split = key.split('_')
+                split = k.split('_')
                 lang = "_".join(split[0:2])
                 body = bodies[lang]
                 _id = split[2]
                 result = cherrypy.request.db.query(body).get(_id)
-                setattr(result,'text',data[key])
+                setattr(result,'text', v)
             else:
-                setattr(result,key,data[key])
+                setattr(result,k, v)
         cherrypy.request.db.add(result)
         return json.dumps({"responseText":"Saved!"})
 
@@ -86,24 +82,26 @@ class TagAPI(object):
         result = Tag.list(cherrypy.request.db)
         return json.dumps(result, cls=Jsonify(),check_circular=False, skipkeys=True, indent=2)
 
-    def POST(self):
+    def POST(self, **kwargs):
+        '''Create a new instance with kwargs'''
         result = Tag()
-        data = cherrypy.request.headers.get('X-Admin-Tag-New')
-        data = json.loads(data, encoding="utf-8")
-        for key in data:
-            setattr(result, key, data[key])
+        for k,v in kwargs.iteritems():
+            setattr(result, k, v)
         cherrypy.request.db.add(result)
         return json.dumps({"_id": result._id})
 
-    def PUT(self, _id):
+    def PUT(self, _id=None, **kwargs):
+        '''Retrieve an instance by _id and update kwargs'''
         result = cherrypy.request.db.query(Tag).get(_id)
-        data = cherrypy.request.headers.get('X-Admin-Tag-Edit')
-        data = json.loads(data, encoding="utf-8")
-        for key in data:
-            setattr(result, key, data[key])
+        for k,v in kwargs.iteritems():
+            setattr(result, k, v)
         cherrypy.request.db.add(result)
         return json.dumps({"responseText": "Updated tag %s" %result._id})
 
+    def DELETE(self, _id=None):
+        if _id != None:
+            result = cherrypy.request.db.query(Tag).filter(Tag._id == _id).delete()
+        return json.dumps({"responseText": "Need to specify an id"})
 
 """
 We probably don't need an image uploading system

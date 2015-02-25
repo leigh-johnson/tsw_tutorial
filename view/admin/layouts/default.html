@@ -48,39 +48,33 @@ ${parent.menu()}
 <script>
 $(document).ready(function() {
 	// Ckeditor 
-		var article_id = window.location.search
-		$("[contenteditable='true']").each(function( index ) {
+	var article_id = window.location.search
+	$("[contenteditable='true']").each(function( index ) {
+		var column_id = $(this).attr('id');
+		CKEDITOR.inline( column_id, {
+			on: {
+				blur: function( event ) {
+				var data = {}
+				// strip surrounding html from banner, save only src
+					if(column_id != 'banner_src'){
+						data[column_id] = event.editor.getData();
+					}
+					else{
+						var banner_img = $('#banner_src img');
+						data[column_id] = banner_img.attr('src');
+					}
 
-				var column_id = $(this).attr('id');
-				CKEDITOR.inline( column_id, {
-						on: {
-								blur: function( event ) {
-									var data = {}
-									// strip surrounding html from banner, save only src
-									if(column_id != 'banner_src'){
-										data[column_id] = event.editor.getData();
-										}
-										else{
-											var banner_img = $('#banner_src img');
-											data[column_id] = banner_img.attr('src');
-										}
-
-										var request = $.ajax({
-											type:'PUT',
-											url: './api/article'+article_id,
-											headers: {'X-Ckeditor-Edit': JSON.stringify(data)},
-											processData: false,
-											dataType: 'json'
-										});
-
-								}
-						}
-				});
-
+					var request = $.ajax({
+						type:'PUT',
+						url: '/admin/api/article'+article_id,
+						dataType: 'json',
+						data: data,
+						contentType: "application/x-www-form-urlencoded; charset=utf-8",
+					});
+				}
+			}
 		});
-
-		
-
+	});
 });
 
 </script>

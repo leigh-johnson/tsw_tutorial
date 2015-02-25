@@ -1,3 +1,5 @@
+// admin.js
+
 $( document ).ready(function() {
 	// AJAX defaults
 		$.ajaxSetup({
@@ -13,7 +15,11 @@ $( document ).ready(function() {
 		});
 
 
-	// Admin panel
+/*
+*************
+ADMIN PANEL
+*************
+*/	
 	// Change language
 		$('#language_submit').click(function(event) {
 			lang = $('#language').val();
@@ -190,4 +196,104 @@ $( document ).ready(function() {
 
     }
 
+    // Adjust input fiels in new_article.html
+
+    // Add video_src input based on layout choice
+	$('#layout').change(function(){
+		if($('#layout').val() == 'video'){
+			$('#layout').after('<label for="video_src">Video link</label><input id="video_src" type="textarea" placeholder="Video URL">');
+		}
+		if($('#layout').val() != 'video'){
+			$('#video_src').remove();
+			$('label[for="video_src"]').remove();
+		}
+	});
+
+
+/*
+*************
+API REQUESTS
+*************
+*/
+    // admin/tags POST
+	$('#new-tag-submit').click(function(e){
+		e.preventDefault();
+		data = {}
+		$('#new-tag input').each(function(column){
+			column_name = $(this).attr('id');
+			data[column_name] = $(this).val();
+			console.log(data);
+		});
+		$.ajax({
+			type: 'POST',
+			url: '/admin/api/tag',
+            //processData: false,
+			dataType: 'json',
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			data: data,
+			success: function(){
+				location.reload();
+			}
+		});
+
+	});
+
+	// admin/tags PUT
+	$(".tables [contenteditable='true']").each(function(index){
+		var column_id = $(this).attr('data-attr');
+		var tag_id = $(this).parent().attr('id');
+		$(this).blur(function(){
+			data = {}
+			data[column_id] = $(this).html();
+			$.ajax({
+				type: 'PUT',
+				url: '/admin/api/tag?_id='+tag_id,
+				dataType: 'json',
+  				contentType: "application/x-www-form-urlencoded; charset=utf-8",
+  				data: data
+			});
+		});
+	});
+
+	// admin/tags DELETE
+	$(".tag-delete").click(function(){
+		console.log($(this).attr('data-attr'));
+		var tag_id = $(this).attr('data-attr');
+		$.ajax({
+			type: 'DELETE',
+			url: '/admin/api/tag?_id='+tag_id,
+			dataType: 'json',
+			success: function(){
+				location.reload();
+			}
+		});
+	});
+
+	// POST
+	$('#new-article-submit').click(function(e){
+		e.preventDefault();
+		data = {}
+		$('#new-article input, #new-article select, #new-article textarea').each(function(column){
+			column_name = $(this).attr('id');
+			data[column_name] = $(this).val();
+		});
+		$.ajax({
+			type: 'POST',
+			url: '/admin/api/article',
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			data: data,
+			dataType: 'json',
+			success: function(response){
+				_id = response['_id']
+				window.location.replace('/admin/article?_id='+_id)
+			}
+		});
+
+	});
+
+/*
+*************
+WIDGET LAYOUTS
+*************
+*/
 });
