@@ -495,25 +495,25 @@ body.menu-active div#content .menu-trigger {
 
 #content {
   text-align: center; }
-  #content fieldset {
+  #content .search-results {
     height: 100px;
     margin: 15px;
     width: 80%;
     display: inline-block;
     position: relative; }
-    #content fieldset:hover {
+    #content .search-results:hover {
       background: #e3f5ff; }
-    #content fieldset h3 {
+    #content .search-results h3 {
       position: absolute;
       top: 3px;
       left: 8px; }
-    #content fieldset p {
+    #content .search-results p {
       width: 80%;
       text-align: left;
       position: absolute;
       top: 35px;
       left: 8px; }
-    #content fieldset span {
+    #content .search-results span {
       position: absolute;
       color: #333;
       font-size: 2.5em;
