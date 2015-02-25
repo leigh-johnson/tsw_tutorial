@@ -2,7 +2,7 @@ import cherrypy
 import json
 from sqlalchemy import update
 from sqlalchemy.ext.serializer import loads, dumps
-from models import Admin, Article, Body_en, Body_fr, Body_de, Jsonify
+from models import Admin, Article, Body_en, Body_fr, Body_de, Tag, Jsonify
 ### RESTful API Controllers ###
 ### ALL RETURNS ON API ROUTES AGONOSTICALLY RETURN `result` ###
 
@@ -32,7 +32,7 @@ class ArticleAPI(object):
         No validation strategy implemented, use with caution
         '''
         result = Article()
-        data = cherrypy.request.headers.get('X-Ckeditor-New')
+        data = cherrypy.request.headers.get('X-Admin-Article-New')
         data = json.loads(data, encoding="utf-8")
         bodies = {"body_en":Body_en, "body_fr":Body_fr, "body_de":Body_de}
         for key in data:
@@ -57,7 +57,7 @@ class ArticleAPI(object):
         No validation strategy implemented, use with caution
         '''
         result = cherrypy.request.db.query(Article).get(_id)
-        data = cherrypy.request.headers.get('X-Ckeditor-Edit')
+        data = cherrypy.request.headers.get('X-Ckeditor-Article-Edit')
         data = json.loads(data, encoding="utf-8")
         bodies = {"body_en":Body_en, "body_fr":Body_fr, "body_de":Body_de}
         for key in data:
@@ -78,6 +78,31 @@ class ArticleAPI(object):
     def DELETE(self, _id=None):
         result = cherrypy.request.db.query(Article).filter(Article._id == _id).delete()
         return json.dumps({"responseText": "Deleted!"})
+
+class TagAPI(object):
+    exposed = True
+
+    def GET(self):
+        result = Tag.list(cherrypy.request.db)
+        return json.dumps(result, cls=Jsonify(),check_circular=False, skipkeys=True, indent=2)
+
+    def POST(self):
+        result = Tag()
+        data = cherrypy.request.headers.get('X-Admin-Tag-New')
+        data = json.loads(data, encoding="utf-8")
+        for key in data:
+            setattr(result, key, data[key])
+        cherrypy.request.db.add(result)
+        return json.dumps({"_id": result._id})
+
+    def PUT(self, _id):
+        result = cherrypy.request.db.query(Tag).get(_id)
+        data = cherrypy.request.headers.get('X-Admin-Tag-Edit')
+        data = json.loads(data, encoding="utf-8")
+        for key in data:
+            setattr(result, key, data[key])
+        cherrypy.request.db.add(result)
+        return json.dumps({"responseText": "Updated tag %s" %result._id})
 
 
 """

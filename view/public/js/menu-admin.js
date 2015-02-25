@@ -12,11 +12,11 @@ $( document ).ready(function() {
 			}			
 		});
 
+
 	// Admin panel
 	// Change language
 		$('#language_submit').click(function(event) {
 			lang = $('#language').val();
-			var hostname = window.location.hostname
 
 			//req to AdminController.setLang() 
 			$.ajax({
@@ -64,6 +64,18 @@ $( document ).ready(function() {
 		});
 	});
 
+	// Add video_src input based on layout choice
+	$('#layout').change(function(){
+		if($('#layout').val() == 'video'){
+			$('#layout').after('<label for="video_src">Video link</label><input id="video_src" type="textarea" placeholder="Video URL">');
+		}
+		if($('#layout').val() != 'video'){
+			$('#video_src').remove();
+			$('label[for="video_src"]').remove();
+		}
+	});
+
+	// Set icon
 	$('#set_icon').change(function(){
 		icon = $(this).val();
 		path = window.location.search;
@@ -110,6 +122,18 @@ $( document ).ready(function() {
 		});
 	});
 
+	// Add Tag() relationship
+	$('#set_tag').change(function(){
+		val = $(this).val();
+		console.log(val)
+		path = window.location.search;
+		_id = path.split('?')[1].split('=')[1];
+		$.ajax({
+			url: '/admin/setTag?_id='+_id+'&tag_id='+val
+		});
+
+	});
+
 	// Nested Sortable ordering
 	var sortable = $('#menu .sortable').nestedSortable({
 		handle: 'div',
@@ -122,7 +146,7 @@ $( document ).ready(function() {
 			console.log(data);
 			$.ajax({
 				url: '/admin/setOrder',
-				headers: {'X-Admin-setOrder': JSON.stringify(data)},
+				headers: {'X-Admin-Menu-SetOrder': JSON.stringify(data)},
 				processData: false,
 				dataType: 'json'
 			});
@@ -136,7 +160,7 @@ $( document ).ready(function() {
 	}
 
     // Adjust article info in main panel
-    if(window.location.search != ''){
+    if(window.location.search != '' && window.location.pathname != '/admin/search'){
 
     	function getArticle(){
 	    	// GET request based on current window.location.search

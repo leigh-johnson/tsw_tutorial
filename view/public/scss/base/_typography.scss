@@ -7,7 +7,6 @@ body {
   line-height: $base-line-height;
 }
 
-article {
   ///////////////////////////////////////////////////////////////////////////////////
   $base-border-radius: 3px !default;
   $base-line-height: 1.5em !default;
@@ -41,8 +40,6 @@ article {
     text-decoration: none;
   }
 
-  @include clearfix;
-  text-align: left;
 
   .type {
     border-bottom: 1px solid;
@@ -59,14 +56,14 @@ article {
 
   h1 {
     font-family: $serif;
-    font-size: 2em;
+    font-size: 2.3em;
     font-weight: 600;
     margin-bottom: 0.6em;
   }
 
   h2 {
     font-family: $sans-serif;
-    font-size: 1.2em;
+    font-size: 1.8em;
     font-weight: 400;
     line-height: 1.4em;
     margin-bottom: 1.2em;
@@ -85,7 +82,7 @@ article {
 
   h3 {
    font-family: $serif;
-   font-size: 1em;
+   font-size: 1.5em;
    font-weight: 700;
    line-height: 1.4em;
    margin-bottom: 0.5em; 
@@ -138,7 +135,7 @@ article {
     font-family: $sans-serif;
     font-style: italic;
   }
-}
+
 
 
 h1,
@@ -148,7 +145,6 @@ h4,
 h5,
 h6 {
   font-family: $heading-font-family;
-  font-size: $base-heading-size;
   line-height: $heading-line-height;
   margin: 0 0 $small-spacing;
   text-transform: uppercase;

@@ -3,20 +3,25 @@
 @import 'neat/neat';
 @import 'partials/_icons';
 @import 'partials/_menu';
+@import 'partials/_search';
+
+
+// CSS reset strips these
+
+strong, b, strong *, b * { font-weight: bold !important; }
+em, i, em *, i * { font-style: italic !important; }
 
 body {
     margin: 0;
     background: $base-bg;
-    font: 18px/27px 'Obuntu Mono';
 }
 
-h1, h2, h3 { color: #FF6B6B; margin: 0 0 27px; }
+h1, h2, h3 { 
+    color: #FF6B6B; 
+    margin: 0 0 27px; 
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.2);}
 
-#wrapper{
-    height: $height;
-    width: $width;
-    overflow-y: auto;
-}
+
 #content{
 	h1,h2,h3{
 		text-align: center;
@@ -32,6 +37,9 @@ h1, h2, h3 { color: #FF6B6B; margin: 0 0 27px; }
 	margin-left: 0.3em;
 }
 
+.ellipsis {
+    @include ellipsis(100%);
+}
 // Dividers
 
 .divider{
@@ -54,4 +62,10 @@ h1, h2, h3 { color: #FF6B6B; margin: 0 0 27px; }
 }
 .divider:after{
     margin:0 -55% 0 2%;
+}
+
+// Badges
+
+.badge{
+    @include badge($notice-color)
 }

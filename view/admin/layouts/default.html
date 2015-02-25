@@ -10,7 +10,8 @@ ${parent.menu()}
 </%block>
 <%block name="content">
 
-%if article:
+## default layout: category
+%if article.is_category == True:
 	<h1 id="${'title_'+lang}" contenteditable="true">${getattr(article, 'title_'+lang)}</h1>
 	##<h3 id="${'description_'+lang}" contenteditable="true">${getattr(article, 'description_'+lang)}</h3>
 	%if article.banner_src:
@@ -33,46 +34,52 @@ ${parent.menu()}
 		</figure>
 	%endfor
 
+## default layout: article/non-category
 %else:
- Missing article data
 %endif
+
+<div id="tags">
+%for tag in article.tags:
+	 <a href="${'search?tag='+getattr(tag, "title_"+lang)}"><span class="badge">${getattr(tag, "title_"+lang)}</span>
+%endfor
+</div>
 
 ## Persist ckeditor instances
 <script>
 $(document).ready(function() {
 	// Ckeditor 
-   	var article_id = window.location.search
-    $("[contenteditable='true']").each(function( index ) {
+		var article_id = window.location.search
+		$("[contenteditable='true']").each(function( index ) {
 
-        var column_id = $(this).attr('id');
-        CKEDITOR.inline( column_id, {
-            on: {
-                blur: function( event ) {
-                	var data = {}
-                	// strip surrounding html from banner, save only src
-                	if(column_id != 'banner_src'){
-                   	data[column_id] = event.editor.getData();
-                  	}
-                  	else{
-                  		var banner_img = $('#banner_src img');
-                  		data[column_id] = banner_img.attr('src');
-                  	}
+				var column_id = $(this).attr('id');
+				CKEDITOR.inline( column_id, {
+						on: {
+								blur: function( event ) {
+									var data = {}
+									// strip surrounding html from banner, save only src
+									if(column_id != 'banner_src'){
+										data[column_id] = event.editor.getData();
+										}
+										else{
+											var banner_img = $('#banner_src img');
+											data[column_id] = banner_img.attr('src');
+										}
 
-                    var request = $.ajax({
-                    	type:'PUT',
-                        url: './api/article'+article_id,
-         				headers: {'X-Ckeditor-Edit': JSON.stringify(data)},
-                        processData: false,
-					    dataType: 'json'
-                    });
+										var request = $.ajax({
+											type:'PUT',
+											url: './api/article'+article_id,
+											headers: {'X-Ckeditor-Edit': JSON.stringify(data)},
+											processData: false,
+											dataType: 'json'
+										});
 
-                }
-            }
-        });
+								}
+						}
+				});
 
-    });
+		});
 
-    
+		
 
 });
 

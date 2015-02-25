@@ -1,11 +1,32 @@
-/*
-Accordion
-*/
+// _menu.scss
+// jQuery UI classes - using a rolled theme will over ride these in future distros! 
 
+// ul
+.ui-autocomplete{
+	width: ($menu-width - 15px);
+	display: block;
+}
+// li
+.ui-menu-item{
+	width: 100%;
+	display: block;
+	border-bottom: $accordion-menu-border;
+	background: $content-bg;
+	text-indent: 10px;
+	&:hover,
+	&:focus,{
+		background: darken($content-bg, 10%);
+	}
+}
+// Accordion
 .accordion {  
   margin: 0;
   padding: 0;
   font-size: 18px;
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: 18px;
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
 
   color: $accordion-menu-color;
   li {
@@ -37,7 +58,7 @@ Accordion
   }
   
   
-  background-color: darken($accordion-menu-background, 5%);
+  background-color: $accordion-menu-background;
   border: $accordion-menu-border;
   margin-bottom: $base-spacing;
 
@@ -73,9 +94,9 @@ nav#slide-menu {
 	bottom: 0;
 	display: block;
 	float: left;
+	height: $height;
 	width: 100%;
 	max-width: $menu-width;
-	overflow-y: auto;
 }
 
 

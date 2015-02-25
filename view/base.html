@@ -4,12 +4,12 @@
 <head>
 <%block name='head'>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<!-- CDN resources can go here, but relative paths need to be delclared in client/index or admin/index-->
+<!-- CDN resources can go here, but most relative paths need to be delclared in client/index templates or they'll only resolve on client route-->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <!-- JS -->
 <script src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='/public/js/jquery-ui.js'></script>
-##Commenting out minified cdn, need readable tradeback
+## @todo re-enable minified CDN
 ##<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
 </%block>
@@ -18,25 +18,9 @@
 <!-- Navigation -->
 <nav id="slide-menu">
 <form class='search-bar' role='search'>
-	<input type='search' placeholder='Enter Search' />
-	<button type='submit'>Submit</button>
+	<input id="search" type='search' placeholder='Enter Search' required /><button id="search-submit"><span class="icon-search"></span></button>
 </form>
 <%block name='menu'>
-<div id="accordion">
-<ul>
-%for row in categories:
-	%if row.is_category == True:
-	<li class="accordion-header"><a href="article?_id=${row._id}">${getattr(row, 'title_'+lang)}</a></li>
-	<ul class="accordion-content">
-	%for article in row.articles:
-		<li><span class="${article.icon}"></span>
-<a href="article?_id=${article._id}">${getattr(article, 'title_'+lang)}</a></li>	
-	%endfor
-	%endif
-	</ul>
-%endfor
-</ul>
-</div>
 </%block>
 </nav>
 
@@ -51,7 +35,21 @@ ${self.body()}
 </div>
 <div id="footer"><%block name='footer'></%block></div>
 <%block name='scripts'>
-
+	## Muxing Mako & Javascript to build jquery UI autocomplete fields, o'lala
+	<script type="text/javascript">
+	$(document).ready(function(){
+		// build autocomplete.source
+		var availableTags = []
+		%for tag in tags:
+			availableTags.push({label:"${getattr(tag, 'title_'+lang)}", value:"tag=${getattr(tag,'title_'+lang)}"});
+		%endfor
+		// init autocomplete
+		$("#search").autocomplete({
+			minLength: 0,
+			source: availableTags
+		});
+	});
+	</script>
 </%block>
 </body>
 </html>

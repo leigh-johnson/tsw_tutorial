@@ -72,3 +72,29 @@ $accordion-menu-sub-background: darken($accordion-menu-background, 5%);
 $accordion-menu-sub-inset: darken($accordion-menu-sub-background, 6%);
 $accordion-menu-sub-hover: lighten($accordion-menu-sub-background, 2%);
 $accordion-menu-list-padding: ($base-spacing / 10);
+
+// Mixins
+
+// Badges, notices
+$base-spacing: 1.5em !default;
+$alert-color: #fff6bf !default;
+$error-color: #fbe3e4 !default;
+$notice-color: #e5edf8 !default;
+$success-color: #e6efc2 !default;
+$badge-font-size: 1em !default;
+
+@mixin badge($color: $dark-gray) {
+	@include transition(all 0.35s ease-in-out);
+  background-color: $color;
+  border-radius: $badge-font-size * 5;
+  color: darken($color, 60%);
+  display: inline-block;
+  font-size: $badge-font-size;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.4em 1.2em;
+
+  &:hover{
+  	background-color: darken($color, 20%);
+  }
+}

@@ -1,0 +1,49 @@
+##  actually the article-default template
+<%inherit file="../index.html"/>
+<%block name='head'>
+${parent.head()}
+</%block>
+<%block name='menu'>
+${parent.menu()}
+</%block>
+<%block name="content">
+<div class="divider">Results for <strong>${query}</strong></div>
+
+%if query.startswith("tag="):
+## query ?tag=
+%for result in results.articles:
+	<fieldset>
+	<a href="article?_id=${result._id}">
+	<div class="result">
+	<h3>${getattr(result, "title_"+lang)}</h3>
+	%if getattr(result, "body_"+lang) != []:
+		<p>${getattr(result, "body_"+lang)[0].text[:150]} ...
+		</p>
+	%endif
+	<span class="${result.icon}"></span>
+	</div>
+	</a>
+	</fieldset>
+%endfor
+%endif
+
+%if query.startswith("term="):
+## query ?term=
+## results are returned as tuple (Body_$lang(), Article())
+%for n in results:
+	<% result = n[0] %>
+	<fieldset>
+	<a href="article?_id=${result._id}">
+	<div class="result">
+	<h3>${getattr(result, "title_"+lang)}</h3>
+	%if getattr(result, "body_"+lang) != []:
+		<p>${getattr(result, "body_"+lang)[0].text[:150]} ...
+		</p>
+	%endif
+	<span class="${result.icon}"></span>
+	</div>
+	</a>
+	</fieldset>
+%endfor
+%endif
+</%block>

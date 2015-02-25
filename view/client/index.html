@@ -1,19 +1,98 @@
-## -*- coding: utf-8 -*-
+## served on
 <%inherit file="../base.html"/>
-<%def name="path()">
-## Empty at root.
-</%def>
-<%block name="head">
-	${parent.head()}
-	<link href="${path()+'public/css/style.css'}" type="text/css" rel="stylesheet"/>
-	## load faction-specific stylesheet
+<%def name="path()"></%def>
+<%block name='head'>
+${parent.head()}
+<link href="${path()+'public/css/reset.css'}" rel='stylesheet' type='text/css' />
+<link href="${path()+'public/css/style.css'}" rel='stylesheet' type='text/css' />
+<link href="${path()+'public/css/admin.css'}" rel='stylesheet' />
 </%block>
+<%block name='menu'>
+<div id="menu" class="accordion">
+<ol class="">
+
+## categories sorted by SQLalchemy's order_by()
+## @todo should really use a recursive algorithm to traverse each Article().articles
+
+%for row in categories:
+	 ##Top level categories
+	%if row.is_category == True & row.is_public == True & (row.parent_id is None):
+	<li id="${'article_'+str(row._id)}">
+		<div class="-wrapper accordion-header">
+			<span class="icon-plus accordion-icon">
+			</span>
+			<a href="article?_id=${row._id}">${getattr(row, 'title_'+lang)}</a>
+		</div>
+		## Category roll of articles
+		<ol>
+			%for article in row.articles:
+				##If child has children
+				%if article.is_category == True:
+					<li data-order="${article.order}" id="${'article_'+str(article._id)}">
+						<div class="accordion-header -wrapper">
+							<span class="icon-plus accordion-icon"></span>
+							<a href="article?_id=${article._id}">${getattr(article, 'title_'+lang)}</a>
+						</div>
+						## Article roll, if subcategory
+						<ol>
+						%for nested_article in article.articles:
+							%if nested_article.is_category == True:
+								<li id="${'article_'+str(nested_article._id)}">
+									<div class="accordion-header -wrapper">
+									<span class="icon-plus accordion-icon"></span>
+									<a href="article?_id=${nested_article._id}">${getattr(nested_article, 'title_'+lang)}</a>
+									</div>
+									<ol>
+									%for sub_article in nested_article.articles:
+										<li id="${'article_'+str(sub_article._id)}">
+										<div class="accordion-header -wrapper">
+											<span class="${article.icon}"></span>
+											<a href="article?_id=${sub_article._id}">${getattr(sub_article, 'title_'+lang)}</a>
+										</div>
+										</li>
+									%endfor
+									</ol>
+								</li>
+							%else:
+								<li id="${'article_'+str(nested_article._id)}">
+									<div class="accordion-header -wrapper">
+										<span class="${article.icon}"></span>
+										<a href="article?_id=${nested_article._id}">${getattr(nested_article, 'title_'+lang)}</a>
+									</div>
+								</li>
+							%endif
+						%endfor
+						</ol>
+					</li>
+				%else:
+				<li id="${'article_'+str(article._id)}">
+					<div class="-wrapper">
+					<span class="${article.icon}"></span>
+					<a href="article?_id=${article._id}">${getattr(article, 'title_'+lang)}</a>
+					</div>
+				</li>
+				%endif
+			%endfor
+		</ol>
+	</li>
+	%endif
+%endfor
+</ol>
+</%block>
+## Select a language
+
 <%block name="content">
-	<h1>Welcome to the TSW tutorials, ${character['name']}</h1>
-	%for item in article.body_en:
-		${item.text}
-	%endfor
+
+<h1>Welcome, ${character["name"]}</h1>
+
+Super secret ${character["faction"]} database.
 </%block>
+</div> <!-- End #wrapper -->
+
+
 <%block name='scripts'>
-<script type='text/javascript' src="${path()+'public/js/menu.js'}"></script>
+	<script type='text/javascript' src='${path()+"public/js/menu.js"}'>
+	</script>
+	${parent.scripts()}
+
 </%block>

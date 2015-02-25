@@ -106,6 +106,11 @@ class Tag(Base):
 	title_fr = Column(String(100))
 	title_de = Column(String(100))
 
+	@staticmethod
+	def list(session):
+		'''Returns an ordered list'''
+		return session.query(Tag).all()
+
 class Article(Base):
 	__tablename__ = 'article'
 	_id = Column(Integer, primary_key=True)

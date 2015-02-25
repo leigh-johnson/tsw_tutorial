@@ -1,0 +1,52 @@
+// _search.scss
+
+#search{
+	width: 85%;
+}
+.search-bar{
+	margin-left: 5px;
+	margin-top: 10px;
+	div{
+		display:inline-block;
+		margin-top: 10px;
+		font-size: 2em;
+		color: $content-bg;
+		width: 20%;
+	}
+}
+
+#content{
+	text-align:center;
+
+fieldset{
+	height: 100px;
+	margin: 15px;
+	width: 80%;
+	display: inline-block;
+	position: relative;
+	&:hover{
+			background: darken($content-bg, 5%);
+	}
+
+	h3{
+		position: absolute;
+		top: 3px;
+		left: 8px;
+	}
+	p{	
+		width: 80%;
+		text-align: left;
+		position: absolute;
+		top: 35px;
+		left: 8px;
+	}
+	span{
+		position: absolute;
+		color: $dark-gray;
+		font-size: 2.5em;
+		right: 25px;
+		top: 25px;
+	}
+}
+
+}

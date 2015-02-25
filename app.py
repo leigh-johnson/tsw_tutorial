@@ -6,8 +6,8 @@ import cherrypy
 import re
 from collections import OrderedDict
 from auth import AuthController, require, check_auth
-from api import ArticleAPI
-from models import Base, Article, Body_en, Body_fr, Body_de, Admin, Jsonify
+from api import ArticleAPI, TagAPI
+from models import Base, Article, Body_en, Body_fr, Body_de, Admin, Tag, Jsonify
 from sqlalchemy.ext.serializer import loads, dumps
 from sqlalchemy.exc import IntegrityError
 from cherrypy.process import wspbus, plugins
@@ -113,10 +113,10 @@ class ClientController(object):
             'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
             'language': "en" # cherrypy.request.headers.get('X-Tsw-Language')
         }
-
         categories = Article.list(cherrypy.request.db)
-        template = lookup.get_template(("client/index.html"))
-        return template.render(categories=categories, character=character, lang=character['language'])
+        template = lookup.get_template(('client/index.html'))
+        return template.render(categories=categories, lang=character["language"], character=character)
+
 
     @cherrypy.expose
     def article(self, _id=None):
@@ -129,89 +129,14 @@ class ClientController(object):
             raise cherrypy.HTTPRedirect('/')
         categories = Article.list(cherrypy.request.db)
         article = cherrypy.request.db.query(Article).filter(Article._id == _id).one()
-        template = lookup.get_template("client/index.html")
-        return template.render(categories=categories, article=article, character=character, lang=character['language'])
+        template = lookup.get_template('client/layouts/'+article.layout+'.html')
+        return template.render(categories=categories, lang=character["language"], character=character)
 
     @cherrypy.expose
-    def build_data(self):
-        body_1 = Body_en(
-            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
-            )
-        body_2 = Body_en(
-            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
-            )
-        body_3 = Body_en(
-            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
-            )
-        body_4 = Body_en(
-            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
-            )
-        body_5 = Body_en(
-            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
-            )
-        body_6 = Body_en(
-            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
-            )     
-        body_7 = Body_en(
-            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
-            )
-        body_8 = Body_en(
-            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
-            )
-        body_9 = Body_en(
-            text='<figure><img alt="" src="http://placehold.it/200x200/1e1e1e/ffffff/&amp;text=200x200px" style="float: left;" /><figcaption><p><span style="font-family: Oxygen, sans-serif; font-size: 18px; font-style: normal; font-variant: normal; line-height: 27px; background-color: rgb(252, 254, 255);">Changchunsaurus Gyposaurus Rinconsaurus Aggiosaurus Scelidosaurus Dryosaurus Anatosaurus Astrodon Asiamericana Ignavusaurus Gongxianosaurus Rebbachisaurus Zhuchengosaurus Trinisaura Kritosaurus Cryptovolans Erliansaurus Deltadromeus Jiangshanosaurus Hongshanosaurus Protognathosaurus Stegopelta Symphyrophus Echinodon Rahiolisaurus. </span></p></figcaption></figure>'
-            )
-        article_1 = Article(
-            title_en='Category of Things',
-            order=30,
-            layout='default',
-            public= True,
-            is_category=True
-            )
-        article_2 = Article(
-            title_en='English text/img thing',
-            order=20,
-            public=True
-            )
-        article_3 = Article(
-            title_en='English video thing',
-            order=10,
-            layout='video',
-            public=True
-            )
-        article_4 = Article(
-            title_en='Orphan article qq',
-            order=30,
-            layout='default',
-            public=False)
-        article_5 = Article(
-            title_en="Sub-category of things",
-            order=10,
-            public=True,
-            is_category=True)
-        article_6 = Article(
-            title_en="Article in a subcategory",
-            order=10,
-            public=True)
-        article_1.body_en.append(body_1)
-        article_1.body_en.append(body_2)
-        article_1.body_en.append(body_3)
-        article_2.body_en.append(body_4)
-        article_2.body_en.append(body_5)
-        article_2.body_en.append(body_6)
-        article_3.body_en.append(body_7)
+    def search(self, **kwargs):
+        '''Search function. Prioritizes article tags/keywords, then performs a fuzzy search'''
+        #articles tagged with keyword
 
-
-        article_6.body_en.append(body_8)
-        article_6.body_en.append(body_9)
-
-        article_1.articles.append(article_2)
-        article_1.articles.append(article_3)
-        article_1.articles.append(article_5)
-        article_5.articles.append(article_6)
-
-        result = cherrypy.request.db.add_all([article_1, article_2, article_3, article_4, article_5, article_6])
-        return result
 
 
 
@@ -221,9 +146,10 @@ class AdminController(object):
         cookie = cherrypy.request.cookie
         if 'lang' in cookie.keys():
             lang = cookie['lang'].value
+        tags = Tag.list(cherrypy.request.db)
         categories = Article.list(cherrypy.request.db)
         template = lookup.get_template(('admin/index.html'))
-        return template.render(categories=categories, lang=lang)
+        return template.render(categories=categories, lang=lang, tags=tags)
 
     @cherrypy.expose
     def article(self, _id=None, lang='en'):
@@ -233,8 +159,9 @@ class AdminController(object):
             lang = cookie['lang'].value
         categories = Article.list(cherrypy.request.db)
         article = cherrypy.request.db.query(Article).filter(Article._id == _id).one()
+        tags = Tag.list(cherrypy.request.db)
         template = lookup.get_template('admin/layouts/'+article.layout+'.html')
-        return template.render(categories=categories, article=article, lang=lang)
+        return template.render(categories=categories, article=article, lang=lang, tags=tags)
 
     @cherrypy.expose
     def new(self, lang='en'):
@@ -243,9 +170,58 @@ class AdminController(object):
         if 'lang' in cookie.keys():
             lang = cookie['lang'].value
         categories = Article.list(cherrypy.request.db)
-        template = lookup.get_template('admin/new.html')
-        return template.render(categories=categories, lang=lang)
+        tags = Tag.list(cherrypy.request.db)
+        template = lookup.get_template('admin/new_article.html')
+        return template.render(categories=categories, lang=lang, tags=tags)
+
+    @cherrypy.expose
+    def tags(self, lang='en'):
+        '''Serve a new tag template'''
+        cookie = cherrypy.request.cookie
+        if 'lang' in cookie.keys():
+            lang = cookie['lang'].value
+        categories = Article.list(cherrypy.request.db)
+        tags = Tag.list(cherrypy.request.db)
+        template = lookup.get_template('admin/new_tag.html')
+        return template.render(categories=categories, lang=lang, tags=tags)
+
+    @cherrypy.expose
+    def search(self, lang="en", tag=None, term=None, *args):
+        cookie = cherrypy.request.cookie
+        if 'lang' in cookie.keys():
+            lang = cookie['lang'].value
+        categories = Article.list(cherrypy.request.db)
+        tags = Tag.list(cherrypy.request.db)
+        template = lookup.get_template('admin/layouts/search.html')
+
+        # return tag results
+        if tag != None:
+            title = "title_"+lang
+            result = cherrypy.request.db.query(Tag).filter((Tag.title_en == tag)|(Tag.title_fr == tag)|(Tag.title_de == tag)).one()
+            query = "tag= "+tag
+            return template.render(categories=categories, lang=lang, tags=tags, results=result, query=query)
         
+        elif term != None:
+        # return string-match to Body_$lang.text & Article.title_$lang
+            bodies = {"body_de": Body_de, "body_en": Body_en, "body_fr": Body_fr}
+            for k,v in bodies.iteritems():
+                if k == "body_"+lang:
+                    result = cherrypy.request.db.query(v, Article).join(Article).filter(
+                    v.text.like('%' + term + '%')|(getattr(Article, "title_"+lang).like('%' + term + '%'))).all()
+            query = "term= "+term
+            return template.render(categories=categories, lang=lang, tags=tags, results=results, query=query)
+        else:
+            return "Could not interpret search, try again"
+
+
+    @cherrypy.expose
+    def setTag(self, _id=None, tag_id=None):
+        '''Creates an association between Article() & Tag() instance'''
+        article = cherrypy.request.db.query(Article).get(_id)
+        tag = cherrypy.request.db.query(Tag).get(tag_id)
+        article.tags.append(tag)
+        return json.dumps({'responseText': 'Added tag: %s' %tag.title_en})
+
     @cherrypy.expose
     def setLang(self, lang):
         # Set cookie to send
@@ -310,7 +286,7 @@ class AdminController(object):
     @cherrypy.expose
     def setOrder(self):
         '''Accepts an xhr request header X-Admin-setOrder and serializes Article() instances by order with children'''
-        data = cherrypy.request.headers.get('X-Admin-setOrder')
+        data = cherrypy.request.headers.get('X-Admin-SetOrder')
         data = json.loads(data)
         order=0
         for _id in self.setOrder_generator(data):
@@ -365,10 +341,14 @@ class AdminController(object):
                         _id = int(i["id"])
                         yield {_id: child}
 
+        '''Adds a tag to article instance'''
+        pass
+
 
 class APIController(object):
     exposed = True
     article = ArticleAPI()
+    tag = TagAPI()
     ## Any other APIs can share this mount point
 
 ### Config ###

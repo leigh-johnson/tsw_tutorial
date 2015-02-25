@@ -22,6 +22,9 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+.icon-home:before {
+	content: "\e900";
+}
 
 .icon-file-text:before {
 	content: "\e926";
@@ -33,6 +36,10 @@
 
 .icon-file-video:before {
 	content: "\e92a";
+}
+
+.icon-search:before {
+	content: "\e986";
 }
 
 .icon-menu:before {

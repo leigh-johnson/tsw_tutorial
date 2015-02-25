@@ -121,6 +121,8 @@ ${parent.head()}
 	<div>
 
 	<a href="${path()+'admin/new'}"><button>New Article</button></a>
+	<a href="${path()+'admin/tags'}"><button>All Tags</button></a>
+
 	## Article options
 
 	## Change layout
@@ -176,6 +178,12 @@ ${parent.head()}
 
 	<div class="divider">LUA, Tags</div>
 
+	<label for="set_tag">Add a tag?</label>
+	<select id="set_tag"> 
+	%for tag in tags:
+		<option value="${tag._id}">${tag.title_en}</option>
+	%endfor
+	</select>
 
 	<div class="divider">Delete</div>
 	<button id="delete_article">Delete</button>
@@ -192,4 +200,5 @@ ${parent.head()}
 	<script type='text/javascript' src='${path()+"public/js/jquery.switchButton.js"}'></script>
 	<script src="${path()+'public/js/menu-admin.js'}"type='text/javascript'>
 	</script>
+	${parent.scripts()}
 </%block>
