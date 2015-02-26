@@ -108,12 +108,12 @@ body.menu-active nav#slide-menu ol { left: 0px; opacity: 1; }
 */
 
 div#content {
+	@include padding(30px, 60px, 60px, 60px);
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: $width;
 	height: $height;
-	padding: 60px;
 	overflow-x: hidden;
 	overflow-y: auto;
 	background: $content-bg;

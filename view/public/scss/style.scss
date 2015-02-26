@@ -4,6 +4,7 @@
 @import 'partials/_icons';
 @import 'partials/_menu';
 @import 'partials/_search';
+@import 'partials/_video';
 
 
 // CSS reset strips these
@@ -68,4 +69,10 @@ h1, h2, h3 {
 
 .badge{
     @include badge($notice-color)
+}
+
+#tags{
+    position: absolute;
+    bottom: 10px;
+    right: 50px;
 }

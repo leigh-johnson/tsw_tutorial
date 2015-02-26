@@ -296,4 +296,9 @@ API REQUESTS
 WIDGET LAYOUTS
 *************
 */
+	var widgets = ["img-aside"];
+	// Add figure + figcaption
+
+	// Remove widget & delete all Body_$lang() instances (requires confrim)
+
 });

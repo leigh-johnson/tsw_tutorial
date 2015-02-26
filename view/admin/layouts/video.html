@@ -2,6 +2,9 @@
 <%inherit file="../index.html"/>
 <%block name='head'>
 ${parent.head()}
+<link href="/public/css/video-js.css" rel="stylesheet" />
+<script src="/public/js/video.js" type="text/javascript"></script>
+
 ## load faction-specific stylesheet
 <script src="../public/ckeditor/ckeditor.js" type="text/javascript"></script>
 </%block>
@@ -9,5 +12,21 @@ ${parent.head()}
 ${parent.menu()}
 </%block>
 <%block name="content">
-video layout
-</%block>
+<h1 id="${'title_'+lang}" contenteditable="true">${getattr(article, 'title_'+lang)}</h1>
+<div id="video-wrapper">
+%if article.video_src:
+<video id="example_video_1" width="750px" class="video-js vjs-default-skin vjs-big-play-centered"
+  controls autoplay preload="auto">
+ <source src="${article.video_src}" type='video/webm' />
+ %else:
+<h4>No video src set. Please unlock the article & submit link to a video, or change template.</h4>
+
+</div>
+%endif
+
+<div id="tags">
+%for tag in article.tags:
+	 <a href="${'search?tag='+getattr(tag, "title_"+lang)}"><span class="badge">#${getattr(tag, "title_"+lang)}</span>
+%endfor
+</div>
+ </%block>

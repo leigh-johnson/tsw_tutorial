@@ -4,6 +4,7 @@ import json
 import MySQLdb
 import cherrypy
 import re
+import csv
 from collections import OrderedDict
 from auth import AuthController, require, check_auth
 from api import ArticleAPI, TagAPI
@@ -45,9 +46,9 @@ class SAEnginePlugin(plugins.SimplePlugin):
         self.bus.subscribe("bind", self.bind)
  
     def start(self):
-        db_path = 'root:normacreedlives@127.0.0.1/tsw_tuts'
+        db_conn = cherrypy.config.get("db.connection")
         #db_path = os.path.abspath(os.path.join(os.curdir, 'data/my.db'))
-        self.sa_engine = create_engine('mysql+mysqldb://%s?charset=utf8' % db_path, echo=True)
+        self.sa_engine = create_engine('mysql+mysqldb://%s?charset=utf8' % db_conn, echo=True)
         Base.metadata.create_all(self.sa_engine)
  
     def stop(self):
@@ -164,15 +165,15 @@ class AdminController(object):
         return template.render(categories=categories, article=article, lang=lang, tags=tags)
 
     @cherrypy.expose
-    def new(self, lang='en'):
+    def new(self, **kwargs):
         '''Serve new article template'''
-        cookie = cherrypy.request.cookie
-        if 'lang' in cookie.keys():
-            lang = cookie['lang'].value
-        categories = Article.list(cherrypy.request.db)
-        tags = Tag.list(cherrypy.request.db)
-        template = lookup.get_template('admin/new_article.html')
-        return template.render(categories=categories, lang=lang, tags=tags)
+        article = Article()
+        for k,v in kwargs.iteritems():
+            setattr(article, k, v)
+        cherrypy.request.db.add(article)
+        cherrypy.request.db.flush()
+        # flush to have access to ._id, otherwise None 
+        raise cherrypy.HTTPRedirect('/admin/article?_id=%i' % article._id)
 
     @cherrypy.expose
     def tags(self, lang='en'):
@@ -340,9 +341,6 @@ class AdminController(object):
                     for child in self.setOrder_generator(v):
                         _id = int(i["id"])
                         yield {_id: child}
-
-        '''Adds a tag to article instance'''
-        pass
 
 
 class APIController(object):

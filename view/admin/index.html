@@ -1,13 +1,10 @@
 ## served on
 <%inherit file="../base.html"/>
-<%def name="path()">
-../
-</%def>
 <%block name='head'>
 ${parent.head()}
-<link href="${path()+'public/css/reset.css'}" rel='stylesheet' type='text/css' />
-<link href="${path()+'public/css/style.css'}" rel='stylesheet' type='text/css' />
-<link href="${path()+'public/css/admin.css'}" rel='stylesheet' />
+<link href="/public/css/reset.css" rel='stylesheet' type='text/css' />
+<link href="/public/css/style.css" rel='stylesheet' type='text/css' />
+<link href="/public/css/admin.css" rel='stylesheet' />
 </%block>
 <div id="wrapper">
 <%block name='menu'>
@@ -82,7 +79,7 @@ ${parent.head()}
 %endfor
 </ol>
 <ol>Private
-	<li><a href="/admin/new">Create new...</a></li>
+	<li><a href="new?title_en=New+article">Create new...</a></li>
 	%for row in categories:
 		%if row.is_public == False:
 		<li id="${row._id}" data-order="${row.order}"><a href="article?_id=${row._id}">${getattr(row, 'title_'+lang)}</a></li>
@@ -120,8 +117,8 @@ ${parent.head()}
 	</%block>
 	<div>
 
-	<a href="${path()+'admin/new'}"><button>New Article</button></a>
-	<a href="${path()+'admin/tags'}"><button>All Tags</button></a>
+	<a href="new?title_en=New+article"><button>New Article</button></a>
+	<a href="tags"><button>All Tags</button></a>
 
 	## Article options
 
@@ -195,10 +192,10 @@ ${parent.head()}
 	</%block>
 
 <%block name='scripts'>
-	<script type='text/javascript' src='${path() + "public/js/jquery-nestedSortable.js"}'></script>
-	<script type='text/javascript' src='${path()+"public/js/menu.js"}'></script>
-	<script type='text/javascript' src='${path()+"public/js/jquery.switchButton.js"}'></script>
-	<script src="${path()+'public/js/admin.js'}"type='text/javascript'>
+	<script type='text/javascript' src='/public/js/jquery-nestedSortable.js'></script>
+	<script type='text/javascript' src='/public/js/menu.js'></script>
+	<script type='text/javascript' src='/public/js/jquery.switchButton.js'></script>
+	<script src="/public/js/admin.js"type='text/javascript'>
 	</script>
 	${parent.scripts()}
 </%block>

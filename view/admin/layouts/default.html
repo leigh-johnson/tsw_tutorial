@@ -3,7 +3,7 @@
 <%block name='head'>
 ${parent.head()}
 ## load faction-specific stylesheet
-<script src="../public/ckeditor/ckeditor.js" type="text/javascript"></script>
+<script src="/public/ckeditor/ckeditor.js" type="text/javascript"></script>
 </%block>
 <%block name='menu'>
 ${parent.menu()}
@@ -14,8 +14,10 @@ ${parent.menu()}
 %if article.is_category == True:
 	<h1 id="${'title_'+lang}" contenteditable="true">${getattr(article, 'title_'+lang)}</h1>
 	##<h3 id="${'description_'+lang}" contenteditable="true">${getattr(article, 'description_'+lang)}</h3>
-	%if article.banner_src:
+	%if article.banner_src != None & article.banner_src != "":
 		<div contenteditable="true" id="banner_src"><img src="${article.banner_src}"></img></div>
+	%else:
+		<div contenteditable="true" id="banner_src">You haven't added a banner, click here to begin: <img src="${article.banner_src}"></img></div>
 	%endif
 	
 	## Enumerate body text instances
@@ -23,7 +25,7 @@ ${parent.menu()}
 		<div class="article-body" id="${'body_'+lang+'_'+str(body._id)}" contenteditable="true">${body.text}</div>
 	%endfor
 
-	<button>Add Widget @todo</button>
+	<button id="add-widget">Add Widget @todo</button>
 
 	## Enumerate article instances
 	%for summary in article.articles:
@@ -36,11 +38,22 @@ ${parent.menu()}
 
 ## default layout: article/non-category
 %else:
-%endif
+<h1 id="${'title_'+lang}" contenteditable="true">${getattr(article, 'title_'+lang)}</h1>
+	##<h3 id="${'description_'+lang}" contenteditable="true">${getattr(article, 'description_'+lang)}</h3>
+	%if article.banner_src != None and article.banner_src != "":
+		<div contenteditable="true" id="banner_src"><img src="${article.banner_src}"></img></div>
+	%endif
+	
+	## Enumerate body text instances
+	%for i, body in enumerate(getattr(article, 'body_'+lang)):
+		<div class="article-body" id="${'body_'+lang+'_'+str(body._id)}" contenteditable="true">${body.text}</div>
+	%endfor
 
+	<button id="add-widget">Add Widget @todo</button>
+%endif
 <div id="tags">
 %for tag in article.tags:
-	 <a href="${'search?tag='+getattr(tag, "title_"+lang)}"><span class="badge">${getattr(tag, "title_"+lang)}</span>
+	 <a href="${'search?tag='+getattr(tag, "title_"+lang)}"><span class="badge">#${getattr(tag, "title_"+lang)}</span>
 %endfor
 </div>
 
@@ -61,9 +74,14 @@ $(document).ready(function() {
 					}
 					else{
 						var banner_img = $('#banner_src img');
-						data[column_id] = banner_img.attr('src');
+						if(! banner_img){
+							data[column_id] = banner_img.attr('src');
+						}
+						else{
+							data[column_id] = null;
+						}
 					}
-
+					console.log(data);
 					var request = $.ajax({
 						type:'PUT',
 						url: '/admin/api/article'+article_id,
