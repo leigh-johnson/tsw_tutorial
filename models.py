@@ -114,7 +114,7 @@ class Tag(Base):
 class Article(Base):
 	__tablename__ = 'article'
 	_id = Column(Integer, primary_key=True)
-	layout = Column(Enum('default', 'video', 'img_hero'), default='default')
+	layout = Column(default='default')
 	icon = Column(String(100), default='icon-file-text')
 	lua_tag = Column(Integer)
 	is_public = Column(Boolean, default=False)

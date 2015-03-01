@@ -255,6 +255,8 @@ class AdminController(object):
         '''Sets the layout of an Article() instance'''
         article = cherrypy.request.db.query(Article).get(_id)
         article.layout = layout
+        print('*************************', layout)
+        print('*************************', article.layout)
         return json.dumps({'responseText': "Layout changed to %s" %layout})
 
     @cherrypy.expose

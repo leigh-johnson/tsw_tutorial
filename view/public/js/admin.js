@@ -58,6 +58,7 @@ ADMIN PANEL
 
 	// Set new layout
 	$('#set-layout').change(function(){
+		console.log($(this).val());
 		layout = $(this).val();
 		path = window.location.search;
 		_id = path.split('?')[1].split('=')[1];
@@ -65,7 +66,7 @@ ADMIN PANEL
 			url: '/admin/setLayout',
 			data: '_id='+_id+'&'+'layout='+layout,
 			success: function(){
-				location.reload();
+				//location.reload();
 			}
 		});
 	});

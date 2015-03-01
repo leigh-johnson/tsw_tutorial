@@ -39,8 +39,8 @@ ${parent.menu()}
 %else:
 <h1 id="${'title_'+lang}" contenteditable="true">${getattr(article, 'title_'+lang)}</h1>
 	##<h3 id="${'description_'+lang}" contenteditable="true">${getattr(article, 'description_'+lang)}</h3>
-	%if article.banner_src != None and article.banner_src != "":
-		<div contenteditable="true" id="banner_src"><img src="${article.banner_src}"></img></div>
+	%if article.banner_src != None:
+		<div id="banner_src"><img src="${article.banner_src}"></img></div>
 	%endif
 
 	<div id="body-text-wrapper">

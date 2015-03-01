@@ -502,27 +502,27 @@ body.menu-active div#content .menu-trigger {
     color: #fcfeff;
     width: 20%; }
 
-#content {
+#search-results {
   text-align: center; }
-  #content .search-results {
+  #search-results .search-results {
     height: 100px;
     margin: 15px;
     width: 80%;
     display: inline-block;
     position: relative; }
-    #content .search-results:hover {
+    #search-results .search-results:hover {
       background: #e3f5ff; }
-    #content .search-results h3 {
+    #search-results .search-results h3 {
       position: absolute;
       top: 3px;
       left: 8px; }
-    #content .search-results p {
+    #search-results .search-results p {
       width: 80%;
       text-align: left;
       position: absolute;
       top: 35px;
       left: 8px; }
-    #content .search-results span {
+    #search-results .search-results span {
       position: absolute;
       color: #333;
       font-size: 2.5em;
@@ -605,5 +605,8 @@ h1, h2, h3 {
   position: absolute;
   bottom: 10px;
   right: 50px; }
+
+#banner_src {
+  text-align: center; }
 
 /*# sourceMappingURL=style.css.map */
