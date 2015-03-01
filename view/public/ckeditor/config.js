@@ -43,6 +43,8 @@ CKEDITOR.editorConfig = function( config ) {
 	// Turns off automatic <p> wrapping - we'll handle that with templating!
 	CKEDITOR.config.autoParagraph = false;
 
+	// Replace all content box defaults to false
+	config.templates_replaceContent = false;
 
 	// Set the most common block elements.
 	config.format_tags = 'p;h1;h2;h3;pre';

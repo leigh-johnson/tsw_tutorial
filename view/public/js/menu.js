@@ -25,13 +25,6 @@
 
     // Search
 
-    function searchTerm (term) {
-    if (philosophers.indexOf(person) >= 0) {
-        console.log(person + " is a philosopher.");
-    } else {
-        console.log(person + " is NOT a philosopher.");
-    }
-}
     $('#search-submit').click(function(event){
         event.preventDefault();
         var search = $("#search").val();

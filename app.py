@@ -216,12 +216,17 @@ class AdminController(object):
 
 
     @cherrypy.expose
-    def setTag(self, _id=None, tag_id=None):
-        '''Creates an association between Article() & Tag() instance'''
-        article = cherrypy.request.db.query(Article).get(_id)
-        tag = cherrypy.request.db.query(Tag).get(tag_id)
-        article.tags.append(tag)
-        return json.dumps({'responseText': 'Added tag: %s' %tag.title_en})
+    def setTag(self,_id=None, tag_id=None, remove=False):
+        '''Creates or removes an association between Article() & Tag() instance'''
+        if remove == 'True':
+            article = cherrypy.request.db.query(Article).get(_id)
+            tag = cherrypy.request.db.query(Tag).get(tag_id)
+            article.tags.remove(tag)
+        else:
+            article = cherrypy.request.db.query(Article).get(_id)
+            tag = cherrypy.request.db.query(Tag).get(tag_id)
+            article.tags.append(tag)
+        return json.dumps({'responseText': 'Updated tag: %s' %tag.title_en})
 
     @cherrypy.expose
     def setLang(self, lang):
@@ -287,7 +292,7 @@ class AdminController(object):
     @cherrypy.expose
     def setOrder(self):
         '''Accepts an xhr request header X-Admin-setOrder and serializes Article() instances by order with children'''
-        data = cherrypy.request.headers.get('X-Admin-SetOrder')
+        data = cherrypy.request.headers.get('X-Admin-Menu-SetOrder')
         data = json.loads(data)
         order=0
         for _id in self.setOrder_generator(data):

@@ -37,7 +37,7 @@ class ArticleAPI(object):
         for k,v in kwargs.iteritems():
             if k.startswith("body"):
                 body = bodies[k]()
-                body.text = data[key]
+                body.text = v
                 getattr(result, k).append(body)
             else:
                 setattr(result, k, v)
@@ -49,7 +49,7 @@ class ArticleAPI(object):
         return json.dumps({"_id": result._id})
 
     #@require()
-    def PUT(self, _id, **kwargs):
+    def PUT(self, _id, new_body=False, **kwargs):
         '''
         If authorized, retrieve Article() and persist on session
         No validation strategy implemented, use with caution
@@ -67,6 +67,14 @@ class ArticleAPI(object):
                 setattr(result,'text', v)
             else:
                 setattr(result,k, v)
+        # handle new Body_$lang instance creation
+        if new_body == 'True':
+            body_fr = Body_fr(text="Empty French section.<br> Click to choose a template & begin editing")
+            body_en = Body_en(text="Empty English section.<br> Click to choose a template & begin editing")
+            body_de = Body_de(text="Empty German section.<br> Click to choose a template & begin editing")
+            result.body_fr.append(body_fr)
+            result.body_en.append(body_en)
+            result.body_de.append(body_de)
         cherrypy.request.db.add(result)
         return json.dumps({"responseText":"Saved!"})
 

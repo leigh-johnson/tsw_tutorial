@@ -326,6 +326,12 @@ html {
 .icon-file-video:before {
   content: "\e92a"; }
 
+.icon-folder:before {
+  content: "\e92f"; }
+
+.icon-folder-open:before {
+  content: "\e930"; }
+
 .icon-search:before {
   content: "\e986"; }
 
@@ -340,6 +346,9 @@ html {
 
 .icon-minus:before {
   content: "\ea0b"; }
+
+.icon-cross:before {
+  content: "\ea0f"; }
 
 .icon-arrow-right2:before {
   content: "\ea3c"; }

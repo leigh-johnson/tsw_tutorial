@@ -1,8 +1,4 @@
-﻿/**
- * @license Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
- */
-
+﻿// templates/default.js
 // Register a templates definition set named "default".
 CKEDITOR.addTemplates( 'default', {
 	// The name of sub folder which hold the shortcut preview images of the
@@ -24,7 +20,7 @@ CKEDITOR.addTemplates( 'default', {
 			'</p>'
 	},
 	{
-		title: 'Strange Template',
+		title: 'Two Columns',
 		image: 'template2.gif',
 		description: 'A template that defines two colums, each one with a title, and some text.',
 		html: '<table cellspacing="0" cellpadding="0" style="width:100%" border="0">' +

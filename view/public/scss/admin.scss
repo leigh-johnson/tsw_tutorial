@@ -4,7 +4,25 @@
 @import 'neat/neat';
 @import 'partials/admin-switchbutton';
 
-// jquery-sortable
+// Remove Tag
+.remove-tag{
+  color: #e74c3c;
+  font-size: 12px;
+  display: inline-block;
+  width: 18px;
+  &:hover{
+    color: darken(#e74c3c, 15%);
+  }
+}
+.remove-tag-wrapper{
+  display: inline-block;
+  border-style: dashed;
+  border-width: 1px;
+  border-color: #e74c3c;
+}
+
+
+// jquery-nestedSortable
 
 body.dragging, body.dragging * {
   cursor: move !important;
@@ -40,7 +58,8 @@ div#footer{
 }
 
 label{
-  font-size: 0.6em;
+  @include margin(0.5em, 0, 0.5em, 0);
+  font-size: 0.7em;
   text-transform: uppercase;
 }
 

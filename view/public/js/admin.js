@@ -34,7 +34,7 @@ ADMIN PANEL
 			});
 		});
 	// Assign new category/parent to article
-	$('#set_parent_id').change(function(){
+	$('#set-parent_id').change(function(){
 		// parent and child identities
 		p_id = $(this).val();
 		path = window.location.search;
@@ -57,7 +57,7 @@ ADMIN PANEL
 	});
 
 	// Set new layout
-	$('#set_layout').change(function(){
+	$('#set-layout').change(function(){
 		layout = $(this).val();
 		path = window.location.search;
 		_id = path.split('?')[1].split('=')[1];
@@ -82,7 +82,7 @@ ADMIN PANEL
 	});
 
 	// Set icon
-	$('#set_icon').change(function(){
+	$('#set-icon').change(function(){
 		icon = $(this).val();
 		path = window.location.search;
 		_id = path.split('?')[1].split('=')[1];
@@ -93,7 +93,7 @@ ADMIN PANEL
 	});
 
 	// Delete article @todo PROMPT CASCADE WARNING
-	$('#delete_article').click(function() {
+	$('#delete-article').click(function() {
 	    if (confirm('Really delete this article? CANNOT BE UNDONE!')) {
 			path = window.location.search;
 			_id = path.split('?')[1].split('=')[1];
@@ -109,7 +109,7 @@ ADMIN PANEL
 	});
 
 	// Set parental hierarchy
-	$('#set_is_category').change(function(){
+	$('#set-is_category').change(function(){
 		val = $(this).val();
 		path = window.location.search;
 		_id = path.split('?')[1].split('=')[1];
@@ -119,7 +119,7 @@ ADMIN PANEL
 	});
 
 	// Set viewer privs
-	$('#set_is_public').change(function(){
+	$('#set-is_public').change(function(){
 		val = $(this).val();
 		path = window.location.search;
 		_id = path.split('?')[1].split('=')[1];
@@ -128,17 +128,33 @@ ADMIN PANEL
 		});
 	});
 
+
 	// Add Tag() relationship
-	$('#set_tag').change(function(){
-		val = $(this).val();
+	$('#set-search-tag-submit').click(function(){
+		val = $('#set-search-tag').val();
 		console.log(val)
-		path = window.location.search;
-		_id = path.split('?')[1].split('=')[1];
+		query = window.location.search;
+		_id = query.split('?')[1].split('=')[1];
 		$.ajax({
 			url: '/admin/setTag?_id='+_id+'&tag_id='+val
 		});
 
 	});
+
+	// Remove Tag() relationship
+	$('.remove-tag').click(function(){
+		val = $(this).attr('data-attr');
+		query = window.location.search;
+		_id = query.split('?')[1].split('=')[1];
+		$.ajax({
+			url: '/admin/setTag?_id='+_id+'&tag_id='+val+'&remove=True',
+			success: function(){
+				window.location.reload();
+			}
+		})
+	});
+
+
 
 	// Nested Sortable ordering
 	var sortable = $('#menu .sortable').nestedSortable({
@@ -178,6 +194,7 @@ ADMIN PANEL
 	    	});
 	    }
 
+	    // Displays current column values in .flash-notice boxes
 	    function displayData(callback){
 	    	//Bakes data into html elements
 	    	callback.success(function (data) {
@@ -185,8 +202,8 @@ ADMIN PANEL
 	    		var options = ['icon', 'layout', 'lua_tag', 'is_public', 'is_category', 'parent_id', 'articles'];
 		  		 for (var key in data){
 		  		 	if(options.indexOf(key) > -1){
-		  		 	$("#set_"+key).after("<p class='flash-notice'>"+key+": "+ data[key]+"</p>");
-		  		 	}
+		  		 		$("#set-"+key).after("<p class='flash-notice'>"+key+": "+ data[key]+"</p>");
+		  			}
 	   			 }
 			});
 	    }
@@ -196,18 +213,6 @@ ADMIN PANEL
 
     }
 
-    // Adjust input fiels in new_article.html
-
-    // Add video_src input based on layout choice
-	$('#layout').change(function(){
-		if($('#layout').val() == 'video'){
-			$('#layout').after('<label for="video_src">Video link</label><input id="video_src" type="textarea" placeholder="Video URL">');
-		}
-		if($('#layout').val() != 'video'){
-			$('#video_src').remove();
-			$('label[for="video_src"]').remove();
-		}
-	});
 
 
 /*
@@ -293,12 +298,22 @@ API REQUESTS
 
 /*
 *************
-WIDGET LAYOUTS
+ADD BODY ("WIDGET" OR "SECTION")
 *************
 */
-	var widgets = ["img-aside"];
-	// Add figure + figcaption
+	$('#add-body').click(function(){
+		var _id = window.location.search
+		$.ajax({
+			type: 'PUT',
+			url: '/admin/api/article'+_id+'&new=True',
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			dataType: 'json',
+			success: function(){
+				window.location.reload();
+			}
+		});
+
+	});
 
 	// Remove widget & delete all Body_$lang() instances (requires confrim)
-
 });

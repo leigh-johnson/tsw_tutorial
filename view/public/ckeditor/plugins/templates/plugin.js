@@ -90,4 +90,3 @@ CKEDITOR.config.templates_files = [
  * @cfg
  * @member CKEDITOR.config
  */
-CKEDITOR.config.templates_replaceContent = true;

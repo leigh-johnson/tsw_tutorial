@@ -1,4 +1,4 @@
-## served on
+## -*- coding: utf-8 -*-
 <%inherit file="../base.html"/>
 <%block name='head'>
 ${parent.head()}
@@ -94,6 +94,8 @@ ${parent.head()}
 
 <h1>Welcome to the admin panel</h1>
 <p>Use tutorial goes here</p>
+
+
 </%block>
 </div> <!-- End #wrapper -->
 
@@ -128,66 +130,66 @@ ${parent.head()}
 	<div class="toggle"><input type="checkbox" value="1" checked></div>
 	## Assign to parent
 	<div id="article_options">
-	<select id="set_parent_id">
-	<option value="" disabled selected>Assign to Category</option>
-	%for row in categories:
-		%if row.is_category == True and (row.parent_id is None):
-			<option value="${row._id}">${row.title_en}</option>
-			%for article in row.articles:
-				%if article.is_category == True & (row._id == article.parent_id):
-				<option value="${article._id}"> >>${article.title_en}</option>
-				%endif
-			%endfor
-		%endif
-	%endfor
-	</select>
 
-	<label for="is_category">Is this a category? <br>Only categories can have children.</label>
-	<select id="set_is_category">
+	<div class="divider">Add Section</div>
+	<button id="add-body">Add Section</button>
+	<label for="add-body">Sections are generated in ALL languages!<br> Each section can hold a unique template. Use sections to organize content. </label>
+
+	<div class="divider">Is Category?</div>
+	<select id="set-is_category">
 		<option value="" disabled selected>Is this a category?</option>
 		<option value=0>No</option>
 		<option value=1>Yes</option>
 	</select>
+	<label for="is_category">Only categories can have children.</label>
 
-	<label for="set_is_public">Publish?</label>
-	<select id="set_is_public">
+	<div class="divider">Publish article?</div>
+	<select id="set-is_public">
 		<option value="" disabled selected>Publish this article?</option>
 		<option value=0>No</option>
 		<option value=1>Yes</option>
 	</select>
+	<label for="set-is_public">Only public articles appear in home menu.</label>
 
 
 	<div class="divider">Template, Icons</div>
-	<label for="set_layout">Choose a template/layout</label>
-	<select id="set_layout">
+	<label for="set-layout">Choose a template/layout:</label>
+	<select id="set-layout">
 		<option value="" disabled selected>Template</option>
-		<option value="default">Text+Imgs (default)</option>
+		<option value="category">Category</option>
+		<option value="default_banner">Article (default)</option>
+		<option value="default">Article (no banner) </option>
 		<option value="video">Video</option>
-		<option value="text">Text base</option>
 	</select>
 
-	<label for="set_icon">Choose an icon</label>
-	<select id="set_icon" style="font-family:'icomoon'; font-size: 1em;"required>
+	<label for="set-icon">Choose an icon</label>
+	<select id="set-icon" style="font-family:'icomoon'; font-size: 1em;"required>
 	<option value="icon-file-text">&#xe926;</span></option>
 	<option value="icon-file-picture">&#xe927;</option>
 	<option value="icon-file-video">&#xe92a;</option>
 	</select>
 
-	<div class="divider">LUA, Tags</div>
-
-	<label for="set_tag">Add a tag?</label>
-	<select id="set_tag"> 
-	%for tag in tags:
-		<option value="${tag._id}">${tag.title_en}</option>
-	%endfor
+	<div class="divider">Search Tags</div>
+	<select id="set-search-tag">
+		%for tag in tags:
+			<option value="${tag._id}">${getattr(tag,'title_'+lang)}</option>
+		%endfor
 	</select>
+	<button id="set-search-tag-submit">Add</button> 
+	<label for="set-search-tag">If the tag doesn't exist, it'll be created.
+	<br><a href="tags">Take care to localize before publishing.</a></label>
+
+	<div class="divider">LUA Tags</div>
+	<input id="set-lua-tag"></input>
+	<button id="set-lua-tag-submit">Add</button> 
+	<label for="set-lua-tag">Associate article with LUA Tag?</label>
+	</div>
+
 
 	<div class="divider">Delete</div>
-	<button id="delete_article">Delete</button>
-	</div>
+	<button id="delete-article">Delete</button>
 	<%block name="error">
 	<div id="error"></div>
-	</div>
 	</%block>
 	</%block>
 
