@@ -95,7 +95,11 @@ ADMIN PANEL
 		path = window.location.search;
 		_id = path.split('?')[1].split('=')[1];
 		$.ajax({
-			url: '/admin/setIsCategory?_id='+_id+'&is_category='+val	
+			type: 'PUT',
+			url: '/admin/api/article?_id='+_id+'&is_category='+val,
+			success: function(){
+				window.location.reload();
+			}
 		});
 	});
 
@@ -105,7 +109,8 @@ ADMIN PANEL
 		path = window.location.search;
 		_id = path.split('?')[1].split('=')[1];
 		$.ajax({
-			url: '/admin/setIsPublic?_id='+_id+'&is_public='+val
+			type: 'PUT',
+			url: '/admin/api/article?_id='+_id+'&is_public='+val,
 		});
 	});
 
@@ -194,7 +199,7 @@ ADMIN PANEL
 	    	//Bakes data into html elements
 	    	callback.success(function (data) {
 	    		data = data[0];
-	    		var options = ['layout', 'banner_src', 'lua_tag', 'is_public', 'is_category', 'parent_id', 'articles'];
+	    		var options = ['layout', 'lua_tag', 'is_public', 'is_category', 'parent_id', 'articles'];
 		  		 for (var key in data){
 		  		 	if(options.indexOf(key) > -1){
 		  		 		if (key == 'layout'){

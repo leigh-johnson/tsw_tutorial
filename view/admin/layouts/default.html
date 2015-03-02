@@ -61,6 +61,14 @@ ${parent.menu()}
 	</div>
 </div>
 
+ <%block name="set_banner_src">
+ <div class="divider">Banner URL</div>
+ <input id="set-banner_src"></input>
+ <button id="set-banner-src-submit">Add</button>
+ <label for="set-banner-src">Images are hosted in Funcom's CDN.
+ <br>WARNING! Submitting a new URL will replace the old one.</label>
+ </%block>
+
 ## Persist ckeditor instances
 ## inline to avoid excess HTTP requests
 <script type="text/javascript">

@@ -250,27 +250,6 @@ class AdminController(object):
         new_parent.articles.append(child)
         return json.dumps({'responseText': "Category assigned"})
 
-    @cherrypy.expose
-    def setIsCategory(self, _id, is_category):
-        '''Sets the is_category bool of an Article() instance'''
-        article = cherrypy.request.db.query(Article).get(_id)
-        article.is_category = is_category
-        return json.dumps({'responseText' : "is_category bool set to %s" % is_category})
-
-    @cherrypy.expose
-    def setIsPublic(self, _id, is_public):
-        '''Sets the is_public bool of an Article() instance'''
-        article = cherrypy.request.db.query(Article).get(_id)
-        article.is_public = is_public
-        return json.dumps({'responseText' : "is_public bool set to %s" % is_public})
-
-    @cherrypy.expose
-    def setIcon(self, _id, icon):
-        ''' Sets the icon-class string, which is rendered in accordion menu'''
-        article = cherrypy.request.db.query(Article).get(_id)
-        article.icon = icon
-        return json.dumps({'responseText': 'icon class seto to %s' % icon})
-
     # @todo remove this function
     @cherrypy.expose
     def buildOrder(self):
