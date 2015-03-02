@@ -11,37 +11,9 @@ ${parent.menu()}
 </%block>
 <%block name="content">
 
-## default layout: category
-%if article.is_category == True:
-	<h1 id="${'title_'+lang}" contenteditable="true">${getattr(article, 'title_'+lang)}</h1>
-	##<h3 id="${'description_'+lang}" contenteditable="true">${getattr(article, 'description_'+lang)}</h3>
-	%if article.banner_src != None and article.banner_src != "":
-		<div contenteditable="true" id="banner_src"><img src="${article.banner_src}"></img></div>
-	%endif
-	
-	## Enumerate body text instances
-	<div id="body-text-wrapper">
-	%for i, body in enumerate(getattr(article, 'body_'+lang)):
-		<div class="article-body" id="${'body_'+lang+'_'+str(body._id)}" contenteditable="true">${body.text}</div>
-	%endfor
-	</div>
-
-	## Enumerate article instances
-	%for summary in article.articles:
-		<figure>
-		<figcaption>
-		<h3>${getattr(summary, 'title_'+lang)}</h3>
-		</figcaption>
-		</figure>
-	%endfor
-
-## default layout: article/non-category
-%else:
 <h1 id="${'title_'+lang}" contenteditable="true">${getattr(article, 'title_'+lang)}</h1>
 	##<h3 id="${'description_'+lang}" contenteditable="true">${getattr(article, 'description_'+lang)}</h3>
-	%if article.banner_src != None:
-		<div id="banner_src"><img src="${article.banner_src}"></img></div>
-	%endif
+	<div id="banner_src"><img src="${article.banner_src}"></img></div>
 
 	<div id="body-text-wrapper">
 	## Enumerate body text instances
@@ -49,7 +21,6 @@ ${parent.menu()}
 		<div class="article-body" id="${'body_'+lang+'_'+str(body._id)}" contenteditable="true">${body.text}</div>
 	%endfor
 	</div>
-%endif
 	<div id="tags">
 	%for tag in article.tags:
 		<div class="remove-tag-wrapper">
