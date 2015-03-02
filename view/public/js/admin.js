@@ -115,7 +115,6 @@ ADMIN PANEL
 	});
 
 	// Set video_src
-
 	$('#set-video-src-submit').click(function(){
 		val = $('#set-video_src').val();
 		query = window.location.search;
@@ -129,6 +128,7 @@ ADMIN PANEL
 		});
 	});
 
+	// Set banner_src
 	$('#set-banner-src-submit').click(function(){
 		val = $('#set-banner_src').val();
 		query = window.location.search;
@@ -136,6 +136,20 @@ ADMIN PANEL
 		$.ajax({
 			type: 'PUT',
 			url: '/admin/api/article?_id='+_id+'&banner_src='+val,
+			success: function(){
+				window.location.reload();
+			}
+		});
+	});
+
+	// Set lua_tag
+	$('#set-lua-tag-submit').click(function(){
+		val = $('#set-lua_tag').val();
+		query = window.location.search;
+		_id = query.split('?')[1].split('=')[1];
+		$.ajax({
+			type: 'PUT',
+			url: '/admin/api/article?_id='+_id+'&lua_tag='+val,
 			success: function(){
 				window.location.reload();
 			}

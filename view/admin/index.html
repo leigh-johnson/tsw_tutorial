@@ -167,19 +167,20 @@ ${parent.head()}
 	<%block name="set_video_src"></%block>
 
 	<div class="divider">Search Tags</div>
+	<button id="set-search-tag-submit">Add</button> 
 	<select id="set-search-tag">
 		%for tag in tags:
 			<option value="${tag._id}">${getattr(tag,'title_'+lang)}</option>
 		%endfor
 	</select>
-	<button id="set-search-tag-submit">Add</button> 
 	<label for="set-search-tag">
 	<a href="tags">Take care to localize before publishing.</a></label>
 
 	<div class="divider">LUA Tags</div>
-	<input id="set-lua-tag"></input>
 	<button id="set-lua-tag-submit">Add</button> 
-	<label for="set-lua-tag">Associate article with LUA Tag?</label>
+	<input id="set-lua_tag"></input>
+	<label for="set-lua_tag">Associate article with LUA Tag?
+	<br>Only one LUA tag can be assigned, for now.</label>
 	</div>
 
 
