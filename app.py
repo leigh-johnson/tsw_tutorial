@@ -210,6 +210,7 @@ class AdminController(object):
                     result = cherrypy.request.db.query(v, Article).join(Article).filter(
                     v.text.like('%' + term + '%')|(getattr(Article, "title_"+lang).like('%' + term + '%'))).all()
             query = "term= "+term
+            
             return template.render(categories=categories, lang=lang, tags=tags, results=result, query=query)
         else:
             return "Could not interpret search, try again"

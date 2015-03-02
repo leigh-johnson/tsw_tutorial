@@ -35,7 +35,7 @@ ${parent.menu()}
 <p>No results found. </p>
 %endif
 %for n in results:
-	<% result = n[0] %>
+	<% result = n[1] %>
 	<fieldset>
 	<a href="article?_id=${result._id}">
 	<div class="result">
@@ -50,5 +50,4 @@ ${parent.menu()}
 	</fieldset>
 %endfor
 %endif
-</div>
 </%block>
