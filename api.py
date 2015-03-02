@@ -56,17 +56,18 @@ class ArticleAPI(object):
         '''
         result = cherrypy.request.db.query(Article).get(_id)
         bodies = {"body_en":Body_en, "body_fr":Body_fr, "body_de":Body_de}
-        for k,v in kwargs.iteritems():
-            if k.startswith("body"):
-                # Unpackage request  from Body_$language_$id to Body_$language.get(_id)
-                split = k.split('_')
-                lang = "_".join(split[0:2])
-                body = bodies[lang]
-                _id = split[2]
-                result = cherrypy.request.db.query(body).get(_id)
-                setattr(result,'text', v)
-            else:
-                setattr(result,k, v)
+        if new_body == False:
+            for k,v in kwargs.iteritems():
+                if k.startswith("body"):
+                    # Unpackage request  from Body_$language_$id to Body_$language.get(_id)
+                    split = k.split('_')
+                    lang = "_".join(split[0:2])
+                    body = bodies[lang]
+                    _id = split[2]
+                    result = cherrypy.request.db.query(body).get(_id)
+                    setattr(result,'text', v)
+                else:
+                    setattr(result,k, v)
         # handle new Body_$lang instance creation
         if new_body == 'True':
             body_fr = Body_fr(text="Empty French section.<br> Click to choose a template & begin editing")

@@ -342,6 +342,10 @@ html {
   border-width: 1px;
   border-color: #e74c3c; }
 
+#set-layout-icon {
+  font-family: "icomoon", "Source Sans Pro", sans-serif;
+  font-size: 0.9em; }
+
 body.dragging, body.dragging * {
   cursor: move !important; }
 

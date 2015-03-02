@@ -15,7 +15,7 @@ ${parent.menu()}
 <h1 id="${'title_'+lang}" contenteditable="true">${getattr(article, 'title_'+lang)}</h1>
 <div id="video-wrapper">
 %if article.video_src:
-<video id="example_video_1" width="750px" class="video-js vjs-default-skin vjs-big-play-centered"
+<video width="750px" class="video-js vjs-default-skin vjs-big-play-centered"
   controls autoplay preload="auto">
  <source src="${article.video_src}" type='video/webm' />
  %else:
@@ -29,4 +29,42 @@ ${parent.menu()}
 	 <a href="${'search?tag='+getattr(tag, "title_"+lang)}"><span class="badge">#${getattr(tag, "title_"+lang)}</span>
 %endfor
 </div>
+ </%block>
+
+ <%block name="set_video_src">
+ <div class="divider">Video URL</div>
+ <input id="set-video_src"></input>
+ <button id="set-video-src-submit">Add</button>
+ <label for="set-videos-src">Videos are hosted in Funcom's CDN.
+ <br>WARNING! Submitting a new URL will replace the old one.</label>
+ </%block>
+
+ <%block name="scripts">
+${parent.scripts()}
+<script type="text/javascript">
+$(document).ready(function() {
+	// Ckeditor 
+	var article_id = window.location.search
+	$("[contenteditable='true']").each(function( index ) {
+		var column_id = $(this).attr('id');
+		CKEDITOR.inline( column_id, {
+			on: {
+				blur: function( event ) {
+				var data = {}
+				// strip surrounding html from banner, save only src
+				data[column_id] = event.editor.getData();
+				var request = $.ajax({
+					type:'PUT',
+					url: '/admin/api/article'+article_id,
+					dataType: 'json',
+					data: data,
+					contentType: "application/x-www-form-urlencoded; charset=utf-8",
+				});
+				}
+			}
+		});
+	});
+});
+
+</script>
  </%block>

@@ -251,15 +251,6 @@ class AdminController(object):
         return json.dumps({'responseText': "Category assigned"})
 
     @cherrypy.expose
-    def setLayout(self, _id, layout):
-        '''Sets the layout of an Article() instance'''
-        article = cherrypy.request.db.query(Article).get(_id)
-        article.layout = layout
-        print('*************************', layout)
-        print('*************************', article.layout)
-        return json.dumps({'responseText': "Layout changed to %s" %layout})
-
-    @cherrypy.expose
     def setIsCategory(self, _id, is_category):
         '''Sets the is_category bool of an Article() instance'''
         article = cherrypy.request.db.query(Article).get(_id)

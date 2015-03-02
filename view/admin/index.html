@@ -79,7 +79,6 @@ ${parent.head()}
 %endfor
 </ol>
 <ol>Private
-	<li><a href="new?title_en=New+article">Create new...</a></li>
 	%for row in categories:
 		%if row.is_public == False:
 		<li id="${row._id}" data-order="${row.order}"><a href="article?_id=${row._id}">${getattr(row, 'title_'+lang)}</a></li>
@@ -152,21 +151,20 @@ ${parent.head()}
 	<label for="set-is_public">Only public articles appear in home menu.</label>
 
 
-	<div class="divider">Template, Icons</div>
-	<label for="set-layout">Choose a template/layout:</label>
-	<select id="set-layout">
+	<div class="divider">Template</div>
+	<label for="set-layout-icon">Choose a template/layout:</label>
+	<select id="set-layout-icon">
 		<option disabled selected>Layout</option>
-		<option value="category">Category</option>
-		<option value="default">Article (default)</option>
-		<option value="video">Video</option>
+		<option data-layout="category" data-icon="icon-file-text">&#xe926; Category</option>
+		<option data-layout="default" data-icon="icon-file-picture">&#xe927;Article (default) </option>
+		<option data-layout="default_nobanner" data-licon="icon-file-text">&#xe926;Article (no banner) </option>
+		<option data-layout="video" data-icon="icon-file-video">&#xe92a; Video</option>
 	</select>
 
-	<label for="set-icon">Choose an icon</label>
-	<select id="set-icon" style="font-family:'icomoon'; font-size: 1em;"required>
-	<option value="icon-file-text">&#xe926;</span></option>
-	<option value="icon-file-picture">&#xe927;</option>
-	<option value="icon-file-video">&#xe92a;</option>
-	</select>
+	## fill in these blocks in each layout template
+	## extend templaye layouts by adding more blocks with set-layout-specific-value 
+	<%block name="set_banner_src"></%block>
+	<%block name="set_video_src"></%block>
 
 	<div class="divider">Search Tags</div>
 	<select id="set-search-tag">
@@ -175,8 +173,8 @@ ${parent.head()}
 		%endfor
 	</select>
 	<button id="set-search-tag-submit">Add</button> 
-	<label for="set-search-tag">If the tag doesn't exist, it'll be created.
-	<br><a href="tags">Take care to localize before publishing.</a></label>
+	<label for="set-search-tag">
+	<a href="tags">Take care to localize before publishing.</a></label>
 
 	<div class="divider">LUA Tags</div>
 	<input id="set-lua-tag"></input>

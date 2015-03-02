@@ -62,7 +62,8 @@ ${parent.menu()}
 </div>
 
 ## Persist ckeditor instances
-<script>
+## inline to avoid excess HTTP requests
+<script type="text/javascript">
 $(document).ready(function() {
 	// Ckeditor 
 	var article_id = window.location.search

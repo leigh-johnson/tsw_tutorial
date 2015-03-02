@@ -4,7 +4,7 @@
 @import 'neat/neat';
 @import 'partials/admin-switchbutton';
 
-// Remove Tag
+// Remove Search Tag
 .remove-tag{
   color: #e74c3c;
   font-size: 12px;
@@ -19,6 +19,12 @@
   border-style: dashed;
   border-width: 1px;
   border-color: #e74c3c;
+}
+
+// Set icon font in layout options
+#set-layout-icon{
+  font-family: "icomoon", "Source Sans Pro", sans-serif;
+  font-size: 0.9em;
 }
 
 

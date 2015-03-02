@@ -57,40 +57,20 @@ ADMIN PANEL
 	});
 
 	// Set new layout
-	$('#set-layout').change(function(){
-		console.log($(this).val());
-		layout = $(this).val();
+	$('#set-layout-icon').change(function(){
+		layout = $(this).find(':selected').data('layout');
+		icon = $(this).find(':selected').data('icon');
 		path = window.location.search;
 		_id = path.split('?')[1].split('=')[1];
+		console.log(layout, icon);
 		$.ajax({
-			url: '/admin/setLayout',
-			data: '_id='+_id+'&'+'layout='+layout,
+			type: 'PUT',
+			url: '/admin/api/article?_id='+_id+'&'+'layout='+layout+'&icon='+icon,
 			success: function(){
-				//location.reload();
+				window.location.reload();
 			}
 		});
-	});
 
-	// Add video_src input based on layout choice
-	$('#layout').change(function(){
-		if($('#layout').val() == 'video'){
-			$('#layout').after('<label for="video_src">Video link</label><input id="video_src" type="textarea" placeholder="Video URL">');
-		}
-		if($('#layout').val() != 'video'){
-			$('#video_src').remove();
-			$('label[for="video_src"]').remove();
-		}
-	});
-
-	// Set icon
-	$('#set-icon').change(function(){
-		icon = $(this).val();
-		path = window.location.search;
-		_id = path.split('?')[1].split('=')[1];
-		$.ajax({
-			url: '/admin/setIcon',
-			data: '_id='+_id+'&'+'icon='+icon
-		});
 	});
 
 	// Delete article @todo PROMPT CASCADE WARNING
@@ -129,6 +109,20 @@ ADMIN PANEL
 		});
 	});
 
+	// Set video_src
+
+	$('#set-video-src-submit').click(function(){
+		val = $('#set-video_src').val();
+		query = window.location.search;
+		_id = query.split('?')[1].split('=')[1];
+		$.ajax({
+			type: 'PUT',
+			url: '/admin/api/article?_id='+_id+'&video_src='+val,
+			success: function(){
+				window.location.reload();
+			}
+		});
+	});
 
 	// Add Tag() relationship
 	$('#set-search-tag-submit').click(function(){
@@ -199,11 +193,16 @@ ADMIN PANEL
 	    function displayData(callback){
 	    	//Bakes data into html elements
 	    	callback.success(function (data) {
-	    		data = data[0]
-	    		var options = ['icon', 'layout', 'lua_tag', 'is_public', 'is_category', 'parent_id', 'articles'];
+	    		data = data[0];
+	    		var options = ['layout', 'banner_src', 'lua_tag', 'is_public', 'is_category', 'parent_id', 'articles'];
 		  		 for (var key in data){
 		  		 	if(options.indexOf(key) > -1){
-		  		 		$("#set-"+key).after("<p class='flash-notice'>"+key+": "+ data[key]+"</p>");
+		  		 		if (key == 'layout'){
+		  		 			$("#set-layout-icon").after("<p class='flash-notice'>"+key+": "+ data[key]+"</p>");
+		  		 		}
+		  		 		else{
+		  		 			$("#set-"+key).after("<p class='flash-notice'>"+key+": "+ data[key]+"</p>");
+		  				}
 		  			}
 	   			 }
 			});
@@ -306,9 +305,7 @@ ADD BODY ("WIDGET" OR "SECTION")
 		var _id = window.location.search
 		$.ajax({
 			type: 'PUT',
-			url: '/admin/api/article'+_id+'&new=True',
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			dataType: 'json',
+			url: '/admin/api/article'+_id+'&new_body=True',
 			success: function(){
 				window.location.reload();
 			}
