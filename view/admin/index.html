@@ -9,7 +9,7 @@ ${parent.head()}
 <div id="wrapper">
 <%block name='menu'>
 <div id="menu" class="accordion">
-<ol class="sortable">Published
+<ol class="sortable"><div class="flash-notice">Published</div>
 
 ## categories sorted by SQLalchemy's order_by()
 ## @todo should really use a recursive algorithm to traverse each Article().articles
@@ -78,7 +78,14 @@ ${parent.head()}
 	%endif
 %endfor
 </ol>
-<ol>Private
+<ol><div class="flash-notice">Orphans <br>(published but no parent)</div>
+	%for row in categories:
+		%if row.is_public == True and row.parent_id == None:
+			<li id="${row._id}" data-order="${row.order}"><a href="article?_id=${row._id}">${getattr(row, 'title_'+lang)}</a></li>
+		%endif
+	%endfor
+</ol>
+<ol><div class="flash-notice">Unpublished</div>
 	%for row in categories:
 		%if row.is_public == False:
 		<li id="${row._id}" data-order="${row.order}"><a href="article?_id=${row._id}">${getattr(row, 'title_'+lang)}</a></li>
@@ -180,7 +187,7 @@ ${parent.head()}
 	<button id="set-lua-tag-submit">Add</button> 
 	<input id="set-lua_tag"></input>
 	<label for="set-lua_tag">Associate article with LUA Tag?
-	<br>Only one LUA tag can be assigned, for now.</label>
+	<br>Only one LUA tag can be assigned, for now.2</label>
 	</div>
 
 

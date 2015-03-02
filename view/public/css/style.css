@@ -419,7 +419,8 @@ nav#slide-menu {
   float: left;
   height: 580px;
   width: 100%;
-  max-width: 290px; }
+  max-width: 290px;
+  overflow-y: auto; }
 
 body.menu-active nav#slide-menu {
   left: 0px; }

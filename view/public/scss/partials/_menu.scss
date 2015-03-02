@@ -97,6 +97,7 @@ nav#slide-menu {
 	height: $height;
 	width: 100%;
 	max-width: $menu-width;
+	overflow-y: auto;
 }
 
 

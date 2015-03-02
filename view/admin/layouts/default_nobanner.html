@@ -1,4 +1,79 @@
+## -*- coding: utf-8 -*-
+##  actually the article-default template
 <%inherit file="../index.html"/>
+<%block name='head'>
+${parent.head()}
+## load faction-specific stylesheet
+<script src="/public/ckeditor/ckeditor.js" type="text/javascript"></script>
+</%block>
+<%block name='menu'>
+${parent.menu()}
+</%block>
 <%block name="content">
-bannerless article layout
+
+<h1 id="${'title_'+lang}" contenteditable="true">${getattr(article, 'title_'+lang)}</h1>
+	<div id="body-text-wrapper">
+	## Enumerate body text instances
+	%for i, body in enumerate(getattr(article, 'body_'+lang)):
+		<div class="article-body" id="${'body_'+lang+'_'+str(body._id)}" contenteditable="true">${body.text}</div>
+	%endfor
+	</div>
+	<div id="tags">
+	%for tag in article.tags:
+		<div class="remove-tag-wrapper">
+		 <span class="icon-cross remove-tag" data-attr="${tag._id}"></span>
+		 <a href="${'search?tag='+getattr(tag, 'title_'+lang)}"><span class="badge">
+		 #${getattr(tag, "title_"+lang)}</span></a>
+		 </div>
+	%endfor
+	</div>
+</div>
+
+ <%block name="set_banner_src">
+ <div class="divider">Banner URL</div>
+ <button id="set-banner-src-submit">Add</button>
+ <input id="set-banner_src"></input>
+ <label for="set-banner-src">Images are hosted in Funcom's CDN.
+ <br>WARNING! Submitting a new URL will replace the old one.</label>
+ </%block>
+
+## Persist ckeditor instances
+## inline to avoid excess HTTP requests
+<script type="text/javascript">
+$(document).ready(function() {
+	// Ckeditor 
+	var article_id = window.location.search
+	$("[contenteditable='true']").each(function( index ) {
+		var column_id = $(this).attr('id');
+		CKEDITOR.inline( column_id, {
+			on: {
+				blur: function( event ) {
+				var data = {}
+				// strip surrounding html from banner, save only src
+					if(column_id != 'banner_src'){
+						data[column_id] = event.editor.getData();
+					}
+					else{
+						var banner_img = $('#banner_src img');
+						if(! banner_img){
+							data[column_id] = banner_img.attr('src');
+						}
+						else{
+							data[column_id] = null;
+						}
+					}
+					var request = $.ajax({
+						type:'PUT',
+						url: '/admin/api/article'+article_id,
+						dataType: 'json',
+						data: data,
+						contentType: "application/x-www-form-urlencoded; charset=utf-8",
+					});
+				}
+			}
+		});
+	});
+});
+
+</script>
 </%block>
