@@ -9,6 +9,7 @@ from collections import OrderedDict
 from auth import AuthController, require, check_auth
 from api import ArticleAPI, TagAPI
 from models import Base, Article, Body_en, Body_fr, Body_de, Admin, Tag, Jsonify
+from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.ext.serializer import loads, dumps
 from sqlalchemy.exc import IntegrityError
 from cherrypy.process import wspbus, plugins
@@ -109,18 +110,20 @@ class ClientController(object):
     '''Tutorial client. Views in views/client/_locale'''
     @cherrypy.expose
     def index(self):
+        # @todo remove static data
         character = {
             'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
             'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
             'language': "en" # cherrypy.request.headers.get('X-Tsw-Language')
         }
+        tags = Tag.list(cherrypy.request.db)
         categories = Article.list(cherrypy.request.db)
         template = lookup.get_template(('client/index.html'))
-        return template.render(categories=categories, lang=character["language"], character=character)
-
+        return template.render(categories=categories, character=character, lang=character["language"], tags=tags)
 
     @cherrypy.expose
     def article(self, _id=None):
+        # @todo remove static data
         character = {
             'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
             'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
@@ -130,16 +133,54 @@ class ClientController(object):
             raise cherrypy.HTTPRedirect('/')
         categories = Article.list(cherrypy.request.db)
         article = cherrypy.request.db.query(Article).filter(Article._id == _id).one()
+        tags = Tag.list(cherrypy.request.db)
         template = lookup.get_template('client/layouts/'+article.layout+'.html')
-        return template.render(categories=categories, lang=character["language"], character=character)
+        return template.render(categories=categories, article=article, character=character, lang=character["language"], tags=tags)
 
     @cherrypy.expose
-    def search(self, **kwargs):
+    def search(self, lang="en", tag=None, term=None, *args):
         '''Search function. Prioritizes article tags/keywords, then performs a fuzzy search'''
-        #articles tagged with keyword
+        # @todo remove static data
+        character = {
+            'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
+            'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
+            'language': "en" # cherrypy.request.headers.get('X-Tsw-Language')
+        }
+        categories = Article.list(cherrypy.request.db)
+        tags = Tag.list(cherrypy.request.db)
+        template = lookup.get_template('admin/layouts/search.html')
 
+        # return tag results
+        if tag != None:
+            title = "title_"+lang
+            result = cherrypy.request.db.query(Tag).filter((Tag.title_en == tag)|(Tag.title_fr == tag)|(Tag.title_de == tag)).one()
+            query = "tag= "+tag
+            return template.render(categories=categories, character=character, lang=character["language"], tags=tags, results=result, query=query)
+        
+        elif term != None:
+        # return string-match to Body_$lang.text & Article.title_$lang
+            bodies = {"body_de": Body_de, "body_en": Body_en, "body_fr": Body_fr}
+            for k,v in bodies.iteritems():
+                if k == "body_"+lang:
+                    result = cherrypy.request.db.query(v, Article).join(Article).filter(
+                    v.text.like('%' + term + '%')|(getattr(Article, "title_"+lang).like('%' + term + '%'))).all()
+            query = "term= "+term
+            return template.render(categories=categories, lang=lang, tags=tags, results=result, query=query)
+        else:
+            return "Could not interpret search, try again"
 
-
+    @cherrypy.expose
+    def help(self, lua_tag=None):
+        '''Alias route to query articles by LUA tag'''
+        categories = Article.list(cherrypy.request.db)
+        tags = Tag.list(cherrypy.request.db)
+        try:
+            article = cherrypy.request.db.query(Article).filter(Article.lua_tag == lua_tag).one()
+            template = lookup.get_template('client/layouts/'+article.layout+'.html')
+            return template.render(categories=categories, article=article, character=character, lang=character["language"], tags=tags)
+        except NoResultFound, e:
+            raise cherrypy.HTTPRedirect('/')
+        
 
 class AdminController(object):
     @cherrypy.expose

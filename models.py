@@ -57,7 +57,7 @@ class Admin(Base):
 class Body_en(Base):
 	'''Body exists so body_$language columns can contain many serialized entries
 	
-	e.g. body[0] & img[0] will share a CKeditor instance'''
+	e.g. body[0] & img[0] will share a CKeditor instance, if an img model is used.'''
 	__tablename__ = 'body_en'
 	_id = Column(Integer, primary_key=True)
 	article_id = Column(Integer, ForeignKey('article._id', ondelete='CASCADE'))

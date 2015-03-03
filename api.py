@@ -14,7 +14,7 @@ class ArticleAPI(object):
 
     exposed = True
     #@require()
-    def GET(self, **kwargs):
+    def GET(self, _id=None,**kwargs):
         '''
         Returns _id if id is supplied OR
         all article records if no id is supplied
@@ -87,7 +87,7 @@ class ArticleAPI(object):
 class TagAPI(object):
     exposed = True
 
-    def GET(self, **kwargs):
+    def GET(self, _id=None, **kwargs):
         if kwargs:
             result = cherrypy.request.db.query(Article).filter_by(**kwargs).all()
             return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
@@ -115,49 +115,7 @@ class TagAPI(object):
             result = cherrypy.request.db.query(Tag).filter(Tag._id == _id).delete()
         return json.dumps({"responseText": "Need to specify an id"})
 
-"""
-We probably don't need an image uploading system
 
-class ImgAPI(object):
-
-    exposed = True
-
-    def GET(self, img_id=None):
-        '''
-        Returns img_id if id is supplied OR
-        all img records if no id is supplied
-        '''
-        if img_id == None:
-            result = Img.list(cherrypy.request.db)
-            return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
-        elif cherrypy.request.db.query(Img).get(img_id):
-            result = cherrypy.request.db.query(Img).get(img_id)
-            return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
-        return 'Img ID not found.'
-
-    def POST(self, **kwargs):
-        '''
-        If authorized, persist a new Img() to session and return it
-        No validation strategy implemented, use with caution
-        '''
-        result = Img()
-        cherrypy.request.db.add(result)
-        return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
-
-    def PUT(self, img_id, **kwargs):
-        '''
-        If authorized, persist .update() on session
-        **KWARGS:
-        key=value
-        No validation strategy implemented, use with caution
-        '''
-        result = cherrypy.request.db.query(Img).filter(Img._id == img_id).update(kwargs)
-        return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
-
-    def DELETE(self, img_id):
-        '''
-        Marks object for delete in session
-        '''
-        result = cherrypy.request.db.query(Img).filter(Img._id == img_id).delete()
-        return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
-"""
+# Don't need to interface with these models yet, but we can always extend later. 
+# class BodyAPI(object)
+# class AdminAPI(object)
