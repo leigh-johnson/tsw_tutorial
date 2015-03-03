@@ -1,81 +1,640 @@
+input[type="button"], input[type="reset"], input[type="submit"],
+button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  -webkit-font-smoothing: antialiased;
+  background-color: #34495e;
+  border-radius: 3px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 0.9em;
+  font-weight: 600;
+  line-height: 0.65;
+  padding: 0.75em 0.75em;
+  text-decoration: none;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  font-variant: small-caps; }
+  input[type="button"]:hover, input[type="button"]:focus, input[type="reset"]:hover, input[type="reset"]:focus, input[type="submit"]:hover, input[type="submit"]:focus,
+  button:hover,
+  button:focus {
+    background-color: #19232d;
+    color: #fff; }
+  input[type="button"]:disabled, input[type="reset"]:disabled, input[type="submit"]:disabled,
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5; }
+
+fieldset {
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  margin: 0 0 0.75em;
+  padding: 1.5em; }
+
+input,
+label,
+select {
+  display: block;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 0.9em; }
+
+label {
+  font-weight: 600;
+  margin-bottom: 0.375em; }
+  label.required::after {
+    content: "*"; }
+  label abbr {
+    display: none; }
+
+input[type="email"], input[type="number"], input[type="password"], input[type="search"], input[type="tel"], input[type="text"], input[type="url"], input[type="color"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="time"], input[type="week"],
+select[multiple=multiple],
+textarea {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 0.9em;
+  margin-bottom: 0.75em;
+  padding: 0.5em;
+  transition: border-color;
+  width: 100%; }
+  input[type="email"]:hover, input[type="number"]:hover, input[type="password"]:hover, input[type="search"]:hover, input[type="tel"]:hover, input[type="text"]:hover, input[type="url"]:hover, input[type="color"]:hover, input[type="date"]:hover, input[type="datetime"]:hover, input[type="datetime-local"]:hover, input[type="month"]:hover, input[type="time"]:hover, input[type="week"]:hover,
+  select[multiple=multiple]:hover,
+  textarea:hover {
+    border-color: #c4c4c4; }
+  input[type="email"]:focus, input[type="number"]:focus, input[type="password"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="text"]:focus, input[type="url"]:focus, input[type="color"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus,
+  select[multiple=multiple]:focus,
+  textarea:focus {
+    border-color: #34495e;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 5px rgba(43, 60, 78, 0.7);
+    outline: none; }
+
+textarea {
+  resize: vertical; }
+
+input[type="search"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none; }
+
+input[type="checkbox"],
+input[type="radio"] {
+  display: inline;
+  margin-right: 0.375em; }
+
+input[type="file"] {
+  padding-bottom: 0.75em;
+  width: 100%; }
+
+select {
+  margin-bottom: 1.5em;
+  max-width: 100%;
+  width: auto; }
+
+ul,
+ol {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+dl {
+  margin-bottom: 0.75em; }
+  dl dt {
+    font-weight: bold;
+    margin-top: 0.75em; }
+  dl dd {
+    margin: 0; }
+
+table {
+  -webkit-font-feature-settings: "kern", "liga", "tnum";
+  -moz-font-feature-settings: "kern", "liga", "tnum";
+  -ms-font-feature-settings: "kern", "liga", "tnum";
+  font-feature-settings: "kern", "liga", "tnum";
+  border-collapse: collapse;
+  margin: 0.75em 0;
+  table-layout: fixed;
+  width: 100%; }
+
+th {
+  border-bottom: 1px solid #b7b7b7;
+  font-weight: 600;
+  padding: 0.75em 0;
+  text-align: left; }
+
+td {
+  border-bottom: 1px solid #ddd;
+  padding: 0.75em 0; }
+
+tr,
+td,
+th {
+  vertical-align: middle; }
+
+body {
+  -webkit-font-feature-settings: "kern", "liga", "pnum";
+  -moz-font-feature-settings: "kern", "liga", "pnum";
+  -ms-font-feature-settings: "kern", "liga", "pnum";
+  font-feature-settings: "kern", "liga", "pnum";
+  -webkit-font-smoothing: antialiased;
+  color: #333;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 0.9em;
+  line-height: 1.5; }
+
+h1, h2, h3, p {
+  margin: 0; }
+
+hr {
+  border-bottom: 1px solid #ddd;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  margin: 1.5em 0; }
+
+p {
+  color: #333;
+  line-height: 1.5; }
+
+a {
+  color: #477DCA;
+  text-decoration: none; }
+
+.type {
+  border-bottom: 1px solid;
+  display: inline-block;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 0.7em;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin-bottom: 2em;
+  padding: 0.1em 0;
+  text-align: left;
+  text-transform: uppercase; }
+
+h1 {
+  font-family: "Bitter", serif;
+  font-size: 2.3em;
+  font-weight: 600;
+  margin-bottom: 0.6em; }
+
+h2 {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 1.8em;
+  font-weight: 400;
+  line-height: 1.4em;
+  margin-bottom: 1.2em; }
+
+code {
+  background: #F7F7F7;
+  border-radius: 4.5px;
+  border: 1px solid #E0E0E0;
+  font-family: monaco;
+  font-size: 0.65em;
+  font-style: normal;
+  padding: 0.1em 0.4em;
+  white-space: nowrap; }
+
+h3 {
+  font-family: "Bitter", serif;
+  font-size: 1.5em;
+  font-weight: 700;
+  line-height: 1.4em;
+  margin-bottom: 0.5em;
+  text-transform: uppercase; }
+
+p.date {
+  color: rgba(51, 51, 51, 0.4);
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 0.8em;
+  margin-bottom: 0.5em; }
+
+p {
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+  letter-spacing: 1;
+  margin-bottom: 1.5em; }
+  p span {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 0.8em;
+    font-weight: 600;
+    text-transform: uppercase; }
+
+hr {
+  width: 3em; }
+
+a.read-more {
+  display: inline-block;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 0.8em;
+  font-weight: 700;
+  margin-left: 0.2em;
+  position: relative;
+  text-transform: uppercase; }
+  a.read-more span {
+    font-size: 1.7em;
+    position: absolute;
+    right: -10px;
+    top: -2px; }
+
+p.author {
+  font-family: "Source Sans Pro", sans-serif;
+  font-style: italic; }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Bitter", serif;
+  line-height: 1.2;
+  margin: 0 0 0.75em;
+  text-transform: uppercase; }
+
+p {
+  margin: 0 0 0.75em; }
+
+a {
+  color: #34495e;
+  text-decoration: none;
+  transition: color 0.1s linear; }
+  a:active, a:focus, a:hover {
+    color: #19232d; }
+  a:active, a:focus {
+    outline: none; }
+
+hr {
+  border-bottom: 1px solid #ddd;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  margin: 1.5em 0; }
+
+img,
+picture {
+  margin: 0;
+  max-width: 100%; }
+
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit; }
+
+@font-face {
+  font-family: 'icomoon';
+  src: url("../fonts/icomoon/icomoon.woff?-n3yekb") format("woff");
+  font-weight: normal;
+  font-style: normal; }
+[class^="icon-"], [class*=" icon-"] {
+  font-family: 'icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+.icon-home:before {
+  content: "\e900"; }
+
+.icon-file-text:before {
+  content: "\e926"; }
+
+.icon-file-picture:before {
+  content: "\e927"; }
+
+.icon-file-video:before {
+  content: "\e92a"; }
+
+.icon-folder:before {
+  content: "\e92f"; }
+
+.icon-folder-open:before {
+  content: "\e930"; }
+
+.icon-search:before {
+  content: "\e986"; }
+
+.icon-menu:before {
+  content: "\e9bd"; }
+
+.icon-link:before {
+  content: "\e9cb"; }
+
+.icon-plus:before {
+  content: "\ea0a"; }
+
+.icon-minus:before {
+  content: "\ea0b"; }
+
+.icon-cross:before {
+  content: "\ea0f"; }
+
+.icon-arrow-right2:before {
+  content: "\ea3c"; }
+
+.icon-arrow-left2:before {
+  content: "\ea40"; }
+
+.ui-autocomplete {
+  width: 275px;
+  display: block; }
+
+.ui-menu-item {
+  width: 100%;
+  display: block;
+  border-bottom: 1px solid #333;
+  background: #fcfeff;
+  text-indent: 10px; }
+  .ui-menu-item:hover, .ui-menu-item:focus {
+    background: #c9edff; }
+
+.accordion {
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+  font-weight: 600;
+  font-size: 18px;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+  color: #f2fbff;
+  background-color: #4b5663;
+  border: 1px solid #333;
+  margin-bottom: 1.5em; }
+  .accordion li {
+    list-style: none; }
+  .accordion li ol li div {
+    padding: 0 20px; }
+  .accordion li ol li ol li div {
+    padding: 0 40px; }
+  .accordion li ol li ol li ol li div {
+    padding: 0 60px; }
+  .accordion p, .accordion span {
+    color: #f2fbff;
+    line-height: 1.5;
+    padding: 0.15em; }
+  .accordion a {
+    color: #f2fbff;
+    text-decoration: none;
+    font-variant: small-caps; }
+  .accordion a:hover {
+    color: #b0e4ff; }
+  .accordion li:last-child, .accordion li ol:last-child {
+    border: none; }
+  .accordion li:focus, .accordion li:hover, .accordion li.is-expanded {
+    background-color: #4f5b69; }
+  .accordion li div span {
+    margin-left: 5px; }
+  .accordion div {
+    border-bottom: 1px solid #333; }
+
 /*
-Error: Invalid CSS after "	font-weight": expected ";", was ": normal;"
-        on line 7 of scss/partials/_icons.scss
-        from line 4 of scss/style.scss
-
-2: 	font-family: 'icomoon';
-3: 	src://url('../fonts/icomoon/icomoon.eot?#iefix-n3yekb') format('embedded-opentype');
-4: 		url('../fonts/icomoon/icomoon.woff?-n3yekb') format('woff'),
-5: 		//url('../fonts/icomoon/icomoon.ttf?-n3yekb') format('truetype'),
-6: 		//url('../fonts/icomoon/icomoon.svg?-n3yekb#icomoon') format('svg');
-7: 	font-weight: normal;
-8: 	font-style: normal;
-9: }
-10: 
-11: [class^="icon-"], [class*=" icon-"] {
-12: 	font-family: 'icomoon';
-
-Backtrace:
-scss/partials/_icons.scss:7
-scss/style.scss:4
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:1167:in `expected'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:1101:in `expected'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:1096:in `tok!'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:761:in `block in try_declaration'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:1141:in `call'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:1141:in `rethrow'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:766:in `try_declaration'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:696:in `declaration_or_ruleset'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:661:in `block_child'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:653:in `block_contents'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:210:in `directive_body'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:202:in `directive'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:660:in `block_child'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:650:in `block_contents'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:117:in `stylesheet'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/scss/parser.rb:42:in `parse'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/engine.rb:393:in `_to_tree'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/engine.rb:299:in `to_tree'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/perform.rb:323:in `block in visit_import'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/stack.rb:88:in `block in with_import'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/stack.rb:115:in `with_frame'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/stack.rb:88:in `with_import'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/perform.rb:322:in `visit_import'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/base.rb:36:in `visit'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/perform.rb:158:in `block in visit'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/stack.rb:79:in `block in with_base'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/stack.rb:115:in `with_frame'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/stack.rb:79:in `with_base'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/perform.rb:158:in `visit'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/base.rb:52:in `block in visit_children'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/base.rb:52:in `map'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/base.rb:52:in `visit_children'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/perform.rb:167:in `block in visit_children'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/perform.rb:179:in `with_environment'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/perform.rb:166:in `visit_children'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/base.rb:36:in `block in visit'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/perform.rb:186:in `visit_root'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/base.rb:36:in `visit'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/perform.rb:157:in `visit'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/visitors/perform.rb:8:in `visit'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/root_node.rb:36:in `css_tree'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/tree/root_node.rb:29:in `render_with_sourcemap'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/engine.rb:368:in `_render_with_sourcemap'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/engine.rb:285:in `render_with_sourcemap'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/plugin/compiler.rb:490:in `update_stylesheet'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/plugin/compiler.rb:209:in `each'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/plugin/compiler.rb:470:in `on_file_changed'
-/var/lib/gems/1.9.1/gems/sass-3.4.10/lib/sass/plugin/compiler.rb:328:in `block in watch'
-/var/lib/gems/1.9.1/gems/listen-2.8.5/lib/listen/listener.rb:282:in `call'
-/var/lib/gems/1.9.1/gems/listen-2.8.5/lib/listen/listener.rb:282:in `_process_changes'
-/var/lib/gems/1.9.1/gems/listen-2.8.5/lib/listen/listener.rb:246:in `block in _wait_for_changes'
-/var/lib/gems/1.9.1/gems/listen-2.8.5/lib/listen/listener.rb:229:in `loop'
-/var/lib/gems/1.9.1/gems/listen-2.8.5/lib/listen/listener.rb:229:in `_wait_for_changes'
-/var/lib/gems/1.9.1/gems/listen-2.8.5/lib/listen/listener.rb:318:in `block in _start_wait_thread'
+Menu
 */
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: Invalid CSS after \"	font-weight\": expected \";\", was \": normal;\"\A         on line 7 of scss/partials/_icons.scss\A         from line 4 of scss/style.scss\A \A 2: 	font-family: 'icomoon';\A 3: 	src://url('../fonts/icomoon/icomoon.eot?#iefix-n3yekb') format('embedded-opentype');\A 4: 		url('../fonts/icomoon/icomoon.woff?-n3yekb') format('woff'),\A 5: 		//url('../fonts/icomoon/icomoon.ttf?-n3yekb') format('truetype'),\A 6: 		//url('../fonts/icomoon/icomoon.svg?-n3yekb#icomoon') format('svg');\A 7: 	font-weight: normal;\A 8: 	font-style: normal;\A 9: }\A 10: \A 11: [class^=\"icon-\"], [class*=\" icon-\"] {\A 12: 	font-family: 'icomoon';"; }
+nav#slide-menu {
+  position: fixed;
+  top: 0;
+  left: -100px;
+  bottom: 0;
+  display: block;
+  float: left;
+  height: 580px;
+  width: 100%;
+  max-width: 290px;
+  overflow-y: auto; }
+
+body.menu-active nav#slide-menu {
+  left: 0px; }
+
+body.menu-active nav#slide-menu ol {
+  left: 0px;
+  background-color: rgba(53, 61, 70, 0.5); }
+
+/*
+  Content
+*/
+div#content {
+  padding: 30px 60px 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 780px;
+  height: 580px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #fcfeff;
+  border-radius: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-box-shadow: -3px 0 6px #4a5562;
+  -webkit-box-shadow: -3px 0 6px #4a5562;
+  box-shadow: -3px 0 6px #4a5562;
+  -moz-transition: all 300ms;
+  -webkit-transition: all 300ms;
+  transition: all 300ms; }
+  div#content div.menu-trigger {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: 36px;
+    height: 36px;
+    background: #dfe5eb;
+    cursor: pointer;
+    border-radius: 5px;
+    -moz-transition: all 300ms;
+    -webkit-transition: all 300ms;
+    transition: all 300ms; }
+    div#content div.menu-trigger:before {
+      content: "\e9bd";
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      color: black;
+      font-family: "icomoon";
+      font-style: normal;
+      font-size: 1.2em;
+      font-weight: normal;
+      font-variant: normal;
+      text-align: center;
+      text-transform: none;
+      line-height: 36px; }
+    div#content div.menu-trigger:hover {
+      background: #4f5b69; }
+      div#content div.menu-trigger:hover:before {
+        color: #fcfeff; }
+
+body.menu-active div#content {
+  left: 290px;
+  border-radius: 7px 0 0 7px; }
+
+body.menu-active div#content .menu-trigger {
+  left: 294px; }
+
+#search {
+  width: 85%; }
+
+.search-bar {
+  margin-left: 5px;
+  margin-top: 10px; }
+
+#search-results {
+  text-align: center; }
+  #search-results .search-results {
+    height: 100px;
+    margin: 15px;
+    width: 80%;
+    display: inline-block;
+    position: relative; }
+    #search-results .search-results:hover {
+      background: #e3f5ff; }
+    #search-results .search-results h3 {
+      position: absolute;
+      top: 3px;
+      left: 8px; }
+    #search-results .search-results p {
+      width: 80%;
+      text-align: left;
+      position: absolute;
+      top: 35px;
+      left: 8px; }
+    #search-results .search-results span {
+      position: absolute;
+      color: #333;
+      font-size: 2.5em;
+      right: 25px;
+      top: 25px; }
+
+#video-wrapper {
+  position: absolute;
+  bottom: 50px;
+  left: 15px; }
+
+.switch-button-label {
+  float: left;
+  font-size: 10pt;
+  cursor: pointer; }
+
+.switch-button-label.off {
+  color: #adadad; }
+
+.switch-button-label.on {
+  color: #0088CC; }
+
+.switch-button-background {
+  float: left;
+  position: relative;
+  background: #ccc;
+  border: 1px solid #aaa;
+  margin: 1px 10px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  cursor: pointer; }
+
+.switch-button-button {
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  background: #FAFAFA;
+  border: 1px solid #aaa;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px; }
+
+strong, b, strong *, b * {
+  font-weight: bold !important; }
+
+em, i, em *, i * {
+  font-style: italic !important; }
+
+body {
+  margin: 0;
+  background: #353d46; }
+
+input, select {
+  display: inline-block; }
+
+h1, h2, h3 {
+  color: #FF6B6B;
+  margin: 0 0 27px;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2); }
+
+#content h1, #content h2, #content h3 {
+  text-align: center; }
+
+.hidden {
+  display: none; }
+
+.article-body {
+  margin-top: 2em;
+  margin-left: 0.3em; }
+
+.ellipsis {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+.divider {
+  color: #707070;
+  width: 70%;
+  margin: 20px auto;
+  overflow: hidden;
+  text-align: center;
+  line-height: 1.2em; }
+
+.divider:before, .divider:after {
+  content: "";
+  vertical-align: top;
+  display: inline-block;
+  width: 50%;
+  height: 0.65em;
+  border-bottom: 1px solid #ccc;
+  margin: 0 2% 0 -55%; }
+
+.divider:after {
+  margin: 0 -55% 0 2%; }
+
+.badge {
+  -webkit-transition: all 0.35s ease-in-out;
+  -moz-transition: all 0.35s ease-in-out;
+  transition: all 0.35s ease-in-out;
+  background-color: #e5edf8;
+  border-radius: 5em;
+  color: #244e87;
+  display: inline-block;
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.4em 1.2em; }
+  .badge:hover {
+    background-color: #95b5e2; }
+
+#tags {
+  position: absolute;
+  bottom: 10px;
+  right: 50px; }
+
+#banner_src {
+  text-align: center; }
+
+/*# sourceMappingURL=style.css.map */
