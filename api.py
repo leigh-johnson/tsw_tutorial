@@ -87,7 +87,10 @@ class ArticleAPI(object):
 class TagAPI(object):
     exposed = True
 
-    def GET(self):
+    def GET(self, **kwargs):
+        if kwargs:
+            result = cherrypy.request.db.query(Article).filter_by(**kwargs).all()
+            return json.dumps(result, cls=Jsonify(), check_circular=False, skipkeys=True, indent=2)
         result = Tag.list(cherrypy.request.db)
         return json.dumps(result, cls=Jsonify(),check_circular=False, skipkeys=True, indent=2)
 

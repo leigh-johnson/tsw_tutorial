@@ -210,7 +210,6 @@ class AdminController(object):
                     result = cherrypy.request.db.query(v, Article).join(Article).filter(
                     v.text.like('%' + term + '%')|(getattr(Article, "title_"+lang).like('%' + term + '%'))).all()
             query = "term= "+term
-            
             return template.render(categories=categories, lang=lang, tags=tags, results=result, query=query)
         else:
             return "Could not interpret search, try again"
@@ -330,8 +329,8 @@ class APIController(object):
 ### Config ###
 
 if __name__ == '__main__':
-    #daemon = Daemonizer(cherrypy.engine)
-    #daemon.subscribe()
+    daemon = Daemonizer(cherrypy.engine)
+    daemon.subscribe()
     cherrypy.config.update('config/app.conf')
     SAEnginePlugin(cherrypy.engine).subscribe()
     cherrypy.tools.db = SATool()
