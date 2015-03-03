@@ -432,7 +432,7 @@ body.menu-active nav#slide-menu ol {
   Content
 */
 div#content {
-  padding: 30px;
+  padding: 30px 60px 60px;
   position: fixed;
   top: 0;
   left: 0;
