@@ -1,10 +1,9 @@
 ## served on
 <%inherit file="../base.html"/>
-<%def name="path()"></%def>
 <%block name='head'>
 ${parent.head()}
-<link href="${path()+'public/css/reset.css'}" rel='stylesheet' type='text/css' />
-<link href="${path()+'public/css/style.css'}" rel='stylesheet' type='text/css' />
+<link href="public/css/reset.css" rel='stylesheet' type='text/css' />
+<link href="public/css/style.css" rel='stylesheet' type='text/css' />
 </%block>
 <%block name='menu'>
 <div id="menu" class="accordion">
@@ -90,7 +89,7 @@ Super secret ${character["faction"]} database.
 
 
 <%block name='scripts'>
-	<script type='text/javascript' src='${path()+"public/js/menu.js"}'>
+	<script type='text/javascript' src='public/js/menu.js'>
 	</script>
 	${parent.scripts()}
 

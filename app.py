@@ -148,7 +148,7 @@ class ClientController(object):
         }
         categories = Article.list(cherrypy.request.db)
         tags = Tag.list(cherrypy.request.db)
-        template = lookup.get_template('admin/layouts/search.html')
+        template = lookup.get_template('client/layouts/search.html')
 
         # return tag results
         if tag != None:

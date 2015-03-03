@@ -47,7 +47,6 @@ body.dragging, body.dragging * {
 
 ol.example li.placeholder {
   position: relative;
-  /** More li styles **/
 }
 ol.example li.placeholder:before {
   position: absolute;
@@ -69,7 +68,7 @@ div#footer{
 }
 
 label{
-  @include margin(0.5em, 0, 0.5em, 0);
+  @include margin(0.5em 0 0.5em 0);
   font-size: 0.7em;
   text-transform: uppercase;
 }
@@ -140,7 +139,7 @@ input, select{
   display:none;
 }
 
-// Tables
+// Tables - admin/tags
 
 .tables {
   

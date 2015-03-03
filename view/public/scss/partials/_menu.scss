@@ -23,7 +23,6 @@
   margin: 0;
   padding: 0;
   font-size: 18px;
-  font-variant: small-caps;
   font-weight: 600;
   font-size: 18px;
   text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
@@ -52,6 +51,7 @@
   a {
     color: $accordion-menu-color;
     text-decoration: none;
+    font-variant: small-caps;
   }
   a:hover{
   	color: darken($content-bg, 15%);
@@ -102,7 +102,10 @@ nav#slide-menu {
 
 
 body.menu-active nav#slide-menu { left: 0px; }
-body.menu-active nav#slide-menu ol { left: 0px; opacity: 1; }
+body.menu-active nav#slide-menu ol { 
+	left: 0px; 
+	background-color: $base-bg-a; 
+}
 
 /*
   Content

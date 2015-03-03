@@ -5,6 +5,8 @@
 @import 'partials/_menu';
 @import 'partials/_search';
 @import 'partials/_video';
+@import 'partials/admin-switchbutton';
+
 
 
 // CSS reset strips these
@@ -16,6 +18,11 @@ body {
     margin: 0;
     background: $base-bg;
 }
+
+input, select{
+  display: inline-block;
+}
+
 
 h1, h2, h3 { 
     color: #FF6B6B; 

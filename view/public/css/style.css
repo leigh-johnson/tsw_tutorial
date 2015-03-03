@@ -297,8 +297,7 @@ html {
 
 @font-face {
   font-family: 'icomoon';
-  src: url("../fonts/icomoon.eot?-n3yekb");
-  src: url("../fonts/icomoon.eot?#iefix-n3yekb") format("embedded-opentype"), url("../fonts/icomoon.woff?-n3yekb") format("woff"), url("../fonts/icomoon.ttf?-n3yekb") format("truetype"), url("../fonts/icomoon.svg?-n3yekb#icomoon") format("svg");
+  src: url("../fonts/icomoon/icomoon.eot?#iefix-n3yekb") format("embedded-opentype"), url("../fonts/icomoon/icomoon.woff?-n3yekb") format("woff"), url("../fonts/icomoon/icomoon.ttf?-n3yekb") format("truetype"), url("../fonts/icomoon/icomoon.svg?-n3yekb#icomoon") format("svg");
   font-weight: normal;
   font-style: normal; }
 [class^="icon-"], [class*=" icon-"] {
@@ -372,7 +371,6 @@ html {
   margin: 0;
   padding: 0;
   font-size: 18px;
-  font-variant: small-caps;
   font-weight: 600;
   font-size: 18px;
   text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
@@ -394,7 +392,8 @@ html {
     padding: 0.15em; }
   .accordion a {
     color: #f2fbff;
-    text-decoration: none; }
+    text-decoration: none;
+    font-variant: small-caps; }
   .accordion a:hover {
     color: #b0e4ff; }
   .accordion li:last-child, .accordion li ol:last-child {
@@ -426,7 +425,7 @@ body.menu-active nav#slide-menu {
 
 body.menu-active nav#slide-menu ol {
   left: 0px;
-  opacity: 1; }
+  background-color: rgba(53, 61, 70, 0.5); }
 
 /*
   Content
@@ -495,12 +494,6 @@ body.menu-active div#content .menu-trigger {
 .search-bar {
   margin-left: 5px;
   margin-top: 10px; }
-  .search-bar div {
-    display: inline-block;
-    margin-top: 10px;
-    font-size: 2em;
-    color: #fcfeff;
-    width: 20%; }
 
 #search-results {
   text-align: center; }
@@ -534,6 +527,38 @@ body.menu-active div#content .menu-trigger {
   bottom: 50px;
   left: 15px; }
 
+.switch-button-label {
+  float: left;
+  font-size: 10pt;
+  cursor: pointer; }
+
+.switch-button-label.off {
+  color: #adadad; }
+
+.switch-button-label.on {
+  color: #0088CC; }
+
+.switch-button-background {
+  float: left;
+  position: relative;
+  background: #ccc;
+  border: 1px solid #aaa;
+  margin: 1px 10px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  cursor: pointer; }
+
+.switch-button-button {
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  background: #FAFAFA;
+  border: 1px solid #aaa;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px; }
+
 strong, b, strong *, b * {
   font-weight: bold !important; }
 
@@ -543,6 +568,9 @@ em, i, em *, i * {
 body {
   margin: 0;
   background: #353d46; }
+
+input, select {
+  display: inline-block; }
 
 h1, h2, h3 {
   color: #FF6B6B;

@@ -357,8 +357,7 @@ body.dragging, body.dragging * {
   z-index: 2000; }
 
 ol.example li.placeholder {
-  position: relative;
-  /** More li styles **/ }
+  position: relative; }
 
 ol.example li.placeholder:before {
   position: absolute; }
@@ -376,7 +375,7 @@ div#footer {
   text-align: center; }
 
 label {
-  margin: 0.5em;
+  margin: 0.5em 0;
   font-size: 0.7em;
   text-transform: uppercase; }
 
