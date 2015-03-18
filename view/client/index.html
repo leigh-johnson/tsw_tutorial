@@ -17,7 +17,7 @@ ${parent.head()}
 	%if row.is_category == True & row.is_public == True & (row.parent_id is None):
 	<li id="${'article_'+str(row._id)}">
 		<div class="-wrapper accordion-header">
-			<span class="icon-plus accordion-icon">
+			<span class="icon-square-plus accordion-icon">
 			</span>
 			<a href="article?_id=${row._id}">${getattr(row, 'title_'+lang)}</a>
 		</div>
@@ -28,7 +28,7 @@ ${parent.head()}
 				%if article.is_category == True:
 					<li data-order="${article.order}" id="${'article_'+str(article._id)}">
 						<div class="accordion-header -wrapper">
-							<span class="icon-plus accordion-icon"></span>
+							<span class="icon-square-plus accordion-icon"></span>
 							<a href="article?_id=${article._id}">${getattr(article, 'title_'+lang)}</a>
 						</div>
 						## Article roll, if subcategory
@@ -37,7 +37,7 @@ ${parent.head()}
 							%if nested_article.is_category == True:
 								<li id="${'article_'+str(nested_article._id)}">
 									<div class="accordion-header -wrapper">
-									<span class="icon-plus accordion-icon"></span>
+									<span class="icon-square-plus accordion-icon"></span>
 									<a href="article?_id=${nested_article._id}">${getattr(nested_article, 'title_'+lang)}</a>
 									</div>
 									<ol>

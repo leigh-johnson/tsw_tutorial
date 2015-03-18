@@ -1,9 +1,9 @@
 // Typography
 
-$serif: 'Bitter', serif;
-$sans-serif: 'Source Sans Pro', sans-serif;
-$base-font-family: $sans-serif;
-$heading-font-family: $serif;
+$serif: 'Inconsolata', serif;
+$sans-serif: 'Roboto', sans-serif;
+$base-font-family: $serif;
+$heading-font-family: $sans-serif;
 $base-heading-size: 2.5em;
 
 // Font Sizes
@@ -24,9 +24,11 @@ $height: 580px;
 
 // Colors
 $blue: #34495e;
-$dark-gray: #333;
 $medium-gray: #999;
+$dark-gray: #1e1e1e !default;
 $light-gray: #ddd;
+$offwhite: #fcfeff;
+
 
 // Font Colors
 $base-background-color: #fff;
@@ -59,10 +61,11 @@ $divider-color: #707070;
 $menu-li-height: 40px;
 $menu-width: 290px;
 
+$base-bottom-bar: $dark-gray;
+
 $base-border-color: $base-bg !default;
 $base-line-height: 1.5em !default;
 $base-spacing: 1.5em !default;
-$dark-gray: #1e1e1e !default;
 $base-font-color: $dark-gray !default;
 $accordion-menu-border-color: $dark-gray;
 $accordion-menu-color: darken($content-bg, 2%);

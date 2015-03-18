@@ -1,46 +1,46 @@
 @font-face {
-    font-family: 'Bitter';
-    src: url('../fonts/bitter/Bitter-Bold-webfont.eot');
-    src: url('../fonts/bitter/Bitter-Bold-webfont.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/bitter/Bitter-Bold-webfont.svg') format('svg'),
-         url('../fonts/bitter/Bitter-Bold-webfont.ttf') format('truetype'),
-         url('../fonts/bitter/Bitter-Bold-webfont.woff') format('woff');
+    font-family: 'Roboto';
+    src: url('../fonts/roboto/Roboto-Bold-webfont.eot');
+    src: url('../fonts/roboto/Roboto-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/roboto/Roboto-Bold-webfont.svg') format('svg'),
+         url('../fonts/roboto/Roboto-Bold-webfont.ttf') format('truetype'),
+         url('../fonts/roboto/Roboto-Bold-webfont.woff') format('woff');
     font-weight: 600;
     font-style: normal;
 
 }
 
 @font-face {
-    font-family: 'Bitter';
-    src: url('../fonts/bitter/Bitter-BoldItalic-webfont.eot');
-    src: url('../fonts/bitter/Bitter-BoldItalic-webfont.eot?#iefix') format('embedded-opentype'),
-          url('../fonts/bitter/Bitter-BoldItalic-webfont.svg') format('svg'),
-         url('../fonts/bitter/Bitter-BoldItalic-webfont.ttf') format('truetype'),
-         url('../fonts/bitter/Bitter-BoldItalic-webfont.woff') format('woff');
+    font-family: 'Roboto';
+    src: url('../fonts/roboto/Roboto-BoldItalic-webfont.eot');
+    src: url('../fonts/roboto/Roboto-BoldItalic-webfont.eot?#iefix') format('embedded-opentype'),
+          url('../fonts/roboto/Roboto-BoldItalic-webfont.svg') format('svg'),
+         url('../fonts/roboto/Roboto-BoldItalic-webfont.ttf') format('truetype'),
+         url('../fonts/roboto/Roboto-BoldItalic-webfont.woff') format('woff');
     font-weight: 600;
     font-style:  italic;
 
 }
 
 @font-face {
-    font-family: 'Bitter';
-    src: url('../fonts/bitter/Bitter-Italic-webfont.eot');
-    src: url('../fonts/bitter/Bitter-Italic-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/bitter/Bitter-Italic-webfont.svg') format('svg'),
-         url('../fonts/bitter/Bitter-Italic-webfont.ttf') format('truetype'),
-         url('../fonts/bitter/Bitter-Italic-webfont.woff') format('woff');
+    font-family: 'Roboto';
+    src: url('../fonts/roboto/Roboto-Italic-webfont.eot');
+    src: url('../fonts/roboto/Roboto-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/roboto/Roboto-Italic-webfont.svg') format('svg'),
+         url('../fonts/roboto/Roboto-Italic-webfont.ttf') format('truetype'),
+         url('../fonts/roboto/Roboto-Italic-webfont.woff') format('woff');
     font-weight: normal;
     font-style: italic;
 
 }
 
 @font-face {
-    font-family: 'Bitter';
-    src: url('../fonts/bitter/Bitter-Regular-webfont.eot');
-    src: url('../fonts/bitter/Bitter-Regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/bitter/Bitter-Regular-webfont.svg#bitterregular') format('svg'),
-         url('../fonts/bitter/Bitter-Regular-webfont.ttf') format('truetype'),
-          url('../fonts/bitter/Bitter-Regular-webfont.woff') format('woff');
+    font-family: 'Roboto';
+    src: url('../fonts/roboto/Roboto-Regular-webfont.eot');
+    src: url('../fonts/roboto/Roboto-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/roboto/Roboto-Regular-webfont.svg#robotoregular') format('svg'),
+         url('../fonts/roboto/Roboto-Regular-webfont.ttf') format('truetype'),
+          url('../fonts/roboto/Roboto-Regular-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 
@@ -48,47 +48,23 @@
 
 @font-face {
     font-family: 'SourceSans Pro';
-    src: url('../fonts/source_sans_pro/SourceSansPro-Bold-webfont.eot');
-    src: url('../fonts/source_sans_pro/SourceSansPro-Bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/source_sans_pro/SourceSansPro-Bold-webfont.ttf') format('truetype'),
-         url('../fonts/source_sans_pro/SourceSansPro-Bold-webfont.svg') format('svg'),
-         url('../fonts/source_sans_pro/SourceSansPro-Bold-webfont.woff') format('woff');
+    src: url('../fonts/inconsolata/Inconsolata-Bold-webfont.eot');
+    src: url('../fonts/inconsolata/Inconsolata-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/inconsolata/Inconsolata-Bold-webfont.ttf') format('truetype'),
+         url('../fonts/inconsolata/Inconsolata-Bold-webfont.svg') format('svg'),
+         url('../fonts/inconsolata/Inconsolata-Bold-webfont.woff') format('woff');
     font-weight: 600;
     font-style: normal;
 
 }
 
 @font-face {
-    font-family: 'Source Sans Pro';
-    src: url('../fonts/source_sans_pro/SourceSansPro-BoldIt-webfont.eot');
-    src: url('../fonts/source_sans_pro/SourceSansPro-BoldIt-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/source_sans_pro/SourceSansPro-BoldIt-webfont.svg#source_sans_probold_italic') format('svg'),
-         url('../fonts/source_sans_pro/SourceSansPro-BoldIt-webfont.ttf') format('truetype'),
-         url('../fonts/source_sans_pro/SourceSansPro-BoldIt-webfont.woff') format('woff');
-    font-weight: 600;
-    font-style: italic;
-
-}
-
-@font-face {
-    font-family: 'Source Sans Pro';
-    src: url('../fonts/source_sans_pro/SourceSansPro-It-webfont.eot');
-    src: url('../fonts/source_sans_pro/SourceSansPro-It-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/source_sans_pro/SourceSansPro-It-webfont.svg') format('svg'),
-         url('../fonts/source_sans_pro/SourceSansPro-It-webfont.ttf') format('truetype'),
-         url('../fonts/source_sans_pro/SourceSansPro-It-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: italic;
-
-}
-
-@font-face {
-    font-family: 'Source Sans Pro';
-    src: url('../fonts/source_sans_pro/SourceSansPro-Regular-webfont.eot');
-    src: url('../fonts/source_sans_pro/SourceSansPro-Regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/source_sans_pro/SourceSansPro-Regular-webfont.svg#source_sans_proregular') format('svg'),
-         url('../fonts/source_sans_pro/SourceSansPro-Regular-webfont.ttf') format('truetype'),
-         url('../fonts/source_sans_pro/SourceSansPro-Regular-webfont.woff') format('woff');
+    font-family: 'Inconsolata';
+    src: url('../fonts/inconsolata/Inconsolata-Regular-webfont.eot');
+    src: url('../fonts/inconsolata/Inconsolata-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/inconsolata/Inconsolata-Regular-webfont.svg#inconsolataregular') format('svg'),
+         url('../fonts/inconsolata/Inconsolata-Regular-webfont.ttf') format('truetype'),
+         url('../fonts/inconsolata/Inconsolata-Regular-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -192,7 +168,7 @@ body {
   }
 
   p {
-    font-family: $sans-serif;
+    font-family: $serif;
     font-weight: 300;
     letter-spacing: 1;
     margin-bottom: 1.5em;

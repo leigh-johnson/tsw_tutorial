@@ -1,0 +1,44 @@
+//colors http://www.colourlovers.com/palette/3668125/Dragon
+$green-1: #A1A364;
+$green-2: #527F33;
+$green-3: #68A140;
+$green-4: #294019;
+$offwhite: #fcfeff;
+
+$base-background-color: #A1A364;
+$base-font-color: $dark-gray;
+
+$action-color: $green-3;
+
+$base-border-color: $light-gray;
+$base-bg: $green-4;
+$base-bg-a: rgba(53,61,70, 0.5);
+
+// base
+$content-bg: #fcfeff;
+$base-font-color: $dark-gray !default;
+$base-accent-color: #477DCA !default;
+$base-bottom-bar: $dark-gray;
+
+// accordion
+
+$base-border-color: $base-bg !default;
+$base-line-height: 1.5em !default;
+$base-spacing: 1.5em !default;
+$base-font-color: $dark-gray !default;
+$accordion-menu-border-color: $dark-gray;
+$accordion-menu-color: darken($content-bg, 2%);
+$accordion-menu-border: 1px solid $accordion-menu-border-color;
+$accordion-menu-background: lighten($green-2, 10%);
+$accordion-menu-hover: lighten($accordion-menu-background, 2%);
+$accordion-menu-sub-background: darken($accordion-menu-background, 5%);
+$accordion-menu-sub-inset: darken($accordion-menu-sub-background, 6%);
+$accordion-menu-sub-hover: lighten($accordion-menu-sub-background, 2%);
+$accordion-menu-list-padding: ($base-spacing / 10);
+
+.menu-trigger, #search-submit{
+  @include transition(all 0.6s ease-in-out);
+  border: 1.5px solid $offwhite;
+  background-color: $green-2;
+  &:hover { background: $green-3; &:before {} }
+}

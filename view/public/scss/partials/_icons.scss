@@ -21,58 +21,82 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-.icon-home:before {
-	content: "\e900";
+.icon-times-outline:before {
+	content: "\e601";
 }
 
-.icon-file-text:before {
-	content: "\e926";
+.icon-th-menu-outline:before {
+	content: "\e602";
 }
 
-.icon-file-picture:before {
-	content: "\e927";
+.icon-home-outline:before {
+	content: "\e600";
+}
+
+.icon-cog-outline:before {
+	content: "\e603";
 }
 
 .icon-file-video:before {
-	content: "\e92a";
+	content: "\e018";
 }
 
-.icon-folder:before {
-	content: "\e92f";
+.icon-file-text:before {
+	content: "\e034";
 }
 
-.icon-folder-open:before {
-	content: "\e930";
+.icon-file-picture:before {
+	content: "\e034";
 }
 
 .icon-search:before {
-	content: "\e986";
+	content: "\e036";
 }
 
-.icon-menu:before {
-	content: "\e9bd";
+.icon-square-plus:before {
+	content: "\e044";
 }
 
-.icon-link:before {
-	content: "\e9cb";
+.icon-square-minus:before {
+	content: "\e045";
 }
 
-.icon-plus:before {
-	content: "\ea0a";
+.icon-square-cross:before {
+	content: "\e047";
 }
 
-.icon-minus:before {
-	content: "\ea0b";
+.icon-folder:before {
+	content: "\e059";
 }
 
-.icon-cross:before {
-	content: "\ea0f";
+.icon-battery:before {
+	content: "\e073";
 }
 
-.icon-arrow-right2:before {
-	content: "\ea3c";
+.icon-head:before {
+	content: "\e074";
 }
 
-.icon-arrow-left2:before {
-	content: "\ea40";
+.icon-share:before {
+	content: "\e081";
+}
+
+.icon-tag:before {
+	content: "\e085";
+}
+
+.icon-bar-graph:before {
+	content: "\e090";
+}
+
+.icon-pie-graph:before {
+	content: "\e092";
+}
+
+.icon-arrow-left:before {
+	content: "\e094";
+}
+
+.icon-arrow-right:before {
+	content: "\e095";
 }

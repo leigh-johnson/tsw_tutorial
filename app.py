@@ -113,7 +113,7 @@ class ClientController(object):
         # @todo remove static data
         character = {
             'name': "Nuwen", #cherrypy.request.headers.get('X-Tsw-Charactername')
-            'faction': "Dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
+            'faction': "dragon", #cherrypy.request.headers.get('X-Tsw-Faction')
             'language': "en" # cherrypy.request.headers.get('X-Tsw-Language')
         }
         tags = Tag.list(cherrypy.request.db)

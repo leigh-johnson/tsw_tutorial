@@ -319,6 +319,15 @@ picture {
   margin: 0;
   max-width: 100%; }
 
+.menu-trigger, #search-submit {
+  -webkit-transition: all 0.6s ease-in-out;
+  -moz-transition: all 0.6s ease-in-out;
+  transition: all 0.6s ease-in-out;
+  border: 1.5px solid #fcfeff;
+  background-color: #527F33; }
+  .menu-trigger:hover, #search-submit:hover {
+    background: #68A140; }
+
 html {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -427,7 +436,7 @@ html {
   font-size: 18px;
   text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
   color: #f2fbff;
-  background-color: #4b5663;
+  background-color: #69a342;
   border: 1px solid #1e1e1e;
   margin-bottom: 1.5em; }
   .accordion li {
@@ -453,7 +462,7 @@ html {
   .accordion li:last-child, .accordion li ol:last-child {
     border: none; }
   .accordion li:focus, .accordion li:hover, .accordion li.is-expanded {
-    background-color: #4f5b69; }
+    background-color: #6eab45; }
   .accordion li div span {
     margin-left: 5px; }
   .accordion div {
@@ -532,7 +541,7 @@ div#content {
     cursor: pointer;
     border-radius: 3px;
     font-size: 2em;
-    color: #353d46; }
+    color: #294019; }
     div#content div.menu-trigger span {
       display: inline-block;
       width: 36px;
@@ -540,7 +549,7 @@ div#content {
       text-align: center;
       line-height: 36px; }
     div#content div.menu-trigger:hover {
-      color: #617080; }
+      color: #588936; }
 
 body.menu-active div#content {
   left: 290px; }
@@ -627,21 +636,7 @@ em, i, em *, i * {
 
 body {
   margin: 0;
-  background: #353d46; }
-
-#slide-menu::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-  background-color: #F5F5F5; }
-
-#slide-menu::-webkit-scrollbar {
-  width: 12px;
-  background-color: #F5F5F5; }
-
-#slide-menu::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: #555; }
+  background: #294019; }
 
 input, select {
   display: inline-block; }
@@ -660,6 +655,9 @@ h1, h2, h3 {
 .article-body {
   margin-top: 2em;
   margin-left: 0.3em; }
+
+.box-shadow-1 {
+  border: 1.5px solid #fcfeff; }
 
 .ellipsis {
   display: inline-block;
@@ -711,4 +709,4 @@ h1, h2, h3 {
 #banner_src {
   text-align: center; }
 
-/*# sourceMappingURL=style.css.map */
+/*# sourceMappingURL=dragon.css.map */
